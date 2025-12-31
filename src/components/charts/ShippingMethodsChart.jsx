@@ -4,26 +4,26 @@ import { PIE_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../constants/chartCon
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export function CategoryBreakdownChart({ data, onCategoryClick }) {
+export function ShippingMethodsChart({ data }) {
   if (!data || data.length === 0) {
     return <div className="text-center text-gray-500 py-8">No data available</div>;
   }
 
-  // Take top 8 categories and group rest as "Other"
-  const topCategories = data.slice(0, 8);
-  const otherCategories = data.slice(8);
-  const otherTotal = otherCategories.reduce((sum, cat) => sum + cat.amount, 0);
+  // Take top 6 methods and group rest as "Other"
+  const topMethods = data.slice(0, 6);
+  const otherMethods = data.slice(6);
+  const otherTotal = otherMethods.reduce((sum, method) => sum + method.count, 0);
 
-  const categories = [...topCategories];
+  const methods = [...topMethods];
   if (otherTotal > 0) {
-    categories.push({ category: 'Other', amount: otherTotal });
+    methods.push({ method: 'Other', count: otherTotal });
   }
 
   const chartData = {
-    labels: categories.map(d => d.category),
+    labels: methods.map(d => d.method),
     datasets: [
       {
-        data: categories.map(d => d.amount),
+        data: methods.map(d => d.count),
         backgroundColor: CHART_COLOR_PALETTE,
         borderWidth: 2,
         borderColor: '#ffffff'
@@ -43,22 +43,11 @@ export function CategoryBreakdownChart({ data, onCategoryClick }) {
             const value = context.parsed || 0;
             const total = context.dataset.data.reduce((a, b) => a + b, 0);
             const percentage = ((value / total) * 100).toFixed(1);
-            const formatted = new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD'
-            }).format(value);
-            return `${label}: ${formatted} (${percentage}%) - Click to view details`;
+            return `${label}: ${value} orders (${percentage}%)`;
           }
         }
       }
-    },
-    onClick: onCategoryClick ? (event, elements) => {
-      if (elements.length > 0) {
-        const index = elements[0].index;
-        const category = categories[index].category;
-        onCategoryClick(category);
-      }
-    } : undefined
+    }
   };
 
   return <Doughnut data={chartData} options={options} />;

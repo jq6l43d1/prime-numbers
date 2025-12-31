@@ -23,7 +23,7 @@ ChartJS.register(
   Filler
 );
 
-export function SpendingOverTimeChart({ data }) {
+export function SpendingOverTimeChart({ data, onMonthClick }) {
   if (!data || data.length === 0) {
     return <div className="text-center text-gray-500 py-8">No data available</div>;
   }
@@ -44,5 +44,25 @@ export function SpendingOverTimeChart({ data }) {
     ]
   };
 
-  return <Line data={chartData} options={LINE_CHART_OPTIONS} />;
+  const options = {
+    ...LINE_CHART_OPTIONS,
+    onClick: onMonthClick ? (event, elements) => {
+      if (elements.length > 0) {
+        const index = elements[0].index;
+        const monthData = data[index];
+        onMonthClick(monthData);
+      }
+    } : undefined,
+    plugins: {
+      ...LINE_CHART_OPTIONS.plugins,
+      tooltip: {
+        ...LINE_CHART_OPTIONS.plugins?.tooltip,
+        callbacks: {
+          afterLabel: () => onMonthClick ? '(Click to view details)' : ''
+        }
+      }
+    }
+  };
+
+  return <Line data={chartData} options={options} />;
 }

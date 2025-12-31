@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 
-export function FileUploader({ onFileSelect, error }) {
+export function FileUploader({ onFileSelect, error, showAddAnother = false }) {
   const onDrop = useCallback((acceptedFiles) => {
     console.log('onDrop called with files:', acceptedFiles);
     if (acceptedFiles && acceptedFiles.length > 0) {
@@ -44,11 +44,16 @@ export function FileUploader({ onFileSelect, error }) {
         <h3 className="text-xl font-semibold text-gray-900 mb-2">
           {isDragActive
             ? 'Drop your file here'
+            : showAddAnother
+            ? 'Add another file'
             : 'Click or drag file to upload'
           }
         </h3>
         <p className="text-gray-600 mb-4">
-          Drag and drop your Amazon "Your Orders.zip" file here, or click anywhere in this area to browse
+          {showAddAnother
+            ? 'Upload another Amazon order file to compare or combine data'
+            : 'Drag and drop your Amazon "Your Orders.zip" file here, or click anywhere in this area to browse'
+          }
         </p>
         <div className="inline-flex items-center text-primary font-semibold">
           <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">

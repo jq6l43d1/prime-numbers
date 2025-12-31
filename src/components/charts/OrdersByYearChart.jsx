@@ -19,7 +19,7 @@ ChartJS.register(
   Legend
 );
 
-export function OrdersByYearChart({ data }) {
+export function OrdersByYearChart({ data, onYearClick }) {
   if (!data || data.length === 0) {
     return <div className="text-center text-gray-500 py-8">No data available</div>;
   }
@@ -54,7 +54,7 @@ export function OrdersByYearChart({ data }) {
           afterLabel: function(context) {
             const yearData = data[context.dataIndex];
             if (yearData && yearData.amount) {
-              return `Total Spent: $${yearData.amount.toLocaleString()}`;
+              return [`Total Spent: $${yearData.amount.toLocaleString()}`, 'Click to view details'];
             }
             return '';
           }
@@ -84,7 +84,14 @@ export function OrdersByYearChart({ data }) {
           stepSize: 1
         }
       }
-    }
+    },
+    onClick: onYearClick ? (event, elements) => {
+      if (elements.length > 0) {
+        const index = elements[0].index;
+        const yearData = data[index];
+        onYearClick(yearData);
+      }
+    } : undefined
   };
 
   return <Bar data={chartData} options={options} />;

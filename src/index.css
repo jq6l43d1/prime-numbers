@@ -4,24 +4,274 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-gradient-to-br from-gray-50 via-blue-50 to-purple-50 text-gray-900;
+    min-height: 100vh;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-primary hover:bg-primary-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm transition-colors duration-200;
+    @apply bg-primary hover:bg-primary-700 text-white font-semibold py-2 px-4 rounded-md shadow-sm transition-all duration-200 hover:shadow-md hover:scale-105;
   }
 
   .btn-secondary {
-    @apply bg-white hover:bg-gray-50 text-gray-700 font-semibold py-2 px-4 rounded-md border border-gray-300 shadow-sm transition-colors duration-200;
+    @apply bg-white hover:bg-gray-50 text-gray-700 font-semibold py-2 px-4 rounded-md border border-gray-300 shadow-sm transition-all duration-200 hover:shadow-md hover:scale-105;
   }
 
   .card {
-    @apply bg-white rounded-lg shadow-md p-6;
+    @apply bg-white rounded-lg shadow-md p-6 transition-all duration-300 hover:shadow-xl;
+    /* Minimal hover effects to prevent overflow */
+    position: relative;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    z-index: 10;
+  }
+
+  .card-interactive {
+    @apply bg-white rounded-lg shadow-md p-6 transition-all duration-300 hover:shadow-2xl cursor-pointer border-2 border-transparent hover:border-blue-200;
+    position: relative;
+  }
+
+  .card-interactive:hover {
+    transform: translateY(-4px);
+    z-index: 10;
   }
 
   .input {
-    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200;
   }
 }
+
+@layer utilities {
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  .animate-slide-in-left {
+    animation: slideInLeft 0.6s ease-out;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 3s ease-in-out infinite;
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  .animate-slideUp {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .shimmer {
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes glow {
+    0%, 100% {
+      box-shadow: 0 0 5px rgba(59, 130, 246, 0.2),
+                  0 0 10px rgba(59, 130, 246, 0.1);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.4),
+                  0 0 30px rgba(59, 130, 246, 0.2),
+                  0 0 40px rgba(59, 130, 246, 0.1);
+    }
+  }
+
+  .animate-glow {
+    animation: glow 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes gradient-shift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 10s ease infinite;
+  }
+
+  .glass-effect {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.8);
+  }
+
+  /* Chart container helpers */
+  .chart-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Section spacing helper */
+  .dashboard-section {
+    margin-bottom: 2.5rem;
+    isolation: isolate;
+  }
+
+  /* Grid gap helper */
+  .chart-grid {
+    display: grid;
+    gap: 2rem;
+    isolation: isolate;
+  }
+
+  /* Mobile Responsiveness Enhancements */
+  @media (max-width: 768px) {
+    .card {
+      @apply p-4;
+    }
+
+    .card:hover {
+      transform: translateY(-1px);
+    }
+
+    .card-interactive {
+      @apply p-4;
+    }
+
+    .card-interactive:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Reduce chart heights on mobile */
+    .chart-container-sm {
+      height: 250px !important;
+    }
+
+    .chart-container-md {
+      height: 300px !important;
+    }
+
+    /* Better touch targets */
+    button, a, .clickable {
+      min-height: 44px;
+      min-width: 44px;
+    }
+
+    /* Better text sizing */
+    h1 {
+      @apply text-2xl;
+    }
+
+    h2 {
+      @apply text-xl;
+    }
+
+    h3 {
+      @apply text-lg;
+    }
+
+    /* Stack filters vertically on mobile */
+    .filter-container {
+      @apply flex-col space-y-4;
+    }
+  }
+
+  @media (max-width: 640px) {
+    /* Even smaller adjustments for very small screens */
+    .card {
+      @apply p-3 text-sm;
+    }
+
+    .stat-card-value {
+      @apply text-xl;
+    }
+
+    /* Horizontal scroll for tables on small screens */
+    .table-container {
+      @apply overflow-x-auto;
+    }
+  }
+
+  /* Smooth scrolling for better mobile experience */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Better focus states for keyboard navigation */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-blue-500;
+  }
+}
+
