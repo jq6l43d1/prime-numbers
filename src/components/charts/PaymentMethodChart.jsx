@@ -4,7 +4,7 @@ import { CHART_COLORS } from '../../constants/chartConfig';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export function PaymentMethodChart({ orders }) {
+export function PaymentMethodChart({ orders, onClick }) {
   if (!orders || orders.length === 0) {
     return <div className="text-center text-gray-500 py-8">No data available</div>;
   }
@@ -69,6 +69,31 @@ export function PaymentMethodChart({ orders }) {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    onClick: onClick ? (event, elements) => {
+      if (elements.length > 0) {
+        const index = elements[0].index;
+        const method = labels[index];
+        const stats = sortedMethods[index][1];
+
+        // Find all orders using this payment method
+        const methodOrders = orders.filter(o => {
+          if (!o.paymentInstrumentType || o.paymentInstrumentType === 'Not Applicable') return false;
+          let cardType = o.paymentInstrumentType.split(' - ')[0].trim();
+          const commonTypes = ['Visa', 'MasterCard', 'American Express', 'Discover', 'Amex'];
+          if (!commonTypes.some(type => cardType.includes(type))) {
+            cardType = 'Other';
+          }
+          return cardType === method;
+        });
+
+        onClick({
+          method,
+          count: stats.count,
+          totalSpent: stats.totalSpent,
+          orders: methodOrders
+        });
+      }
+    } : undefined,
     plugins: {
       legend: {
         position: 'bottom',

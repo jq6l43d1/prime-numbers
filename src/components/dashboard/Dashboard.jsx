@@ -26,6 +26,8 @@ import { OrderStatusChart } from '../charts/OrderStatusChart';
 import { ShippingCostAnalysisChart } from '../charts/ShippingCostAnalysisChart';
 import { TaxAnalysisChart } from '../charts/TaxAnalysisChart';
 import { CarrierPerformanceChart } from '../charts/CarrierPerformanceChart';
+import { ProductConditionChart } from '../charts/ProductConditionChart';
+import { FulfillmentSpeedChart } from '../charts/FulfillmentSpeedChart';
 import { TimePeriodComparison } from '../comparison/TimePeriodComparison';
 import { DateRangeFilter } from '../filters/DateRangeFilter';
 import { ProductSearchFilter } from '../filters/ProductSearchFilter';
@@ -231,6 +233,46 @@ export function Dashboard() {
       subtitle: `${orders.length} shipments`,
       orders: orders
     }, 'carrier');
+  };
+
+  const handlePaymentMethodClick = (methodData) => {
+    openDrillDown({
+      title: `Payment: ${methodData.method}`,
+      subtitle: `${methodData.count} orders • $${methodData.totalSpent.toFixed(2)} total`,
+      orders: methodData.orders
+    }, 'payment');
+  };
+
+  const handleSeasonalClick = (seasonData) => {
+    openDrillDown({
+      title: `${seasonData.season} ${seasonData.year}`,
+      subtitle: `${seasonData.orders.length} orders • $${seasonData.totalSpent.toFixed(2)} total`,
+      orders: seasonData.orders
+    }, 'seasonal');
+  };
+
+  const handleGiftClick = (giftData) => {
+    openDrillDown({
+      title: giftData.type,
+      subtitle: `${giftData.orders.length} orders • $${giftData.totalSpent.toFixed(2)} total`,
+      orders: giftData.orders
+    }, giftData.isGift ? 'gift' : 'personal');
+  };
+
+  const handleConditionClick = (conditionData) => {
+    openDrillDown({
+      title: `Condition: ${conditionData.condition}`,
+      subtitle: `${conditionData.count} orders • ${conditionData.items} items • $${conditionData.totalSpent.toFixed(2)} total`,
+      orders: conditionData.orders
+    }, 'condition');
+  };
+
+  const handleFulfillmentSpeedClick = (speedData) => {
+    openDrillDown({
+      title: `Fulfillment: ${speedData.bucket}`,
+      subtitle: `${speedData.count} orders • $${speedData.totalSpent.toFixed(2)} total`,
+      orders: speedData.orders
+    }, 'fulfillment');
   };
 
   if (!statistics) {
@@ -472,7 +514,7 @@ export function Dashboard() {
           <div className="card bg-gradient-to-br from-white to-fuchsia-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">🌸 Seasonal Spending Analysis</h3>
             <div className="h-96">
-              <SeasonalSpendingChart orders={filteredOrders} />
+              <SeasonalSpendingChart orders={filteredOrders} onClick={handleSeasonalClick} />
             </div>
           </div>
 
@@ -535,17 +577,17 @@ export function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="card bg-gradient-to-br from-white to-teal-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">💳 Payment Methods</h3>
-            <p className="text-sm text-gray-600 mb-4">How you pay for your purchases</p>
+            <p className="text-sm text-gray-600 mb-4">How you pay - click any payment method to view orders</p>
             <div className="h-96">
-              <PaymentMethodChart orders={filteredOrders} />
+              <PaymentMethodChart orders={filteredOrders} onClick={handlePaymentMethodClick} />
             </div>
           </div>
 
           <div className="card bg-gradient-to-br from-white to-pink-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">🎁 Gift Orders Analysis</h3>
-            <p className="text-sm text-gray-600 mb-4">Compare gift purchases vs personal orders</p>
+            <p className="text-sm text-gray-600 mb-4">Gift vs personal - click any bar to view orders</p>
             <div className="h-96">
-              <GiftOrdersChart orders={filteredOrders} />
+              <GiftOrdersChart orders={filteredOrders} onClick={handleGiftClick} />
             </div>
           </div>
         </div>
@@ -592,6 +634,25 @@ export function Dashboard() {
             <p className="text-sm text-gray-600 mb-4">Click any carrier to view shipments</p>
             <div className="h-96">
               <CarrierPerformanceChart orders={filteredOrders} onCarrierClick={handleCarrierClick} />
+            </div>
+          </div>
+        </div>
+
+        {/* Product Condition & Fulfillment Speed - Two Column */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="card bg-gradient-to-br from-white to-emerald-50 shadow-lg overflow-hidden">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">📦 Product Condition Analysis</h3>
+            <p className="text-sm text-gray-600 mb-4">New vs Used vs Refurbished - click any segment</p>
+            <div className="h-96">
+              <ProductConditionChart orders={filteredOrders} onClick={handleConditionClick} />
+            </div>
+          </div>
+
+          <div className="card bg-gradient-to-br from-white to-amber-50 shadow-lg overflow-hidden">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">⚡ Fulfillment Speed Analysis</h3>
+            <p className="text-sm text-gray-600 mb-4">How fast are your orders shipped? Click any bar</p>
+            <div className="h-96">
+              <FulfillmentSpeedChart orders={filteredOrders} onClick={handleFulfillmentSpeedClick} />
             </div>
           </div>
         </div>

@@ -12,7 +12,7 @@ import { CHART_COLORS } from '../../constants/chartConfig';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export function GiftOrdersChart({ orders }) {
+export function GiftOrdersChart({ orders, onClick }) {
   if (!orders || orders.length === 0) {
     return <div className="text-center text-gray-500 py-8">No data available</div>;
   }
@@ -72,6 +72,21 @@ export function GiftOrdersChart({ orders }) {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    onClick: onClick ? (event, elements) => {
+      if (elements.length > 0) {
+        const index = elements[0].index;
+        const isGift = index === 0;
+        const relevantOrders = isGift ? giftOrders : personalOrders;
+        const type = isGift ? 'Gift Orders' : 'Personal Orders';
+
+        onClick({
+          type,
+          isGift,
+          orders: relevantOrders,
+          totalSpent: relevantOrders.reduce((sum, o) => sum + (o.totalOwed || 0), 0)
+        });
+      }
+    } : undefined,
     interaction: {
       mode: 'index',
       intersect: false

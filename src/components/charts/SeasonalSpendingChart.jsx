@@ -19,7 +19,7 @@ ChartJS.register(
   Legend
 );
 
-export function SeasonalSpendingChart({ orders }) {
+export function SeasonalSpendingChart({ orders, onClick }) {
   if (!orders || orders.length === 0) {
     return <div className="text-center text-gray-500">No data available</div>;
   }
@@ -118,6 +118,43 @@ export function SeasonalSpendingChart({ orders }) {
   const options = {
     responsive: true,
     maintainAspectRatio: false,
+    onClick: onClick ? (event, elements) => {
+      if (elements.length > 0) {
+        const element = elements[0];
+        const season = data.labels[element.index];
+        const datasetIndex = element.datasetIndex;
+        const year = sortedYears.reverse()[datasetIndex];
+
+        // Get month range for season
+        let monthRange;
+        if (season === 'Spring') monthRange = [2, 4];
+        else if (season === 'Summer') monthRange = [5, 7];
+        else if (season === 'Fall') monthRange = [8, 10];
+        else monthRange = [11, 1]; // Winter spans Dec-Feb
+
+        // Find all orders in this season/year
+        const seasonOrders = orders.filter(order => {
+          const date = new Date(order.orderDate);
+          const orderYear = getYear(date);
+          const orderMonth = getMonth(date);
+
+          if (orderYear !== year) return false;
+
+          if (season === 'Winter') {
+            return orderMonth === 11 || orderMonth === 0 || orderMonth === 1;
+          } else {
+            return orderMonth >= monthRange[0] && orderMonth <= monthRange[1];
+          }
+        });
+
+        onClick({
+          season,
+          year,
+          orders: seasonOrders,
+          totalSpent: seasonOrders.reduce((sum, o) => sum + (o.totalOwed || 0), 0)
+        });
+      }
+    } : undefined,
     plugins: {
       legend: {
         display: true,
