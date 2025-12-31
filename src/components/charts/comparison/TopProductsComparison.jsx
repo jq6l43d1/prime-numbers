@@ -30,7 +30,8 @@ export function TopProductsComparison({ datasetStats }) {
     if (stats?.products?.topBySpending) {
       stats?.products?.topBySpending.slice(0, 10).forEach(p => {
         // Truncate product name to avoid too long labels
-        const shortName = p.title.length > 40 ? p.title.substring(0, 40) + '...' : p.title;
+        const title = p.title || p.name || 'Unknown Product';
+        const shortName = title.length > 40 ? title.substring(0, 40) + '...' : title;
         allProductsSet.add(shortName);
       });
     }
@@ -42,7 +43,8 @@ export function TopProductsComparison({ datasetStats }) {
     const productMap = new Map();
     if (item.stats?.products?.topBySpending) {
       item.stats?.products?.topBySpending.forEach(p => {
-        const shortName = p.title.length > 40 ? p.title.substring(0, 40) + '...' : p.title;
+        const title = p.title || p.name || 'Unknown Product';
+        const shortName = title.length > 40 ? title.substring(0, 40) + '...' : title;
         productMap.set(shortName, p.totalSpent);
       });
     }
