@@ -1,0 +1,42 @@
+import { Card } from '../common/Card';
+import { formatCurrency, formatNumber } from '../../utils/currencyHelpers';
+
+export function StatCard({ title, value, subtitle, icon, trend, format = 'number' }) {
+  const formattedValue = () => {
+    if (value === null || value === undefined) return '-';
+
+    switch (format) {
+      case 'currency':
+        return formatCurrency(value);
+      case 'percentage':
+        return `${value.toFixed(1)}%`;
+      case 'text':
+        return value;
+      case 'number':
+      default:
+        return formatNumber(value);
+    }
+  };
+
+  return (
+    <Card>
+      <div className="flex items-start justify-between">
+        <div className="flex-1">
+          <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>
+          <p className="text-3xl font-bold text-gray-900">{formattedValue()}</p>
+          {subtitle && (
+            <p className="text-sm text-gray-500 mt-1">{subtitle}</p>
+          )}
+        </div>
+        {icon && (
+          <div className="text-4xl opacity-50">{icon}</div>
+        )}
+      </div>
+      {trend && (
+        <div className={`mt-2 text-sm font-medium ${trend > 0 ? 'text-green-600' : 'text-red-600'}`}>
+          {trend > 0 ? '↑' : '↓'} {Math.abs(trend).toFixed(1)}%
+        </div>
+      )}
+    </Card>
+  );
+}
