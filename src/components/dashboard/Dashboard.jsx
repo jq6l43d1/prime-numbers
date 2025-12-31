@@ -21,6 +21,11 @@ import { PaymentMethodChart } from '../charts/PaymentMethodChart';
 import { GiftOrdersChart } from '../charts/GiftOrdersChart';
 import { SubscriptionDetectionChart } from '../charts/SubscriptionDetectionChart';
 import { ShippingDestinationsChart } from '../charts/ShippingDestinationsChart';
+import { DiscountAnalysisChart } from '../charts/DiscountAnalysisChart';
+import { OrderStatusChart } from '../charts/OrderStatusChart';
+import { ShippingCostAnalysisChart } from '../charts/ShippingCostAnalysisChart';
+import { TaxAnalysisChart } from '../charts/TaxAnalysisChart';
+import { CarrierPerformanceChart } from '../charts/CarrierPerformanceChart';
 import { TimePeriodComparison } from '../comparison/TimePeriodComparison';
 import { DateRangeFilter } from '../filters/DateRangeFilter';
 import { ProductSearchFilter } from '../filters/ProductSearchFilter';
@@ -177,6 +182,57 @@ export function Dashboard() {
     }, 'returns');
   };
 
+  const handleShippingMethodClick = (method) => {
+    const methodOrders = filteredOrders.filter(o =>
+      (o.shippingOption || 'Unknown') === method
+    );
+    openDrillDown({
+      title: `Shipping: ${method}`,
+      subtitle: `${methodOrders.length} orders with this shipping method`,
+      orders: methodOrders
+    }, 'shipping');
+  };
+
+  const handleOrderStatusClick = (status) => {
+    const statusOrders = filteredOrders.filter(o =>
+      (o.orderStatus || 'Unknown') === status
+    );
+    openDrillDown({
+      title: `Status: ${status}`,
+      subtitle: `${statusOrders.length} orders with this status`,
+      orders: statusOrders
+    }, 'status');
+  };
+
+  const handlePriceRangeClick = (range) => {
+    const rangeOrders = filteredOrders.filter(o => {
+      const price = parseFloat(o.unitPrice) || 0;
+      return price >= range.min && price < range.max;
+    });
+    openDrillDown({
+      title: `Price Range: ${range.label}`,
+      subtitle: `${rangeOrders.length} items in this price range`,
+      orders: rangeOrders
+    }, 'price');
+  };
+
+  const handleDigitalRetailClick = (type) => {
+    const typeOrders = filteredOrders.filter(o => o.isDigital === (type === 'digital'));
+    openDrillDown({
+      title: type === 'digital' ? 'Digital Orders' : 'Retail Orders',
+      subtitle: `${typeOrders.length} ${type} orders`,
+      orders: typeOrders
+    }, 'type');
+  };
+
+  const handleCarrierClick = (carrier, orders) => {
+    openDrillDown({
+      title: `Carrier: ${carrier}`,
+      subtitle: `${orders.length} shipments`,
+      orders: orders
+    }, 'carrier');
+  };
+
   if (!statistics) {
     return (
       <div className="text-center py-12">
@@ -319,8 +375,9 @@ export function Dashboard() {
 
           <div className="card bg-gradient-to-br from-white to-green-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">📊 Orders by Month</h3>
+            <p className="text-sm text-gray-600 mb-4">Click any month to view orders</p>
             <div className="h-80">
-              <OrdersByMonthChart data={statistics.spending.last12Months} />
+              <OrdersByMonthChart data={statistics.spending.last12Months} onMonthClick={handleMonthClick} />
             </div>
           </div>
         </div>
@@ -329,25 +386,29 @@ export function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="card bg-gradient-to-br from-white to-indigo-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">💵 Price Distribution</h3>
+            <p className="text-sm text-gray-600 mb-4">Click any price range to view items</p>
             <div className="h-80">
-              <PriceDistributionChart data={statistics.products.priceRanges} />
+              <PriceDistributionChart data={statistics.products.priceRanges} onPriceRangeClick={handlePriceRangeClick} />
             </div>
           </div>
 
           <div className="card bg-gradient-to-br from-white to-pink-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">🔄 Digital vs Retail</h3>
+            <p className="text-sm text-gray-600 mb-4">Click any segment to view orders</p>
             <div className="h-80">
               <DigitalVsRetailChart
                 digitalSpending={statistics.spending.digitalSpending}
                 retailSpending={statistics.spending.retailSpending}
+                onTypeClick={handleDigitalRetailClick}
               />
             </div>
           </div>
 
           <div className="card bg-gradient-to-br from-white to-yellow-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">🚚 Shipping Methods</h3>
+            <p className="text-sm text-gray-600 mb-4">Click any method to view orders</p>
             <div className="h-80">
-              <ShippingMethodsChart data={statistics.shipping.methods} />
+              <ShippingMethodsChart data={statistics.shipping.methods} onMethodClick={handleShippingMethodClick} />
             </div>
           </div>
         </div>
@@ -485,6 +546,52 @@ export function Dashboard() {
             <p className="text-sm text-gray-600 mb-4">Compare gift purchases vs personal orders</p>
             <div className="h-96">
               <GiftOrdersChart orders={filteredOrders} />
+            </div>
+          </div>
+        </div>
+
+        {/* Order Status & Discounts - Two Column */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <div className="card bg-gradient-to-br from-white to-blue-50 shadow-lg overflow-hidden">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">📊 Order Status Distribution</h3>
+            <p className="text-sm text-gray-600 mb-4">Click any status to view those orders</p>
+            <div className="h-96">
+              <OrderStatusChart orders={filteredOrders} onStatusClick={handleOrderStatusClick} />
+            </div>
+          </div>
+
+          <div className="card bg-gradient-to-br from-white to-green-50 shadow-lg overflow-hidden">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">💰 Discount Analysis by Category</h3>
+            <p className="text-sm text-gray-600 mb-4">See where you save the most money</p>
+            <div className="h-96">
+              <DiscountAnalysisChart orders={filteredOrders} />
+            </div>
+          </div>
+        </div>
+
+        {/* Shipping & Tax Analysis - Three Column */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="card bg-gradient-to-br from-white to-blue-50 shadow-lg overflow-hidden">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">📦 Shipping Cost Analysis</h3>
+            <p className="text-sm text-gray-600 mb-4">Free vs Paid shipping breakdown</p>
+            <div className="h-96">
+              <ShippingCostAnalysisChart orders={filteredOrders} />
+            </div>
+          </div>
+
+          <div className="card bg-gradient-to-br from-white to-orange-50 shadow-lg overflow-hidden">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">💵 Tax Analysis</h3>
+            <p className="text-sm text-gray-600 mb-4">Breakdown of taxes paid</p>
+            <div className="h-96">
+              <TaxAnalysisChart orders={filteredOrders} />
+            </div>
+          </div>
+
+          <div className="card bg-gradient-to-br from-white to-cyan-50 shadow-lg overflow-hidden">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">🚛 Carrier Performance</h3>
+            <p className="text-sm text-gray-600 mb-4">Click any carrier to view shipments</p>
+            <div className="h-96">
+              <CarrierPerformanceChart orders={filteredOrders} onCarrierClick={handleCarrierClick} />
             </div>
           </div>
         </div>

@@ -4,12 +4,19 @@ import { BAR_CHART_OPTIONS } from '../../constants/chartConfig';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
-export function PriceDistributionChart({ data }) {
+export function PriceDistributionChart({ data, onPriceRangeClick }) {
   if (!data) {
     return <div className="text-center text-gray-500 py-8">No data available</div>;
   }
 
   const labels = ['Under $10', '$10-$50', '$50-$100', '$100-$500', 'Over $500'];
+  const ranges = [
+    { label: 'Under $10', min: 0, max: 10 },
+    { label: '$10-$50', min: 10, max: 50 },
+    { label: '$50-$100', min: 50, max: 100 },
+    { label: '$100-$500', min: 100, max: 500 },
+    { label: 'Over $500', min: 500, max: Infinity }
+  ];
   const values = [
     data.under10,
     data['10to50'],
@@ -35,6 +42,16 @@ export function PriceDistributionChart({ data }) {
 
   const options = {
     ...BAR_CHART_OPTIONS,
+    onClick: onPriceRangeClick ? (event, elements) => {
+      if (elements.length > 0) {
+        const index = elements[0].index;
+        const range = ranges[index];
+        onPriceRangeClick(range);
+      }
+    } : undefined,
+    onHover: onPriceRangeClick ? (event, elements) => {
+      event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+    } : undefined,
     plugins: {
       ...BAR_CHART_OPTIONS.plugins,
       legend: {
@@ -48,7 +65,8 @@ export function PriceDistributionChart({ data }) {
             const total = values.reduce((a, b) => a + b, 0);
             const percentage = ((value / total) * 100).toFixed(1);
             return `${value} items (${percentage}%)`;
-          }
+          },
+          afterLabel: onPriceRangeClick ? () => 'Click to view items' : undefined
         }
       }
     },

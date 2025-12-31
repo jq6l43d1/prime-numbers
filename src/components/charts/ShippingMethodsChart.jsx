@@ -4,7 +4,7 @@ import { PIE_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../constants/chartCon
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export function ShippingMethodsChart({ data }) {
+export function ShippingMethodsChart({ data, onMethodClick }) {
   if (!data || data.length === 0) {
     return <div className="text-center text-gray-500 py-8">No data available</div>;
   }
@@ -33,6 +33,16 @@ export function ShippingMethodsChart({ data }) {
 
   const options = {
     ...PIE_CHART_OPTIONS,
+    onClick: onMethodClick ? (event, elements) => {
+      if (elements.length > 0) {
+        const index = elements[0].index;
+        const method = methods[index].method;
+        onMethodClick(method);
+      }
+    } : undefined,
+    onHover: onMethodClick ? (event, elements) => {
+      event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+    } : undefined,
     plugins: {
       ...PIE_CHART_OPTIONS.plugins,
       tooltip: {
@@ -44,7 +54,8 @@ export function ShippingMethodsChart({ data }) {
             const total = context.dataset.data.reduce((a, b) => a + b, 0);
             const percentage = ((value / total) * 100).toFixed(1);
             return `${label}: ${value} orders (${percentage}%)`;
-          }
+          },
+          afterLabel: onMethodClick ? () => 'Click to view details' : undefined
         }
       }
     }
