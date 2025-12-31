@@ -84,9 +84,9 @@ export async function parseRetailOrders(csvContent) {
       billingAddress: row['Billing Address'] || '',
       carrierNameAndTrackingNumber: row['Carrier Name & Tracking Number'] || '',
       productName: row['Product Name'] || '',
-      giftMessage: row['Gift Message'] || '',
-      giftSenderName: row['Gift Sender Name'] || '',
-      giftRecipientContactDetails: row['Gift Recipient Contact Details'] || '',
+      giftMessage: (row['Gift Message'] || '').trim(),
+      giftSenderName: (row['Gift Sender Name'] || '').trim(),
+      giftRecipientContactDetails: (row['Gift Recipient Contact Details'] || '').trim(),
       isDigital: false
     }));
 
