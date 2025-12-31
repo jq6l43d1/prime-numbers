@@ -3,9 +3,7 @@ import { useDropzone } from 'react-dropzone';
 
 export function FileUploader({ onFileSelect, error, showAddAnother = false }) {
   const onDrop = useCallback((acceptedFiles) => {
-    console.log('onDrop called with files:', acceptedFiles);
     if (acceptedFiles && acceptedFiles.length > 0) {
-      console.log('Calling onFileSelect with file:', acceptedFiles[0].name);
       onFileSelect(acceptedFiles[0]);
     }
   }, [onFileSelect]);
@@ -20,8 +18,6 @@ export function FileUploader({ onFileSelect, error, showAddAnother = false }) {
     noClick: false,
     noKeyboard: false
   });
-
-  console.log('FileUploader rendering, isDragActive:', isDragActive);
 
   return (
     <div className="max-w-2xl mx-auto">

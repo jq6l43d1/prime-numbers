@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 export function AdvancedFilters({ orders, onFilteredOrdersChange }) {
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
@@ -52,7 +52,7 @@ export function AdvancedFilters({ orders, onFilteredOrdersChange }) {
   }, [orders, priceRange, orderStatusFilter, quantityFilter, shippingFilter]);
 
   // Update parent component when filters change
-  useMemo(() => {
+  useEffect(() => {
     const hasActiveFilters =
       priceRange.min || priceRange.max ||
       orderStatusFilter !== 'all' ||

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 export function ProductSearchFilter({ orders, onFilteredOrdersChange }) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -53,7 +53,7 @@ export function ProductSearchFilter({ orders, onFilteredOrdersChange }) {
   }, [orders, searchTerm, minPrice, maxPrice, selectedCategory]);
 
   // Update parent component when filters change
-  useMemo(() => {
+  useEffect(() => {
     if (onFilteredOrdersChange) {
       onFilteredOrdersChange(filteredOrders);
     }
