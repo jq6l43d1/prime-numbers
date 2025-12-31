@@ -1,5 +1,35 @@
 import { useData } from '../../context/DataContext';
 import { useStatistics } from '../../hooks/useStatistics';
+import { SpendingOverTimeComparison } from '../charts/comparison/SpendingOverTimeComparison';
+import { CategoryBreakdownComparison } from '../charts/comparison/CategoryBreakdownComparison';
+import { OrdersByMonthComparison } from '../charts/comparison/OrdersByMonthComparison';
+import { OrdersByYearComparison } from '../charts/comparison/OrdersByYearComparison';
+import { DigitalVsRetailComparison } from '../charts/comparison/DigitalVsRetailComparison';
+import { DayOfWeekComparison } from '../charts/comparison/DayOfWeekComparison';
+import { PaymentMethodComparison } from '../charts/comparison/PaymentMethodComparison';
+import { ShippingMethodsComparison } from '../charts/comparison/ShippingMethodsComparison';
+import { MerchantAnalysisComparison } from '../charts/comparison/MerchantAnalysisComparison';
+import { SeasonalSpendingComparison } from '../charts/comparison/SeasonalSpendingComparison';
+import { TopProductsComparison } from '../charts/comparison/TopProductsComparison';
+import { PriceDistributionComparison } from '../charts/comparison/PriceDistributionComparison';
+import { ReturnsAnalysisComparison } from '../charts/comparison/ReturnsAnalysisComparison';
+import { GiftOrdersComparison } from '../charts/comparison/GiftOrdersComparison';
+import { OrderStatusComparison } from '../charts/comparison/OrderStatusComparison';
+import { ProductConditionComparison } from '../charts/comparison/ProductConditionComparison';
+import { FulfillmentSpeedComparison } from '../charts/comparison/FulfillmentSpeedComparison';
+import { TaxAnalysisComparison } from '../charts/comparison/TaxAnalysisComparison';
+import { DiscountAnalysisComparison } from '../charts/comparison/DiscountAnalysisComparison';
+import { ShippingCostAnalysisComparison } from '../charts/comparison/ShippingCostAnalysisComparison';
+import { CarrierPerformanceComparison } from '../charts/comparison/CarrierPerformanceComparison';
+import { OrderSizeDistributionComparison } from '../charts/comparison/OrderSizeDistributionComparison';
+import { YearOverYearComparison } from '../charts/comparison/YearOverYearComparison';
+import { RepeatPurchaseComparison } from '../charts/comparison/RepeatPurchaseComparison';
+import { SpendingVelocityComparison } from '../charts/comparison/SpendingVelocityComparison';
+import { CumulativeOrdersComparison } from '../charts/comparison/CumulativeOrdersComparison';
+import { SubscriptionDetectionComparison } from '../charts/comparison/SubscriptionDetectionComparison';
+import { ShippingDestinationsComparison } from '../charts/comparison/ShippingDestinationsComparison';
+import { SpendingHeatmapComparison } from '../charts/comparison/SpendingHeatmapComparison';
+import { CategorySpendingTrendComparison } from '../charts/comparison/CategorySpendingTrendComparison';
 
 export function ComparisonDashboard() {
   const { datasets } = useData();
@@ -340,6 +370,158 @@ export function ComparisonDashboard() {
               {formatCurrency(datasetStats.reduce((sum, item) => sum + item.stats.overview.totalSpent, 0))} across all files
             </p>
           </div>
+        </div>
+      </div>
+
+      {/* Comparison Charts */}
+      <div className="space-y-8 mt-8">
+        {/* Spending Over Time */}
+        <div className="card bg-white shadow-lg">
+          <SpendingOverTimeComparison datasetStats={datasetStats} />
+        </div>
+
+        {/* Category Breakdown */}
+        <div className="card bg-white shadow-lg">
+          <CategoryBreakdownComparison datasetStats={datasetStats} />
+        </div>
+
+        {/* Orders by Month and Year */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card bg-white shadow-lg">
+            <OrdersByMonthComparison datasetStats={datasetStats} />
+          </div>
+          <div className="card bg-white shadow-lg">
+            <OrdersByYearComparison datasetStats={datasetStats} />
+          </div>
+        </div>
+
+        {/* Digital vs Retail and Day of Week */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card bg-white shadow-lg">
+            <DigitalVsRetailComparison datasetStats={datasetStats} />
+          </div>
+          <div className="card bg-white shadow-lg">
+            <DayOfWeekComparison datasetStats={datasetStats} />
+          </div>
+        </div>
+
+        {/* Payment Methods and Shipping Methods */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card bg-white shadow-lg">
+            <PaymentMethodComparison datasetStats={datasetStats} />
+          </div>
+          <div className="card bg-white shadow-lg">
+            <ShippingMethodsComparison datasetStats={datasetStats} />
+          </div>
+        </div>
+
+        {/* Seasonal Spending */}
+        <div className="card bg-white shadow-lg">
+          <SeasonalSpendingComparison datasetStats={datasetStats} />
+        </div>
+
+        {/* Top Products and Merchant Analysis */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card bg-white shadow-lg">
+            <TopProductsComparison datasetStats={datasetStats} />
+          </div>
+          <div className="card bg-white shadow-lg">
+            <MerchantAnalysisComparison datasetStats={datasetStats} />
+          </div>
+        </div>
+
+        {/* Price Distribution and Returns Analysis */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card bg-white shadow-lg">
+            <PriceDistributionComparison datasetStats={datasetStats} />
+          </div>
+          <div className="card bg-white shadow-lg">
+            <ReturnsAnalysisComparison datasetStats={datasetStats} />
+          </div>
+        </div>
+
+        {/* Gift Orders and Order Status */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card bg-white shadow-lg">
+            <GiftOrdersComparison datasetStats={datasetStats} />
+          </div>
+          <div className="card bg-white shadow-lg">
+            <OrderStatusComparison datasetStats={datasetStats} />
+          </div>
+        </div>
+
+        {/* Product Condition and Fulfillment Speed */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card bg-white shadow-lg">
+            <ProductConditionComparison datasetStats={datasetStats} />
+          </div>
+          <div className="card bg-white shadow-lg">
+            <FulfillmentSpeedComparison datasetStats={datasetStats} />
+          </div>
+        </div>
+
+        {/* Tax, Discount, and Shipping Cost Analysis */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="card bg-white shadow-lg">
+            <TaxAnalysisComparison datasetStats={datasetStats} />
+          </div>
+          <div className="card bg-white shadow-lg">
+            <DiscountAnalysisComparison datasetStats={datasetStats} />
+          </div>
+          <div className="card bg-white shadow-lg">
+            <ShippingCostAnalysisComparison datasetStats={datasetStats} />
+          </div>
+        </div>
+
+        {/* Carrier Performance */}
+        <div className="card bg-white shadow-lg">
+          <CarrierPerformanceComparison datasetStats={datasetStats} />
+        </div>
+
+        {/* Order Size Distribution and Year-over-Year */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card bg-white shadow-lg">
+            <OrderSizeDistributionComparison datasetStats={datasetStats} />
+          </div>
+          <div className="card bg-white shadow-lg">
+            <YearOverYearComparison datasetStats={datasetStats} />
+          </div>
+        </div>
+
+        {/* Repeat Purchase and Subscription Detection */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card bg-white shadow-lg">
+            <RepeatPurchaseComparison datasetStats={datasetStats} />
+          </div>
+          <div className="card bg-white shadow-lg">
+            <SubscriptionDetectionComparison datasetStats={datasetStats} />
+          </div>
+        </div>
+
+        {/* Spending Velocity and Cumulative Orders */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card bg-white shadow-lg">
+            <SpendingVelocityComparison datasetStats={datasetStats} />
+          </div>
+          <div className="card bg-white shadow-lg">
+            <CumulativeOrdersComparison datasetStats={datasetStats} />
+          </div>
+        </div>
+
+        {/* Category Spending Trend and Shipping Destinations */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="card bg-white shadow-lg">
+            <CategorySpendingTrendComparison datasetStats={datasetStats} />
+          </div>
+          <div className="card bg-white shadow-lg">
+            <ShippingDestinationsComparison datasetStats={datasetStats} />
+          </div>
+        </div>
+
+        {/* Spending Heatmap */}
+        <div className="card bg-white shadow-lg">
+          <h3 className="text-lg font-bold text-gray-900 mb-4">Spending Heatmap Comparison</h3>
+          <SpendingHeatmapComparison datasetStats={datasetStats} />
         </div>
       </div>
     </div>
