@@ -1,7 +1,7 @@
-import { useMemo } from 'react';
+import { useMemo, memo } from 'react';
 import { format, getMonth, getYear } from 'date-fns';
 
-export function SpendingHeatmapChart({ orders }) {
+export const SpendingHeatmapChart = memo(function SpendingHeatmapChart({ orders }) {
   const heatmapData = useMemo(() => {
     if (!orders || orders.length === 0) return null;
 
@@ -131,4 +131,4 @@ export function SpendingHeatmapChart({ orders }) {
       </div>
     </div>
   );
-}
+});

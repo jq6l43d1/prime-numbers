@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, memo } from 'react';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -14,7 +14,7 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
-export function SpendingVelocityChart({ orders }) {
+export const SpendingVelocityChart = memo(function SpendingVelocityChart({ orders }) {
   const velocityData = useMemo(() => {
     if (!orders || orders.length === 0) return null;
 
@@ -142,4 +142,4 @@ export function SpendingVelocityChart({ orders }) {
       </div>
     </div>
   );
-}
+});

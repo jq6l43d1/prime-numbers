@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useMemo } from 'react';
 
 const DataContext = createContext(null);
 
@@ -126,22 +126,24 @@ export function DataProvider({ children }) {
     clearData();
   };
 
-  // Filter orders by date range
-  const getFilteredOrders = (ordersToFilter) => {
-    if (!dateFilter.startDate && !dateFilter.endDate) {
-      return ordersToFilter;
-    }
+  // Filter orders by date range - memoized for performance
+  const getFilteredOrders = useMemo(() => {
+    return (ordersToFilter) => {
+      if (!dateFilter.startDate && !dateFilter.endDate) {
+        return ordersToFilter;
+      }
 
-    return ordersToFilter.filter(order => {
-      if (!order.orderDate) return false;
-      const orderTime = new Date(order.orderDate).getTime();
+      return ordersToFilter.filter(order => {
+        if (!order.orderDate) return false;
+        const orderTime = new Date(order.orderDate).getTime();
 
-      if (dateFilter.startDate && orderTime < dateFilter.startDate) return false;
-      if (dateFilter.endDate && orderTime > dateFilter.endDate) return false;
+        if (dateFilter.startDate && orderTime < dateFilter.startDate) return false;
+        if (dateFilter.endDate && orderTime > dateFilter.endDate) return false;
 
-      return true;
-    });
-  };
+        return true;
+      });
+    };
+  }, [dateFilter.startDate, dateFilter.endDate]);
 
   const value = {
     // Legacy single dataset

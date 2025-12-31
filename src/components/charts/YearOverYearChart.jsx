@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -19,7 +20,7 @@ ChartJS.register(
   Legend
 );
 
-export function YearOverYearChart({ orders }) {
+export const YearOverYearChart = memo(function YearOverYearChart({ orders }) {
   if (!orders || orders.length === 0) {
     return <div className="text-center text-gray-500">No data available</div>;
   }
@@ -151,4 +152,4 @@ export function YearOverYearChart({ orders }) {
       <Bar data={data} options={options} />
     </div>
   );
-}
+});

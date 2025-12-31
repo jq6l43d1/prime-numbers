@@ -37,41 +37,54 @@ import { ClickableStatCard } from './ClickableStatCard';
 import { ExportButton } from '../export/ExportButton';
 import { useStatistics } from '../../hooks/useStatistics';
 import { useData } from '../../context/DataContext';
-import { useState } from 'react';
+import { useState, useMemo, useTransition } from 'react';
 
 export function Dashboard() {
   const [modalData, setModalData] = useState({ isOpen: false, data: null, type: null });
   const [productFilteredOrders, setProductFilteredOrders] = useState(null);
   const [advancedFilteredOrders, setAdvancedFilteredOrders] = useState(null);
+  const [isPending, startTransition] = useTransition();
   const { orders, returns, viewMode, getCombinedData, dateFilter, setDateFilter, getFilteredOrders } = useData();
 
   // Use combined data if in combined mode, otherwise use single dataset
-  let dataToUse = { orders, returns };
-  if (viewMode === 'combined') {
-    const combined = getCombinedData();
-    if (combined) {
-      dataToUse = combined;
+  const dataToUse = useMemo(() => {
+    if (viewMode === 'combined') {
+      const combined = getCombinedData();
+      return combined || { orders, returns };
     }
-  }
+    return { orders, returns };
+  }, [viewMode, orders, returns, getCombinedData]);
 
-  // Apply filters in order: date -> product search -> advanced
-  const dateFilteredOrders = getFilteredOrders(dataToUse.orders);
+  // Apply filters in order: date -> product search -> advanced - all memoized
+  const dateFilteredOrders = useMemo(() =>
+    getFilteredOrders(dataToUse.orders),
+    [dataToUse.orders, getFilteredOrders]
+  );
 
-  // Apply product search filter
-  const afterProductFilter = productFilteredOrders !== null ? productFilteredOrders : dateFilteredOrders;
+  const afterProductFilter = useMemo(() =>
+    productFilteredOrders !== null ? productFilteredOrders : dateFilteredOrders,
+    [productFilteredOrders, dateFilteredOrders]
+  );
 
-  // Apply advanced filters
-  let filteredOrders = advancedFilteredOrders !== null ? advancedFilteredOrders : afterProductFilter;
+  const filteredOrders = useMemo(() =>
+    advancedFilteredOrders !== null ? advancedFilteredOrders : afterProductFilter,
+    [advancedFilteredOrders, afterProductFilter]
+  );
 
-  const filteredReturns = dataToUse.returns.filter(ret => {
-    const matchingOrder = filteredOrders.find(o => o.orderId === ret.orderId);
-    return !!matchingOrder;
-  });
+  const filteredReturns = useMemo(() =>
+    dataToUse.returns.filter(ret => {
+      const matchingOrder = filteredOrders.find(o => o.orderId === ret.orderId);
+      return !!matchingOrder;
+    }),
+    [dataToUse.returns, filteredOrders]
+  );
 
   const statistics = useStatistics(filteredOrders, filteredReturns);
 
   const handleDateFilterChange = (filter) => {
-    setDateFilter(filter);
+    startTransition(() => {
+      setDateFilter(filter);
+    });
   };
 
   const openDrillDown = (data, type) => {
@@ -284,7 +297,17 @@ export function Dashboard() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
+      {/* Loading overlay when filtering */}
+      {isPending && (
+        <div className="fixed inset-0 bg-white bg-opacity-75 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg shadow-xl p-8 flex flex-col items-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mb-4"></div>
+            <p className="text-lg font-semibold text-gray-700">Updating charts...</p>
+            <p className="text-sm text-gray-500 mt-2">This may take a moment</p>
+          </div>
+        </div>
+      )}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
           <div>
