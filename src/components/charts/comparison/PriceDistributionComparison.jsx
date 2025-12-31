@@ -27,8 +27,8 @@ export function PriceDistributionComparison({ datasetStats }) {
   // Get all unique price ranges across all datasets
   const allRangesSet = new Set();
   datasetStats.forEach(({ stats }) => {
-    if (stats.products.priceDistribution) {
-      stats.products.priceDistribution.forEach(r => allRangesSet.add(r.range));
+    if (stats?.products?.priceDistribution) {
+      stats?.products?.priceDistribution.forEach(r => allRangesSet.add(r.range));
     }
   });
   const allRanges = Array.from(allRangesSet);
@@ -36,8 +36,8 @@ export function PriceDistributionComparison({ datasetStats }) {
   const datasets = datasetStats.map((item, index) => {
     // Create a map of range -> count for this dataset
     const rangeMap = new Map();
-    if (item.stats.products.priceDistribution) {
-      item.stats.products.priceDistribution.forEach(r => {
+    if (item.stats?.products?.priceDistribution) {
+      item.stats?.products?.priceDistribution.forEach(r => {
         rangeMap.set(r.range, r.count);
       });
     }

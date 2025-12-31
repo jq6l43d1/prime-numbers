@@ -27,8 +27,8 @@ export function OrdersByYearComparison({ datasetStats }) {
   // Get all unique years across all datasets
   const allYearsSet = new Set();
   datasetStats.forEach(({ stats }) => {
-    if (stats.orders.byYear) {
-      stats.orders.byYear.forEach(d => allYearsSet.add(d.year));
+    if (stats?.orders?.byYear) {
+      stats?.orders?.byYear.forEach(d => allYearsSet.add(d.year));
     }
   });
   const allYears = Array.from(allYearsSet).sort();
@@ -36,8 +36,8 @@ export function OrdersByYearComparison({ datasetStats }) {
   const datasets = datasetStats.map((item, index) => {
     // Create a map of year -> count for this dataset
     const yearMap = new Map();
-    if (item.stats.orders.byYear) {
-      item.stats.orders.byYear.forEach(d => {
+    if (item.stats?.orders?.byYear) {
+      item.stats?.orders?.byYear.forEach(d => {
         yearMap.set(d.year, d.count);
       });
     }

@@ -29,7 +29,7 @@ export function ReturnsAnalysisComparison({ datasetStats }) {
 
   const returnCountsDataset = {
     label: 'Total Returns',
-    data: datasetStats.map(item => item.stats.returns.totalReturns || 0),
+    data: datasetStats.map(item => item.stats?.returns?.totalReturns || 0),
     backgroundColor: CHART_COLOR_PALETTE[0],
     borderColor: CHART_COLOR_PALETTE[0],
     borderWidth: 1,
@@ -39,7 +39,7 @@ export function ReturnsAnalysisComparison({ datasetStats }) {
   const returnRateDataset = {
     label: 'Return Rate (%)',
     data: datasetStats.map(item => {
-      const returnRate = item.stats.returns.returnRate || 0;
+      const returnRate = item.stats?.returns?.returnRate || 0;
       return parseFloat(returnRate);
     }),
     backgroundColor: CHART_COLOR_PALETTE[1],

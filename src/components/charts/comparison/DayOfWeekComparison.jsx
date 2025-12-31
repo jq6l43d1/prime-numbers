@@ -29,8 +29,8 @@ export function DayOfWeekComparison({ datasetStats }) {
   const datasets = datasetStats.map((item, index) => {
     // Create a map of day -> count for this dataset
     const dayMap = new Map();
-    if (item.stats.orders.byDayOfWeek) {
-      item.stats.orders.byDayOfWeek.forEach(d => {
+    if (item.stats?.orders?.byDayOfWeek) {
+      item.stats?.orders?.byDayOfWeek.forEach(d => {
         dayMap.set(d.day, d.count);
       });
     }

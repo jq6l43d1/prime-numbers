@@ -27,8 +27,8 @@ export function ShippingMethodsComparison({ datasetStats }) {
   // Get all unique shipping methods across all datasets
   const allMethodsSet = new Set();
   datasetStats.forEach(({ stats }) => {
-    if (stats.shipping.byMethod) {
-      stats.shipping.byMethod.forEach(m => allMethodsSet.add(m.method));
+    if (stats?.shipping?.byMethod) {
+      stats?.shipping?.byMethod.forEach(m => allMethodsSet.add(m.method));
     }
   });
   const allMethods = Array.from(allMethodsSet);
@@ -36,8 +36,8 @@ export function ShippingMethodsComparison({ datasetStats }) {
   const datasets = datasetStats.map((item, index) => {
     // Create a map of method -> count for this dataset
     const methodMap = new Map();
-    if (item.stats.shipping.byMethod) {
-      item.stats.shipping.byMethod.forEach(m => {
+    if (item.stats?.shipping?.byMethod) {
+      item.stats?.shipping?.byMethod.forEach(m => {
         methodMap.set(m.method, m.count);
       });
     }

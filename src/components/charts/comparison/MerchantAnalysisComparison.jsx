@@ -27,8 +27,8 @@ export function MerchantAnalysisComparison({ datasetStats }) {
   // Get top merchants across all datasets (top 10)
   const allMerchantsSet = new Set();
   datasetStats.forEach(({ stats }) => {
-    if (stats.merchants.topMerchants) {
-      stats.merchants.topMerchants.slice(0, 10).forEach(m => allMerchantsSet.add(m.merchant));
+    if (stats?.merchants?.topMerchants) {
+      stats?.merchants?.topMerchants.slice(0, 10).forEach(m => allMerchantsSet.add(m.merchant));
     }
   });
   const allMerchants = Array.from(allMerchantsSet);
@@ -36,8 +36,8 @@ export function MerchantAnalysisComparison({ datasetStats }) {
   const datasets = datasetStats.map((item, index) => {
     // Create a map of merchant -> count for this dataset
     const merchantMap = new Map();
-    if (item.stats.merchants.topMerchants) {
-      item.stats.merchants.topMerchants.forEach(m => {
+    if (item.stats?.merchants?.topMerchants) {
+      item.stats?.merchants?.topMerchants.forEach(m => {
         merchantMap.set(m.merchant, m.orderCount);
       });
     }

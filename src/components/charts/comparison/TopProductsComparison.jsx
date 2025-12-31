@@ -27,8 +27,8 @@ export function TopProductsComparison({ datasetStats }) {
   // Get top products by spending across all datasets (top 10)
   const allProductsSet = new Set();
   datasetStats.forEach(({ stats }) => {
-    if (stats.products.topBySpending) {
-      stats.products.topBySpending.slice(0, 10).forEach(p => {
+    if (stats?.products?.topBySpending) {
+      stats?.products?.topBySpending.slice(0, 10).forEach(p => {
         // Truncate product name to avoid too long labels
         const shortName = p.title.length > 40 ? p.title.substring(0, 40) + '...' : p.title;
         allProductsSet.add(shortName);
@@ -40,8 +40,8 @@ export function TopProductsComparison({ datasetStats }) {
   const datasets = datasetStats.map((item, index) => {
     // Create a map of product -> amount for this dataset
     const productMap = new Map();
-    if (item.stats.products.topBySpending) {
-      item.stats.products.topBySpending.forEach(p => {
+    if (item.stats?.products?.topBySpending) {
+      item.stats?.products?.topBySpending.forEach(p => {
         const shortName = p.title.length > 40 ? p.title.substring(0, 40) + '...' : p.title;
         productMap.set(shortName, p.totalSpent);
       });

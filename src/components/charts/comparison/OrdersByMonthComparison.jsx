@@ -27,8 +27,8 @@ export function OrdersByMonthComparison({ datasetStats }) {
   // Get all unique months across all datasets
   const allMonthsSet = new Set();
   datasetStats.forEach(({ stats }) => {
-    if (stats.orders.byMonth) {
-      stats.orders.byMonth.forEach(d => allMonthsSet.add(d.month));
+    if (stats?.orders?.byMonth) {
+      stats?.orders?.byMonth.forEach(d => allMonthsSet.add(d.month));
     }
   });
   const allMonths = Array.from(allMonthsSet).sort();
@@ -36,8 +36,8 @@ export function OrdersByMonthComparison({ datasetStats }) {
   const datasets = datasetStats.map((item, index) => {
     // Create a map of month -> count for this dataset
     const monthMap = new Map();
-    if (item.stats.orders.byMonth) {
-      item.stats.orders.byMonth.forEach(d => {
+    if (item.stats?.orders?.byMonth) {
+      item.stats?.orders?.byMonth.forEach(d => {
         monthMap.set(d.month, d.count);
       });
     }

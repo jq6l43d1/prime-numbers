@@ -31,8 +31,8 @@ export function SpendingOverTimeComparison({ datasetStats }) {
   // Get all unique months across all datasets
   const allMonthsSet = new Set();
   datasetStats.forEach(({ stats }) => {
-    if (stats.spending.overTime) {
-      stats.spending.overTime.forEach(d => allMonthsSet.add(d.month));
+    if (stats?.spending?.overTime) {
+      stats?.spending?.overTime.forEach(d => allMonthsSet.add(d.month));
     }
   });
   const allMonths = Array.from(allMonthsSet).sort();
@@ -40,8 +40,8 @@ export function SpendingOverTimeComparison({ datasetStats }) {
   const datasets = datasetStats.map((item, index) => {
     // Create a map of month -> amount for this dataset
     const monthMap = new Map();
-    if (item.stats.spending.overTime) {
-      item.stats.spending.overTime.forEach(d => {
+    if (item.stats?.spending?.overTime) {
+      item.stats?.spending?.overTime.forEach(d => {
         monthMap.set(d.month, d.amount);
       });
     }

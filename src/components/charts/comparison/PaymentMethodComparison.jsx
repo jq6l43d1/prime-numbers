@@ -27,8 +27,8 @@ export function PaymentMethodComparison({ datasetStats }) {
   // Get all unique payment methods across all datasets
   const allMethodsSet = new Set();
   datasetStats.forEach(({ stats }) => {
-    if (stats.orders.byPaymentMethod) {
-      stats.orders.byPaymentMethod.forEach(m => allMethodsSet.add(m.method));
+    if (stats?.orders?.byPaymentMethod) {
+      stats?.orders?.byPaymentMethod.forEach(m => allMethodsSet.add(m.method));
     }
   });
   const allMethods = Array.from(allMethodsSet);
@@ -36,8 +36,8 @@ export function PaymentMethodComparison({ datasetStats }) {
   const datasets = datasetStats.map((item, index) => {
     // Create a map of method -> count for this dataset
     const methodMap = new Map();
-    if (item.stats.orders.byPaymentMethod) {
-      item.stats.orders.byPaymentMethod.forEach(m => {
+    if (item.stats?.orders?.byPaymentMethod) {
+      item.stats?.orders?.byPaymentMethod.forEach(m => {
         methodMap.set(m.method, m.count);
       });
     }

@@ -25,8 +25,8 @@ export function DigitalVsRetailComparison({ datasetStats }) {
   }
 
   const datasets = datasetStats.map((item, index) => {
-    const digitalCount = item.stats.orders.digitalCount || 0;
-    const physicalCount = item.stats.orders.physicalCount || 0;
+    const digitalCount = item.stats?.orders?.digitalCount || 0;
+    const physicalCount = item.stats?.orders?.physicalCount || 0;
 
     return {
       label: item.dataset.name,

@@ -27,8 +27,8 @@ export function CategoryBreakdownComparison({ datasetStats }) {
   // Get all unique categories across all datasets (top 10)
   const allCategoriesSet = new Set();
   datasetStats.forEach(({ stats }) => {
-    if (stats.spending.byCategory) {
-      stats.spending.byCategory.slice(0, 10).forEach(c => allCategoriesSet.add(c.category));
+    if (stats?.spending?.byCategory) {
+      stats?.spending?.byCategory.slice(0, 10).forEach(c => allCategoriesSet.add(c.category));
     }
   });
   const allCategories = Array.from(allCategoriesSet);
@@ -36,8 +36,8 @@ export function CategoryBreakdownComparison({ datasetStats }) {
   const datasets = datasetStats.map((item, index) => {
     // Create a map of category -> amount for this dataset
     const categoryMap = new Map();
-    if (item.stats.spending.byCategory) {
-      item.stats.spending.byCategory.forEach(c => {
+    if (item.stats?.spending?.byCategory) {
+      item.stats?.spending?.byCategory.forEach(c => {
         categoryMap.set(c.category, c.amount);
       });
     }

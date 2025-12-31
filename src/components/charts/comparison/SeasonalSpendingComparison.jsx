@@ -29,8 +29,8 @@ export function SeasonalSpendingComparison({ datasetStats }) {
   // Get all unique season-year combinations across all datasets
   const allSeasonsSet = new Set();
   datasetStats.forEach(({ stats }) => {
-    if (stats.spending.bySeason) {
-      stats.spending.bySeason.forEach(s => {
+    if (stats?.spending?.bySeason) {
+      stats?.spending?.bySeason.forEach(s => {
         allSeasonsSet.add(`${s.season} ${s.year}`);
       });
     }
@@ -40,8 +40,8 @@ export function SeasonalSpendingComparison({ datasetStats }) {
   const datasets = datasetStats.map((item, index) => {
     // Create a map of season-year -> amount for this dataset
     const seasonMap = new Map();
-    if (item.stats.spending.bySeason) {
-      item.stats.spending.bySeason.forEach(s => {
+    if (item.stats?.spending?.bySeason) {
+      item.stats?.spending?.bySeason.forEach(s => {
         seasonMap.set(`${s.season} ${s.year}`, s.amount);
       });
     }
