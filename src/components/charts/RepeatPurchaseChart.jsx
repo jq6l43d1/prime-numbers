@@ -1,5 +1,16 @@
 import { useMemo } from 'react';
 import { Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+} from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function RepeatPurchaseChart({ orders }) {
   const repeatData = useMemo(() => {
@@ -21,7 +32,7 @@ export function RepeatPurchaseChart({ orders }) {
       }
       productPurchases[key].count += order.quantity || 1;
       productPurchases[key].dates.push(order.orderDate);
-      productPurchases[key].totalSpent += order.totalPrice || 0;
+      productPurchases[key].totalSpent += order.totalOwed || 0;
     });
 
     // Find products purchased multiple times
@@ -104,8 +115,10 @@ export function RepeatPurchaseChart({ orders }) {
   }
 
   return (
-    <div className="h-full">
-      <Bar data={chartData} options={options} />
+    <div>
+      <div className="h-72">
+        <Bar data={chartData} options={options} />
+      </div>
       <div className="mt-4 text-sm text-gray-600">
         <p className="font-medium">
           You've made {repeatData.length} repeat purchases

@@ -179,7 +179,9 @@ export function FulfillmentSpeedChart({ orders, onClick }) {
 
   return (
     <div>
-      <Bar data={chartData} options={options} />
+      <div className="h-56">
+        <Bar data={chartData} options={options} />
+      </div>
       <div className="mt-4 space-y-3">
         {/* Key metrics */}
         <div className="grid grid-cols-3 gap-2">

@@ -139,7 +139,9 @@ export function ProductConditionChart({ orders, onClick }) {
 
   return (
     <div>
-      <Doughnut data={chartData} options={options} />
+      <div className="h-56">
+        <Doughnut data={chartData} options={options} />
+      </div>
       <div className="mt-4 space-y-2">
         <div className="grid grid-cols-2 gap-2">
           {sortedConditions.map(([condition, stats]) => {

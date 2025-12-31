@@ -1,5 +1,18 @@
 import { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+} from 'chart.js';
+
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 export function SpendingVelocityChart({ orders }) {
   const velocityData = useMemo(() => {
@@ -13,7 +26,7 @@ export function SpendingVelocityChart({ orders }) {
     // Calculate cumulative spending
     let cumulative = 0;
     const cumulativeData = sortedOrders.map(order => {
-      cumulative += order.totalPrice || 0;
+      cumulative += order.totalOwed || 0;
       return {
         date: new Date(order.orderDate),
         cumulative: cumulative
@@ -117,8 +130,10 @@ export function SpendingVelocityChart({ orders }) {
   const lastMonth = velocityData.months[velocityData.months.length - 1];
 
   return (
-    <div className="h-full">
-      <Line data={chartData} options={options} />
+    <div>
+      <div className="h-72">
+        <Line data={chartData} options={options} />
+      </div>
       <div className="mt-4 text-sm text-gray-600">
         <div className="flex justify-between items-center">
           <span>Total spending from {firstMonth} to {lastMonth}</span>

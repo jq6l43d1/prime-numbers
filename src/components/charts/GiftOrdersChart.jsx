@@ -143,7 +143,9 @@ export function GiftOrdersChart({ orders, onClick }) {
 
   return (
     <div>
-      <Bar data={chartData} options={options} />
+      <div className="h-64">
+        <Bar data={chartData} options={options} />
+      </div>
       <div className="mt-4 space-y-2 text-sm">
         <div className="grid grid-cols-2 gap-2">
           <div className="bg-pink-50 rounded p-3">

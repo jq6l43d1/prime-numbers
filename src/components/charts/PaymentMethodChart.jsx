@@ -125,7 +125,9 @@ export function PaymentMethodChart({ orders, onClick }) {
 
   return (
     <div>
-      <Doughnut data={chartData} options={options} />
+      <div className="h-64">
+        <Doughnut data={chartData} options={options} />
+      </div>
       <div className="mt-4 text-sm text-gray-600">
         <div className="grid grid-cols-2 gap-2">
           {sortedMethods.map(([method, stats]) => (

@@ -1,12 +1,15 @@
 import { useMemo } from 'react';
 import { Pie } from 'react-chartjs-2';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 export function MerchantAnalysisChart({ orders, onMerchantClick }) {
   const merchantData = useMemo(() => {
     const merchantStats = {};
 
     orders.forEach(order => {
-      const merchant = order.seller || 'Amazon';
+      const merchant = order.sellerOfRecord || order.seller || 'Amazon';
       if (!merchantStats[merchant]) {
         merchantStats[merchant] = {
           count: 0,
@@ -15,7 +18,7 @@ export function MerchantAnalysisChart({ orders, onMerchantClick }) {
         };
       }
       merchantStats[merchant].count += 1;
-      merchantStats[merchant].total += order.totalPrice || 0;
+      merchantStats[merchant].total += order.totalOwed || 0;
       merchantStats[merchant].orders.push(order);
     });
 
@@ -106,8 +109,10 @@ export function MerchantAnalysisChart({ orders, onMerchantClick }) {
   }
 
   return (
-    <div className="h-full">
-      <Pie data={chartData} options={options} />
+    <div>
+      <div className="h-64">
+        <Pie data={chartData} options={options} />
+      </div>
       <div className="mt-4 text-sm text-gray-600">
         <p className="font-medium">Top merchants by total spending</p>
         <div className="mt-2 space-y-1">
