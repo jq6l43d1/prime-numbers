@@ -17,6 +17,7 @@ import { SeasonalSpendingChart } from '../charts/SeasonalSpendingChart';
 import { MerchantAnalysisChart } from '../charts/MerchantAnalysisChart';
 import { RepeatPurchaseChart } from '../charts/RepeatPurchaseChart';
 import { SpendingVelocityChart } from '../charts/SpendingVelocityChart';
+import { CumulativeOrdersChart } from '../charts/CumulativeOrdersChart';
 import { PaymentMethodChart } from '../charts/PaymentMethodChart';
 import { GiftOrdersChart } from '../charts/GiftOrdersChart';
 import { SubscriptionDetectionChart } from '../charts/SubscriptionDetectionChart';
@@ -574,6 +575,15 @@ export function Dashboard() {
           <p className="text-sm text-gray-600 mb-4">Track your cumulative spending growth over time</p>
           <div className="h-80">
             <SpendingVelocityChart orders={filteredOrders} />
+          </div>
+        </div>
+
+        {/* Cumulative Orders - Full Width */}
+        <div className="card bg-gradient-to-br from-white to-green-50 shadow-lg overflow-hidden">
+          <h3 className="text-xl font-bold text-gray-900 mb-4">📈 Cumulative Orders Over Time</h3>
+          <p className="text-sm text-gray-600 mb-4">See how your total order count has grown over time</p>
+          <div className="h-80">
+            <CumulativeOrdersChart orders={filteredOrders} />
           </div>
         </div>
 
