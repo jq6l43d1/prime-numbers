@@ -817,7 +817,7 @@ export function Dashboard() {
             <p className="text-sm text-gray-600 mb-4">
               New vs Used vs Refurbished - click any segment
             </p>
-            <div className="h-96 mb-2">
+            <div className="mb-2">
               <ProductConditionChart orders={filteredOrders} onClick={handleConditionClick} />
             </div>
           </div>
@@ -827,7 +827,7 @@ export function Dashboard() {
             <p className="text-sm text-gray-600 mb-4">
               How fast are your orders shipped? Click any bar
             </p>
-            <div className="h-96 mb-2">
+            <div className="mb-2">
               <FulfillmentSpeedChart
                 orders={filteredOrders}
                 onClick={handleFulfillmentSpeedClick}
