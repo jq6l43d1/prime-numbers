@@ -132,7 +132,7 @@ export async function processAmazonData(zipFile, onProgress = () => {}) {
  * @param {Array} orders - Raw orders
  * @returns {Array} - Normalized orders
  */
-function normalizeOrders(orders) {
+export function normalizeOrders(orders) {
   return orders.map(order => {
     const yearMonth = getYearMonth(order.orderDate);
 
@@ -170,7 +170,7 @@ function normalizeOrders(orders) {
  * @param {string} paymentMethod - Raw payment method
  * @returns {string} - Simplified payment method
  */
-function simplifyPaymentMethod(paymentMethod) {
+export function simplifyPaymentMethod(paymentMethod) {
   if (!paymentMethod) return 'Unknown';
 
   const lower = paymentMethod.toLowerCase();
@@ -191,7 +191,7 @@ function simplifyPaymentMethod(paymentMethod) {
  * @param {Array} returns - Returns
  * @returns {Array} - Orders with return information
  */
-function linkReturnsToOrders(orders, returns) {
+export function linkReturnsToOrders(orders, returns) {
   // Create a map of order IDs to returns
   const returnsMap = {};
   returns.forEach(ret => {
