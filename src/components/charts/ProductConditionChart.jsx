@@ -115,7 +115,10 @@ export function ProductConditionChart({ orders, onClick }) {
             const count = countData[context.dataIndex];
             const spending = spendingData[context.dataIndex];
             const items = itemsData[context.dataIndex];
-            const percentage = formatNumber((count / countData.reduce((a, b) => a + b, 0)) * 100, 1);
+            const percentage = formatNumber(
+              (count / countData.reduce((a, b) => a + b, 0)) * 100,
+              1
+            );
             const avgOrderValue = formatNumber(spending / count, 2);
 
             return [
@@ -172,12 +175,10 @@ export function ProductConditionChart({ orders, onClick }) {
         </div>
 
         {/* Summary stats */}
-        <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded p-3 text-center">
+        <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded p-3 text-center mb-2">
           <div className="grid grid-cols-2 divide-x divide-gray-300">
             <div>
-              <div className="text-lg font-bold text-gray-900">
-                {formatNumber(totalOrders, 0)}
-              </div>
+              <div className="text-lg font-bold text-gray-900">{formatNumber(totalOrders, 0)}</div>
               <div className="text-xs text-gray-600">Total Orders</div>
             </div>
             <div>

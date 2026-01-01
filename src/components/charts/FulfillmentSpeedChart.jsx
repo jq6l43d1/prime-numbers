@@ -180,7 +180,8 @@ export function FulfillmentSpeedChart({ orders, onClick }) {
 
   const fastShipped =
     speedBuckets['Same Day'].orders.length + speedBuckets['1-2 Days'].orders.length;
-  const fastPercentage = orders.length > 0 ? formatNumber((fastShipped / orders.length) * 100, 1) : 0;
+  const fastPercentage =
+    orders.length > 0 ? formatNumber((fastShipped / orders.length) * 100, 1) : 0;
 
   return (
     <div>
@@ -191,7 +192,9 @@ export function FulfillmentSpeedChart({ orders, onClick }) {
         {/* Key metrics */}
         <div className="grid grid-cols-3 gap-2">
           <div className="bg-gradient-to-br from-green-50 to-green-100 rounded p-3 text-center">
-            <div className="text-2xl font-bold text-green-700">{formatNumber(avgFulfillmentDays, 1)}</div>
+            <div className="text-2xl font-bold text-green-700">
+              {formatNumber(avgFulfillmentDays, 1)}
+            </div>
             <div className="text-xs text-green-600 font-medium">Avg Days</div>
           </div>
 
@@ -207,7 +210,7 @@ export function FulfillmentSpeedChart({ orders, onClick }) {
         </div>
 
         {/* Bucket breakdown */}
-        <div className="bg-gray-50 rounded p-3">
+        <div className="bg-gray-50 rounded p-3 mb-2">
           <div className="text-xs font-semibold text-gray-700 mb-2">Speed Breakdown:</div>
           <div className="grid grid-cols-2 gap-2 text-xs">
             {labels.slice(0, 5).map((label, idx) => (
