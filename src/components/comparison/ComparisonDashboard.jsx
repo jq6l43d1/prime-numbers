@@ -1,5 +1,6 @@
 import { useData } from '../../context/DataContext';
 import { useStatistics } from '../../hooks/useStatistics';
+import { formatNumber } from '../../utils/currencyHelpers';
 import { SpendingOverTimeComparison } from '../charts/comparison/SpendingOverTimeComparison';
 import { CategoryBreakdownComparison } from '../charts/comparison/CategoryBreakdownComparison';
 import { OrdersByMonthComparison } from '../charts/comparison/OrdersByMonthComparison';
@@ -183,7 +184,7 @@ export function ComparisonDashboard() {
                         }}
                       >
                         <span className="text-white font-semibold text-sm">
-                          {item.stats.overview.totalOrders}
+                          {formatNumber(item.stats.overview.totalOrders, 0)}
                         </span>
                       </div>
                     </div>
@@ -244,7 +245,7 @@ export function ComparisonDashboard() {
                 <div className="bg-white rounded-lg p-3 shadow-sm">
                   <p className="text-xs text-gray-600 mb-1">Orders</p>
                   <p className="text-xl font-bold text-gray-900">
-                    {item.stats.overview.totalOrders}
+                    {formatNumber(item.stats.overview.totalOrders, 0)}
                   </p>
                 </div>
                 <div className="bg-white rounded-lg p-3 shadow-sm">
@@ -256,7 +257,7 @@ export function ComparisonDashboard() {
                 <div className="bg-white rounded-lg p-3 shadow-sm">
                   <p className="text-xs text-gray-600 mb-1">Items</p>
                   <p className="text-xl font-bold text-gray-900">
-                    {item.stats.overview.totalItems}
+                    {formatNumber(item.stats.overview.totalItems, 0)}
                   </p>
                 </div>
               </div>
@@ -333,7 +334,8 @@ export function ComparisonDashboard() {
                 <div className="flex items-center gap-2">
                   <div className={`w-3 h-3 rounded-full ${highest.color}`}></div>
                   <p className="text-gray-700 flex-1">
-                    {highest.dataset.name} with {highest.stats.overview.totalOrders} orders
+                    {highest.dataset.name} with {formatNumber(highest.stats.overview.totalOrders, 0)}{' '}
+                    orders
                   </p>
                 </div>
               );

@@ -16,14 +16,14 @@ export function StatsGrid({ statistics }) {
         value={overview.totalSpent}
         format="currency"
         icon="💰"
-        subtitle={`${overview.totalOrders} orders`}
+        subtitle={`${formatNumber(overview.totalOrders, 0)} orders`}
       />
       <StatCard
         title="Total Orders"
         value={overview.totalOrders}
         format="number"
         icon="📦"
-        subtitle={`${overview.totalItems} items`}
+        subtitle={`${formatNumber(overview.totalItems, 0)} items`}
       />
       <StatCard
         title="Average Order"
@@ -44,7 +44,7 @@ export function StatsGrid({ statistics }) {
         value={returns?.returnRate || 0}
         format="percentage"
         icon="↩️"
-        subtitle={`${returns?.totalReturns || 0} returns`}
+        subtitle={`${formatNumber(returns?.totalReturns || 0, 0)} returns`}
       />
       <StatCard
         title="Customer Since"

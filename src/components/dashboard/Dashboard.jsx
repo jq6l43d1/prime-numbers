@@ -384,7 +384,7 @@ export function Dashboard() {
             </h2>
             <div className="flex items-center gap-4">
               <p className="text-gray-600">
-                Insights from {statistics.overview.totalOrders} orders
+                Insights from {formatNumber(statistics.overview.totalOrders, 0)} orders
               </p>
               {dateFilter.label !== 'All Time' && (
                 <span className="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm font-medium">
@@ -422,13 +422,13 @@ export function Dashboard() {
             icon="💰"
             label="Total Spending"
             value={`$${formatNumber(statistics.overview.totalSpent, 2)}`}
-            subtitle={`${statistics.overview.totalOrders} orders`}
+            subtitle={`${formatNumber(statistics.overview.totalOrders, 0)} orders`}
             gradient="from-blue-500 to-blue-600"
             onClick={() =>
               openDrillDown(
                 {
                   title: 'All Orders',
-                  subtitle: `Total spending across ${statistics.overview.totalOrders} orders`,
+                  subtitle: `Total spending across ${formatNumber(statistics.overview.totalOrders, 0)} orders`,
                   orders: filteredOrders,
                 },
                 'time'
@@ -443,14 +443,14 @@ export function Dashboard() {
           <ClickableStatCard
             icon="📦"
             label="Total Items"
-            value={statistics.overview.totalItems}
+            value={formatNumber(statistics.overview.totalItems, 0)}
             subtitle={`${formatNumber(statistics.overview.avgItemsPerOrder, 1)} per order`}
             gradient="from-green-500 to-green-600"
             onClick={() =>
               openDrillDown(
                 {
                   title: 'Order Details',
-                  subtitle: `${statistics.overview.totalItems} items ordered`,
+                  subtitle: `${formatNumber(statistics.overview.totalItems, 0)} items ordered`,
                   orders: filteredOrders,
                 },
                 'time'

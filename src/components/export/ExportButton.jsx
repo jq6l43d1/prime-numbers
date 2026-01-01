@@ -123,9 +123,9 @@ Date Range: ${dateFilter.label}
 OVERVIEW
 --------
 Total Spent:          $${formatNumber(statistics.overview.totalSpent, 2)}
-Total Orders:         ${statistics.overview.totalOrders}
+Total Orders:         ${formatNumber(statistics.overview.totalOrders, 0)}
 Average Order Value:  $${formatNumber(statistics.overview.avgOrderValue, 2)}
-Total Items:          ${statistics.overview.totalItems}
+Total Items:          ${formatNumber(statistics.overview.totalItems, 0)}
 Total Savings:        $${formatNumber(statistics.overview.totalDiscounts, 2)}
 Return Rate:          ${statistics.returns ? formatNumber(statistics.returns.returnRate, 1) : 0}%
 

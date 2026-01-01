@@ -1,4 +1,5 @@
 import { useData } from '../../context/DataContext';
+import { formatNumber } from '../../utils/currencyHelpers';
 
 export function FileManager() {
   const { datasets, activeDatasetId, viewMode, setViewMode, switchDataset, removeDataset } =
@@ -104,7 +105,7 @@ export function FileManager() {
                 <div className="flex justify-between">
                   <span className="text-gray-600">Orders:</span>
                   <span className="font-medium text-gray-900">
-                    {dataset.summary?.totalOrders || 0}
+                    {formatNumber(dataset.summary?.totalOrders || 0, 0)}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -116,7 +117,7 @@ export function FileManager() {
                 <div className="flex justify-between">
                   <span className="text-gray-600">Items:</span>
                   <span className="font-medium text-gray-900">
-                    {dataset.summary?.totalItems || 0}
+                    {formatNumber(dataset.summary?.totalItems || 0, 0)}
                   </span>
                 </div>
               </div>

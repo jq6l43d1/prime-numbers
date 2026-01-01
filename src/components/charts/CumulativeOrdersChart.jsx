@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Line } from 'react-chartjs-2';
+import { formatNumber } from '../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -146,7 +147,9 @@ export function CumulativeOrdersChart({ orders }) {
           <span>
             Total orders from {firstMonth} to {lastMonth}
           </span>
-          <span className="font-bold text-lg text-green-600">{totalOrders} orders</span>
+          <span className="font-bold text-lg text-green-600">
+            {formatNumber(totalOrders, 0)} orders
+          </span>
         </div>
       </div>
     </div>

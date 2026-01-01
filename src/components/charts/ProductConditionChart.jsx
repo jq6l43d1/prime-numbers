@@ -175,7 +175,9 @@ export function ProductConditionChart({ orders, onClick }) {
         <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded p-3 text-center">
           <div className="grid grid-cols-2 divide-x divide-gray-300">
             <div>
-              <div className="text-lg font-bold text-gray-900">{totalOrders}</div>
+              <div className="text-lg font-bold text-gray-900">
+                {formatNumber(totalOrders, 0)}
+              </div>
               <div className="text-xs text-gray-600">Total Orders</div>
             </div>
             <div>

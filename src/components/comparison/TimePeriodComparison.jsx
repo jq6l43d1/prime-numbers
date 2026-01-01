@@ -189,11 +189,15 @@ export function TimePeriodComparison() {
                 <div className="grid grid-cols-2 gap-2 mb-2">
                   <div className="bg-blue-50 rounded p-2">
                     <div className="text-xs text-blue-700">{period1.label}</div>
-                    <div className="text-lg font-bold text-blue-900">{stats1.totalOrders}</div>
+                    <div className="text-lg font-bold text-blue-900">
+                      {formatNumber(stats1.totalOrders, 0)}
+                    </div>
                   </div>
                   <div className="bg-purple-50 rounded p-2">
                     <div className="text-xs text-purple-700">{period2.label}</div>
-                    <div className="text-lg font-bold text-purple-900">{stats2.totalOrders}</div>
+                    <div className="text-lg font-bold text-purple-900">
+                      {formatNumber(stats2.totalOrders, 0)}
+                    </div>
                   </div>
                 </div>
                 <div
