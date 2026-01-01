@@ -29,6 +29,8 @@ import { TaxAnalysisChart } from '../charts/TaxAnalysisChart';
 import { CarrierPerformanceChart } from '../charts/CarrierPerformanceChart';
 import { ProductConditionChart } from '../charts/ProductConditionChart';
 import { FulfillmentSpeedChart } from '../charts/FulfillmentSpeedChart';
+import { AmazonAnniversaryChart } from '../charts/AmazonAnniversaryChart';
+import { ProductWordCloudChart } from '../charts/ProductWordCloudChart';
 import { TimePeriodComparison } from '../comparison/TimePeriodComparison';
 import { DateRangeFilter } from '../filters/DateRangeFilter';
 import { ProductSearchFilter } from '../filters/ProductSearchFilter';
@@ -846,6 +848,16 @@ export function Dashboard() {
             orders={filteredOrders}
             onSubscriptionClick={handleSubscriptionClick}
           />
+        </div>
+
+        {/* Amazon Anniversary Stats - Full Width */}
+        <div className="border-2 border-yellow-200">
+          <AmazonAnniversaryChart orders={filteredOrders} />
+        </div>
+
+        {/* Product Word Cloud - Full Width */}
+        <div className="border-2 border-blue-200">
+          <ProductWordCloudChart orders={filteredOrders} />
         </div>
 
         {/* Time Period Comparison - Full Width */}
