@@ -164,7 +164,7 @@ export function ProductConditionChart({ orders, onClick }) {
               >
                 <div className="font-semibold text-gray-900">{condition}</div>
                 <div className="text-xs text-gray-600 mt-1">
-                  {stats.count} orders ({percentage}%)
+                  {formatNumber(stats.count, 0)} orders ({percentage}%)
                 </div>
                 <div className="text-xs text-gray-500">
                   ${formatNumber(stats.totalSpent, 2)} • Avg: ${avgValue}
