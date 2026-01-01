@@ -9,9 +9,9 @@ export function ClickableStatCard({
   return (
     <div
       onClick={onClick}
-      className={`bg-gradient-to-br ${gradient} rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:-translate-y-1`}
+      className={`bg-gradient-to-br ${gradient} rounded-xl shadow-lg p-6 hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:scale-105 hover:-translate-y-1 h-48 flex flex-col`}
     >
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-3 flex-1">
         <span className="text-4xl">{icon}</span>
         <div className="text-right">
           <p className="text-white text-opacity-90 text-sm font-medium mb-1">{label}</p>
@@ -19,7 +19,7 @@ export function ClickableStatCard({
           {subtitle && <p className="text-white text-opacity-75 text-xs mt-1">{subtitle}</p>}
         </div>
       </div>
-      <div className="mt-4 pt-4 border-t border-white border-opacity-20">
+      <div className="pt-4 border-t border-white border-opacity-20">
         <p className="text-white text-opacity-90 text-sm font-medium flex items-center justify-end">
           Click to explore
           <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
