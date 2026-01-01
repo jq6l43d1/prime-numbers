@@ -1,3 +1,5 @@
+import { formatCurrency } from '../utils/currencyHelpers';
+
 // Chart.js default configuration
 export const CHART_COLORS = {
   primary: '#2563eb', // blue-600
@@ -61,10 +63,7 @@ export const DEFAULT_CHART_OPTIONS = {
             label += ': ';
           }
           if (context.parsed.y !== null) {
-            label += new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-            }).format(context.parsed.y);
+            label += formatCurrency(context.parsed.y);
           }
           return label;
         },
@@ -100,7 +99,7 @@ export const LINE_CHART_OPTIONS = {
           size: 11,
         },
         callback: function (value) {
-          return '$' + value.toLocaleString();
+          return formatCurrency(value);
         },
       },
     },

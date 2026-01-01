@@ -1,5 +1,5 @@
 import { Bar } from 'react-chartjs-2';
-import { formatNumber } from '../../utils/currencyHelpers';
+import { formatNumber, formatCurrency } from '../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   BarElement,
@@ -103,9 +103,9 @@ export function TopProductsChart({ data, type = 'spending', onProductClick }) {
           },
           callback: function (value) {
             if (type === 'spending') {
-              return '$' + value;
+              return formatCurrency(value);
             }
-            return value;
+            return formatNumber(value, 0);
           },
         },
       },

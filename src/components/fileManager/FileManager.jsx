@@ -1,5 +1,5 @@
 import { useData } from '../../context/DataContext';
-import { formatNumber } from '../../utils/currencyHelpers';
+import { formatNumber, formatCurrency } from '../../utils/currencyHelpers';
 
 export function FileManager() {
   const { datasets, activeDatasetId, viewMode, setViewMode, switchDataset, removeDataset } =
@@ -21,15 +21,6 @@ export function FileManager() {
       day: 'numeric',
       year: 'numeric',
     });
-  };
-
-  const formatCurrency = amount => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
   };
 
   return (
