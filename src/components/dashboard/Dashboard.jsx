@@ -507,7 +507,7 @@ export function Dashboard() {
           <p className="text-sm text-gray-600 mb-4">
             Click any point to view orders from that month
           </p>
-          <div className="h-80">
+          <div className="h-80 mb-2">
             <SpendingOverTimeChart
               data={statistics.spending.last12Months}
               onMonthClick={handleMonthClick}
@@ -520,7 +520,7 @@ export function Dashboard() {
           <div className="card bg-gradient-to-br from-white to-purple-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">🎯 Spending by Category</h3>
             <p className="text-sm text-gray-600 mb-4">Click any category to view orders</p>
-            <div className="h-80">
+            <div className="h-80 mb-2">
               <CategoryBreakdownChart
                 data={statistics.spending.byCategory}
                 onCategoryClick={handleCategoryClick}
@@ -531,7 +531,7 @@ export function Dashboard() {
           <div className="card bg-gradient-to-br from-white to-green-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">📊 Orders by Month</h3>
             <p className="text-sm text-gray-600 mb-4">Click any month to view orders</p>
-            <div className="h-80">
+            <div className="h-80 mb-2">
               <OrdersByMonthChart
                 data={statistics.spending.last12Months}
                 onMonthClick={handleMonthClick}
@@ -545,7 +545,7 @@ export function Dashboard() {
           <div className="card bg-gradient-to-br from-white to-indigo-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">💵 Price Distribution</h3>
             <p className="text-sm text-gray-600 mb-4">Click any price range to view items</p>
-            <div className="h-80">
+            <div className="h-80 mb-2">
               <PriceDistributionChart
                 data={statistics.products.priceRanges}
                 onPriceRangeClick={handlePriceRangeClick}
@@ -556,7 +556,7 @@ export function Dashboard() {
           <div className="card bg-gradient-to-br from-white to-pink-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">🔄 Digital vs Retail</h3>
             <p className="text-sm text-gray-600 mb-4">Click any segment to view orders</p>
-            <div className="h-80">
+            <div className="h-80 mb-2">
               <DigitalVsRetailChart
                 digitalSpending={statistics.spending.digitalSpending}
                 retailSpending={statistics.spending.retailSpending}
@@ -568,7 +568,7 @@ export function Dashboard() {
           <div className="card bg-gradient-to-br from-white to-yellow-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">🚚 Shipping Methods</h3>
             <p className="text-sm text-gray-600 mb-4">Click any method to view orders</p>
-            <div className="h-80">
+            <div className="h-80 mb-2">
               <ShippingMethodsChart
                 data={statistics.shipping.methods}
                 onMethodClick={handleShippingMethodClick}
@@ -583,7 +583,7 @@ export function Dashboard() {
           <p className="text-sm text-gray-600 mb-4">
             Click any year to view all orders from that year
           </p>
-          <div className="h-80">
+          <div className="h-80 mb-2">
             <OrdersByYearChart data={statistics.spending.byYear} onYearClick={handleYearClick} />
           </div>
         </div>
@@ -593,7 +593,7 @@ export function Dashboard() {
           <div className="card bg-gradient-to-br from-white to-emerald-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">🏆 Top Products by Spending</h3>
             <p className="text-sm text-gray-600 mb-4">Click any product to view all orders</p>
-            <div className="h-96">
+            <div className="h-96 mb-2">
               <TopProductsChart
                 data={statistics.products.topBySpending}
                 type="spending"
@@ -605,7 +605,7 @@ export function Dashboard() {
           <div className="card bg-gradient-to-br from-white to-cyan-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">🔢 Most Ordered Products</h3>
             <p className="text-sm text-gray-600 mb-4">Click any product to view all orders</p>
-            <div className="h-96">
+            <div className="h-96 mb-2">
               <TopProductsChart
                 data={statistics.products.topByQuantity}
                 type="quantity"
@@ -618,7 +618,7 @@ export function Dashboard() {
         {/* New Charts - Category Spending Trend */}
         <div className="card bg-gradient-to-br from-white to-violet-50 shadow-lg overflow-hidden">
           <h3 className="text-xl font-bold text-gray-900 mb-4">📊 Category Spending Trends</h3>
-          <div className="h-80">
+          <div className="h-80 mb-2">
             <CategorySpendingTrendChart orders={filteredOrders} />
           </div>
         </div>
@@ -631,7 +631,7 @@ export function Dashboard() {
           <p className="text-sm text-gray-600 mb-4">
             Compare spending patterns across different years, month by month
           </p>
-          <div className="h-80">
+          <div className="h-80 mb-2">
             <YearOverYearChart orders={filteredOrders} />
           </div>
         </div>
@@ -642,7 +642,7 @@ export function Dashboard() {
           <p className="text-sm text-gray-600 mb-4">
             Visualize your spending intensity across months and years
           </p>
-          <div className="h-auto py-4">
+          <div className="h-auto py-4 mb-2">
             <SpendingHeatmapChart orders={filteredOrders} />
           </div>
         </div>
@@ -651,7 +651,7 @@ export function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="card bg-gradient-to-br from-white to-fuchsia-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">🌸 Seasonal Spending Analysis</h3>
-            <div className="h-96">
+            <div className="h-96 mb-2">
               <SeasonalSpendingChart orders={filteredOrders} onClick={handleSeasonalClick} />
             </div>
           </div>
@@ -661,7 +661,7 @@ export function Dashboard() {
             <p className="text-sm text-gray-600 mb-4">
               Click any day to view all orders from that day of the week
             </p>
-            <div className="h-96">
+            <div className="h-96 mb-2">
               <DayOfWeekChart orders={filteredOrders} onDayClick={handleDayClick} />
             </div>
           </div>
@@ -671,7 +671,7 @@ export function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="card bg-gradient-to-br from-white to-lime-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">📦 Order Size Distribution</h3>
-            <div className="h-80">
+            <div className="h-80 mb-2">
               <OrderSizeDistributionChart orders={filteredOrders} />
             </div>
           </div>
@@ -679,7 +679,7 @@ export function Dashboard() {
           <div className="card bg-gradient-to-br from-white to-rose-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">↩️ Return Reasons</h3>
             <p className="text-sm text-gray-600 mb-4">Click any reason to view returned orders</p>
-            <div className="h-80">
+            <div className="h-80 mb-2">
               <ReturnsAnalysisChart
                 returns={filteredReturns}
                 orders={filteredOrders}
@@ -695,7 +695,7 @@ export function Dashboard() {
           <p className="text-sm text-gray-600 mb-4">
             Track your cumulative spending growth over time
           </p>
-          <div className="h-80">
+          <div className="h-80 mb-2">
             <SpendingVelocityChart orders={filteredOrders} />
           </div>
         </div>
@@ -706,7 +706,7 @@ export function Dashboard() {
           <p className="text-sm text-gray-600 mb-4">
             See how your total order count has grown over time
           </p>
-          <div className="h-80">
+          <div className="h-80 mb-2">
             <CumulativeOrdersChart orders={filteredOrders} />
           </div>
         </div>
@@ -718,7 +718,7 @@ export function Dashboard() {
             <p className="text-sm text-gray-600 mb-4">
               Where you shop most - click any merchant to view orders
             </p>
-            <div className="h-96">
+            <div className="h-96 mb-2">
               <MerchantAnalysisChart
                 orders={filteredOrders}
                 onMerchantClick={handleMerchantClick}
@@ -729,7 +729,7 @@ export function Dashboard() {
           <div className="card bg-gradient-to-br from-white to-violet-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">🔁 Repeat Purchases</h3>
             <p className="text-sm text-gray-600 mb-4">Products you buy again and again</p>
-            <div className="h-96">
+            <div className="h-96 mb-2">
               <RepeatPurchaseChart orders={filteredOrders} />
             </div>
           </div>
@@ -742,7 +742,7 @@ export function Dashboard() {
             <p className="text-sm text-gray-600 mb-4">
               How you pay - click any payment method to view orders
             </p>
-            <div className="h-96">
+            <div className="h-96 mb-2">
               <PaymentMethodChart orders={filteredOrders} onClick={handlePaymentMethodClick} />
             </div>
           </div>
@@ -752,7 +752,7 @@ export function Dashboard() {
             <p className="text-sm text-gray-600 mb-4">
               Gift vs personal - click any bar to view orders
             </p>
-            <div className="h-96">
+            <div className="h-96 mb-2">
               <GiftOrdersChart orders={filteredOrders} onClick={handleGiftClick} />
             </div>
           </div>
@@ -763,7 +763,7 @@ export function Dashboard() {
           <div className="card bg-gradient-to-br from-white to-blue-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">📊 Order Status Distribution</h3>
             <p className="text-sm text-gray-600 mb-4">Click any status to view those orders</p>
-            <div className="h-96">
+            <div className="h-96 mb-2">
               <OrderStatusChart orders={filteredOrders} onStatusClick={handleOrderStatusClick} />
             </div>
           </div>
@@ -773,7 +773,7 @@ export function Dashboard() {
               💰 Discount Analysis by Category
             </h3>
             <p className="text-sm text-gray-600 mb-4">See where you save the most money</p>
-            <div className="h-96">
+            <div className="h-96 mb-2">
               <DiscountAnalysisChart orders={filteredOrders} />
             </div>
           </div>
@@ -784,7 +784,7 @@ export function Dashboard() {
           <div className="card bg-gradient-to-br from-white to-blue-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">📦 Shipping Cost Analysis</h3>
             <p className="text-sm text-gray-600 mb-4">Free vs Paid shipping breakdown</p>
-            <div className="h-96">
+            <div className="h-96 mb-2">
               <ShippingCostAnalysisChart orders={filteredOrders} />
             </div>
           </div>
@@ -792,7 +792,7 @@ export function Dashboard() {
           <div className="card bg-gradient-to-br from-white to-orange-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">💵 Tax Analysis</h3>
             <p className="text-sm text-gray-600 mb-4">Breakdown of taxes paid</p>
-            <div className="h-96">
+            <div className="h-96 mb-2">
               <TaxAnalysisChart orders={filteredOrders} />
             </div>
           </div>
@@ -800,7 +800,7 @@ export function Dashboard() {
           <div className="card bg-gradient-to-br from-white to-cyan-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">🚛 Carrier Performance</h3>
             <p className="text-sm text-gray-600 mb-4">Click any carrier to view shipments</p>
-            <div className="h-96">
+            <div className="h-96 mb-2">
               <CarrierPerformanceChart
                 orders={filteredOrders}
                 onCarrierClick={handleCarrierClick}
@@ -816,7 +816,7 @@ export function Dashboard() {
             <p className="text-sm text-gray-600 mb-4">
               New vs Used vs Refurbished - click any segment
             </p>
-            <div className="h-96">
+            <div className="h-96 mb-2">
               <ProductConditionChart orders={filteredOrders} onClick={handleConditionClick} />
             </div>
           </div>
@@ -826,7 +826,7 @@ export function Dashboard() {
             <p className="text-sm text-gray-600 mb-4">
               How fast are your orders shipped? Click any bar
             </p>
-            <div className="h-96">
+            <div className="h-96 mb-2">
               <FulfillmentSpeedChart
                 orders={filteredOrders}
                 onClick={handleFulfillmentSpeedClick}
