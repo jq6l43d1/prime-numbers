@@ -1,4 +1,16 @@
-import { format, formatDistance, formatDistanceToNow, parseISO, isValid, startOfMonth, endOfMonth, startOfYear, endOfYear, subMonths, subYears } from 'date-fns';
+import {
+  format,
+  formatDistance,
+  formatDistanceToNow,
+  parseISO,
+  isValid,
+  startOfMonth,
+  endOfMonth,
+  startOfYear,
+  endOfYear,
+  subMonths,
+  subYears,
+} from 'date-fns';
 
 /**
  * Formats a date to a readable string
@@ -57,7 +69,7 @@ export function getYearMonth(date) {
   return {
     year: date.getFullYear(),
     month: date.getMonth() + 1, // 1-12
-    monthName: format(date, 'MMM yyyy')
+    monthName: format(date, 'MMM yyyy'),
   };
 }
 
@@ -114,33 +126,33 @@ export function getDateRangePresets() {
     allTime: {
       start: null,
       end: null,
-      label: 'All Time'
+      label: 'All Time',
     },
     lastYear: {
       start: subYears(now, 1),
       end: now,
-      label: 'Last Year'
+      label: 'Last Year',
     },
     last6Months: {
       start: subMonths(now, 6),
       end: now,
-      label: 'Last 6 Months'
+      label: 'Last 6 Months',
     },
     last3Months: {
       start: subMonths(now, 3),
       end: now,
-      label: 'Last 3 Months'
+      label: 'Last 3 Months',
     },
     thisYear: {
       start: startOfYear(now),
       end: endOfYear(now),
-      label: 'This Year'
+      label: 'This Year',
     },
     thisMonth: {
       start: startOfMonth(now),
       end: endOfMonth(now),
-      label: 'This Month'
-    }
+      label: 'This Month',
+    },
   };
 }
 

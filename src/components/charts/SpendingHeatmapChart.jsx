@@ -45,7 +45,7 @@ export function SpendingHeatmapChart({ orders }) {
   const { monthlySpending, maxSpending, years } = heatmapData;
 
   // Color intensity function
-  const getColor = (amount) => {
+  const getColor = amount => {
     if (amount === 0) return 'bg-gray-100';
     const intensity = Math.min((amount / maxSpending) * 100, 100);
 
@@ -56,13 +56,26 @@ export function SpendingHeatmapChart({ orders }) {
     return 'bg-blue-600';
   };
 
-  const getTextColor = (amount) => {
+  const getTextColor = amount => {
     if (amount === 0) return 'text-gray-400';
     const intensity = (amount / maxSpending) * 100;
     return intensity > 40 ? 'text-white' : 'text-gray-700';
   };
 
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
 
   return (
     <div className="h-full w-full overflow-auto">
@@ -81,9 +94,7 @@ export function SpendingHeatmapChart({ orders }) {
         <div className="space-y-1">
           {years.map(year => (
             <div key={year} className="flex items-center gap-2">
-              <div className="w-16 text-sm font-semibold text-gray-700">
-                {year}
-              </div>
+              <div className="w-16 text-sm font-semibold text-gray-700">{year}</div>
               <div className="flex gap-1">
                 {months.map((_, monthIndex) => {
                   const key = `${year}-${monthIndex}`;
@@ -124,7 +135,10 @@ export function SpendingHeatmapChart({ orders }) {
             <div className="w-12 h-6 bg-blue-500 rounded"></div>
             <div className="w-12 h-6 bg-blue-600 rounded"></div>
             <span className="text-xs text-gray-500 ml-2">
-              ${maxSpending > 999 ? `${(maxSpending / 1000).toFixed(1)}k+` : `${maxSpending.toFixed(0)}+`}
+              $
+              {maxSpending > 999
+                ? `${(maxSpending / 1000).toFixed(1)}k+`
+                : `${maxSpending.toFixed(0)}+`}
             </span>
           </div>
         </div>

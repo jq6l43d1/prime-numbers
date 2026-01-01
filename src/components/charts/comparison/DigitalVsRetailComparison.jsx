@@ -6,18 +6,11 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function DigitalVsRetailComparison({ datasetStats }) {
   if (!datasetStats || datasetStats.length === 0) {
@@ -33,13 +26,13 @@ export function DigitalVsRetailComparison({ datasetStats }) {
       data: [digitalCount, physicalCount],
       backgroundColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
       borderColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
-      borderWidth: 1
+      borderWidth: 1,
     };
   });
 
   const chartData = {
     labels: ['Digital Orders', 'Physical Orders'],
-    datasets: datasets
+    datasets: datasets,
   };
 
   const options = {
@@ -51,31 +44,31 @@ export function DigitalVsRetailComparison({ datasetStats }) {
         text: 'Digital vs Physical Orders Comparison',
         font: {
           size: 16,
-          weight: 'bold'
-        }
+          weight: 'bold',
+        },
       },
       tooltip: {
         ...BAR_CHART_OPTIONS.plugins?.tooltip,
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             const label = context.dataset.label || '';
             const value = context.parsed.y;
             return `${label}: ${value} orders`;
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       ...BAR_CHART_OPTIONS.scales,
       y: {
         ...BAR_CHART_OPTIONS.scales.y,
         ticks: {
-          callback: function(value) {
+          callback: function (value) {
             return value.toLocaleString();
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 
   return (

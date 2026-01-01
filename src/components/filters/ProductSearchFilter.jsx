@@ -27,9 +27,10 @@ export function ProductSearchFilter({ orders, onFilteredOrdersChange }) {
     // Search term filter
     if (searchTerm.trim()) {
       const term = searchTerm.toLowerCase();
-      filtered = filtered.filter(order =>
-        (order.productName && order.productName.toLowerCase().includes(term)) ||
-        (order.asin && order.asin.toLowerCase().includes(term))
+      filtered = filtered.filter(
+        order =>
+          (order.productName && order.productName.toLowerCase().includes(term)) ||
+          (order.asin && order.asin.toLowerCase().includes(term))
       );
     }
 
@@ -94,7 +95,7 @@ export function ProductSearchFilter({ orders, onFilteredOrdersChange }) {
           <input
             type="text"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
             placeholder="Enter product name or ASIN..."
             className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
           />
@@ -104,12 +105,10 @@ export function ProductSearchFilter({ orders, onFilteredOrdersChange }) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Category Filter */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Category
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
             <select
               value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
+              onChange={e => setSelectedCategory(e.target.value)}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white"
             >
               <option value="">All Categories</option>
@@ -123,13 +122,11 @@ export function ProductSearchFilter({ orders, onFilteredOrdersChange }) {
 
           {/* Min Price */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Min Price
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Min Price</label>
             <input
               type="number"
               value={minPrice}
-              onChange={(e) => setMinPrice(e.target.value)}
+              onChange={e => setMinPrice(e.target.value)}
               placeholder="$0"
               min="0"
               step="0.01"
@@ -139,13 +136,11 @@ export function ProductSearchFilter({ orders, onFilteredOrdersChange }) {
 
           {/* Max Price */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Max Price
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Max Price</label>
             <input
               type="number"
               value={maxPrice}
-              onChange={(e) => setMaxPrice(e.target.value)}
+              onChange={e => setMaxPrice(e.target.value)}
               placeholder="No limit"
               min="0"
               step="0.01"
@@ -163,7 +158,8 @@ export function ProductSearchFilter({ orders, onFilteredOrdersChange }) {
               {selectedCategory && <span className="ml-1">in {selectedCategory}</span>}
               {(minPrice || maxPrice) && (
                 <span className="ml-1">
-                  priced {minPrice ? `$${minPrice}` : '$0'} - {maxPrice ? `$${maxPrice}` : 'unlimited'}
+                  priced {minPrice ? `$${minPrice}` : '$0'} -{' '}
+                  {maxPrice ? `$${maxPrice}` : 'unlimited'}
                 </span>
               )}
             </p>

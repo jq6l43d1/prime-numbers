@@ -6,7 +6,7 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { CHART_COLORS } from '../../constants/chartConfig';
 
@@ -43,7 +43,7 @@ export function GiftOrdersChart({ orders, onClick }) {
     if (!giftsByMonth[monthKey]) {
       giftsByMonth[monthKey] = {
         count: 0,
-        spending: 0
+        spending: 0,
       };
     }
 
@@ -52,9 +52,11 @@ export function GiftOrdersChart({ orders, onClick }) {
   });
 
   // Get last 12 months of gift data
-  const sortedMonths = Object.keys(giftsByMonth).sort((a, b) => {
-    return new Date(a) - new Date(b);
-  }).slice(-12);
+  const sortedMonths = Object.keys(giftsByMonth)
+    .sort((a, b) => {
+      return new Date(a) - new Date(b);
+    })
+    .slice(-12);
 
   const chartData = {
     labels: ['Gift Orders', 'Personal Orders'],
@@ -65,7 +67,7 @@ export function GiftOrdersChart({ orders, onClick }) {
         backgroundColor: [CHART_COLORS.secondary, CHART_COLORS.primary],
         borderColor: [CHART_COLORS.secondary, CHART_COLORS.primary],
         borderWidth: 1,
-        yAxisID: 'y'
+        yAxisID: 'y',
       },
       {
         label: 'Total Spending',
@@ -73,32 +75,34 @@ export function GiftOrdersChart({ orders, onClick }) {
         backgroundColor: [`${CHART_COLORS.secondary}80`, `${CHART_COLORS.primary}80`],
         borderColor: [CHART_COLORS.secondary, CHART_COLORS.primary],
         borderWidth: 1,
-        yAxisID: 'y1'
-      }
-    ]
+        yAxisID: 'y1',
+      },
+    ],
   };
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
-    onClick: onClick ? (event, elements) => {
-      if (elements.length > 0) {
-        const index = elements[0].index;
-        const isGift = index === 0;
-        const relevantOrders = isGift ? giftOrders : personalOrders;
-        const type = isGift ? 'Gift Orders' : 'Personal Orders';
+    onClick: onClick
+      ? (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const isGift = index === 0;
+            const relevantOrders = isGift ? giftOrders : personalOrders;
+            const type = isGift ? 'Gift Orders' : 'Personal Orders';
 
-        onClick({
-          type,
-          isGift,
-          orders: relevantOrders,
-          totalSpent: relevantOrders.reduce((sum, o) => sum + (o.totalOwed || 0), 0)
-        });
-      }
-    } : undefined,
+            onClick({
+              type,
+              isGift,
+              orders: relevantOrders,
+              totalSpent: relevantOrders.reduce((sum, o) => sum + (o.totalOwed || 0), 0),
+            });
+          }
+        }
+      : undefined,
     interaction: {
       mode: 'index',
-      intersect: false
+      intersect: false,
     },
     scales: {
       y: {
@@ -107,8 +111,8 @@ export function GiftOrdersChart({ orders, onClick }) {
         position: 'left',
         title: {
           display: true,
-          text: 'Number of Orders'
-        }
+          text: 'Number of Orders',
+        },
       },
       y1: {
         type: 'linear',
@@ -116,20 +120,20 @@ export function GiftOrdersChart({ orders, onClick }) {
         position: 'right',
         title: {
           display: true,
-          text: 'Total Spending ($)'
+          text: 'Total Spending ($)',
         },
         grid: {
-          drawOnChartArea: false
-        }
-      }
+          drawOnChartArea: false,
+        },
+      },
     },
     plugins: {
       legend: {
-        position: 'top'
+        position: 'top',
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             let label = context.dataset.label || '';
             if (label) {
               label += ': ';
@@ -140,15 +144,16 @@ export function GiftOrdersChart({ orders, onClick }) {
               label += context.parsed.y;
             }
             return label;
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 
   const avgGiftValue = giftOrders.length > 0 ? giftSpending / giftOrders.length : 0;
   const avgPersonalValue = personalOrders.length > 0 ? personalSpending / personalOrders.length : 0;
-  const giftPercentage = orders.length > 0 ? ((giftOrders.length / orders.length) * 100).toFixed(1) : 0;
+  const giftPercentage =
+    orders.length > 0 ? ((giftOrders.length / orders.length) * 100).toFixed(1) : 0;
 
   return (
     <div>
@@ -162,18 +167,14 @@ export function GiftOrdersChart({ orders, onClick }) {
             <div className="text-xs text-gray-600 mt-1">
               {giftOrders.length} orders • ${giftSpending.toFixed(2)}
             </div>
-            <div className="text-xs text-gray-500">
-              Avg: ${avgGiftValue.toFixed(2)}
-            </div>
+            <div className="text-xs text-gray-500">Avg: ${avgGiftValue.toFixed(2)}</div>
           </div>
           <div className="bg-blue-50 rounded p-3">
             <div className="font-semibold text-gray-900">🛍️ Personal Orders</div>
             <div className="text-xs text-gray-600 mt-1">
               {personalOrders.length} orders • ${personalSpending.toFixed(2)}
             </div>
-            <div className="text-xs text-gray-500">
-              Avg: ${avgPersonalValue.toFixed(2)}
-            </div>
+            <div className="text-xs text-gray-500">Avg: ${avgPersonalValue.toFixed(2)}</div>
           </div>
         </div>
         <div className="bg-gray-50 rounded p-2 text-center">

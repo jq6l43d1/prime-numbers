@@ -32,12 +32,19 @@ export function DrillDownModal({ isOpen, onClose, data, type }) {
           <h4 className="font-semibold text-gray-900 mb-3">Order History</h4>
           <div className="space-y-2 max-h-96 overflow-y-auto">
             {data.orders.map((order, index) => (
-              <div key={index} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+              <div
+                key={index}
+                className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors"
+              >
                 <div className="flex justify-between items-start">
                   <div className="flex-1">
-                    <p className="font-medium text-gray-900">{order.productName || 'Unknown Product'}</p>
+                    <p className="font-medium text-gray-900">
+                      {order.productName || 'Unknown Product'}
+                    </p>
                     <p className="text-sm text-gray-600 mt-1">
-                      {order.orderDate ? format(new Date(order.orderDate), 'MMM dd, yyyy') : 'Unknown date'}
+                      {order.orderDate
+                        ? format(new Date(order.orderDate), 'MMM dd, yyyy')
+                        : 'Unknown date'}
                     </p>
                     {order.category && (
                       <span className="inline-block mt-2 px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded-full">
@@ -75,7 +82,7 @@ export function DrillDownModal({ isOpen, onClose, data, type }) {
           name: key,
           orders: 0,
           quantity: 0,
-          spent: 0
+          spent: 0,
         };
       }
       productGroups[key].orders++;
@@ -108,11 +115,16 @@ export function DrillDownModal({ isOpen, onClose, data, type }) {
           <h4 className="font-semibold text-gray-900 mb-3">Top Products in Category</h4>
           <div className="space-y-2">
             {topProducts.map((product, index) => (
-              <div key={index} className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors">
+              <div
+                key={index}
+                className="bg-gray-50 rounded-lg p-4 hover:bg-gray-100 transition-colors"
+              >
                 <div className="flex justify-between items-center">
                   <div>
                     <p className="font-medium text-gray-900">{product.name}</p>
-                    <p className="text-sm text-gray-600">{product.orders} orders • Qty: {product.quantity}</p>
+                    <p className="text-sm text-gray-600">
+                      {product.orders} orders • Qty: {product.quantity}
+                    </p>
                   </div>
                   <p className="font-bold text-gray-900">${product.spent.toFixed(2)}</p>
                 </div>
@@ -211,25 +223,26 @@ export function DrillDownModal({ isOpen, onClose, data, type }) {
           <div className="flex justify-between items-start">
             <div>
               <h2 className="text-2xl font-bold mb-2">{data.title || 'Details'}</h2>
-              {data.subtitle && (
-                <p className="text-blue-100">{data.subtitle}</p>
-              )}
+              {data.subtitle && <p className="text-blue-100">{data.subtitle}</p>}
             </div>
             <button
               onClick={onClose}
               className="text-white hover:bg-white hover:bg-opacity-20 rounded-lg p-2 transition-colors"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-8rem)]">
-          {renderContent()}
-        </div>
+        <div className="p-6 overflow-y-auto max-h-[calc(90vh-8rem)]">{renderContent()}</div>
       </div>
     </div>
   );

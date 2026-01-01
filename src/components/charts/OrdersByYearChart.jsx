@@ -6,18 +6,11 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLORS } from '../../constants/chartConfig';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function OrdersByYearChart({ data, onYearClick }) {
   if (!data || data.length === 0) {
@@ -33,9 +26,9 @@ export function OrdersByYearChart({ data, onYearClick }) {
         backgroundColor: CHART_COLORS.secondary,
         borderColor: CHART_COLORS.secondary,
         borderWidth: 1,
-        borderRadius: 4
-      }
-    ]
+        borderRadius: 4,
+      },
+    ],
   };
 
   const options = {
@@ -43,55 +36,57 @@ export function OrdersByYearChart({ data, onYearClick }) {
     plugins: {
       ...BAR_CHART_OPTIONS.plugins,
       legend: {
-        display: false
+        display: false,
       },
       tooltip: {
         ...BAR_CHART_OPTIONS.plugins.tooltip,
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             return `Orders: ${context.parsed.y}`;
           },
-          afterLabel: function(context) {
+          afterLabel: function (context) {
             const yearData = data[context.dataIndex];
             if (yearData && yearData.amount) {
               return [`Total Spent: $${yearData.amount.toLocaleString()}`, 'Click to view details'];
             }
             return '';
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       x: {
         grid: {
-          display: false
+          display: false,
         },
         ticks: {
           font: {
-            size: 12
-          }
-        }
+            size: 12,
+          },
+        },
       },
       y: {
         beginAtZero: true,
         grid: {
-          color: 'rgba(0, 0, 0, 0.05)'
+          color: 'rgba(0, 0, 0, 0.05)',
         },
         ticks: {
           font: {
-            size: 11
+            size: 11,
           },
-          stepSize: 1
-        }
-      }
+          stepSize: 1,
+        },
+      },
     },
-    onClick: onYearClick ? (event, elements) => {
-      if (elements.length > 0) {
-        const index = elements[0].index;
-        const yearData = data[index];
-        onYearClick(yearData);
-      }
-    } : undefined
+    onClick: onYearClick
+      ? (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const yearData = data[index];
+            onYearClick(yearData);
+          }
+        }
+      : undefined,
   };
 
   return <Bar data={chartData} options={options} />;

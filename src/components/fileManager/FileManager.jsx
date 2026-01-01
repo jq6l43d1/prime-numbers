@@ -1,14 +1,8 @@
 import { useData } from '../../context/DataContext';
 
 export function FileManager() {
-  const {
-    datasets,
-    activeDatasetId,
-    viewMode,
-    setViewMode,
-    switchDataset,
-    removeDataset
-  } = useData();
+  const { datasets, activeDatasetId, viewMode, setViewMode, switchDataset, removeDataset } =
+    useData();
 
   if (datasets.length === 0) return null;
 
@@ -19,30 +13,28 @@ export function FileManager() {
     }
   };
 
-  const formatDate = (isoString) => {
+  const formatDate = isoString => {
     const date = new Date(isoString);
     return date.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     });
   };
 
-  const formatCurrency = (amount) => {
+  const formatCurrency = amount => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0
+      maximumFractionDigits: 0,
     }).format(amount);
   };
 
   return (
     <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-bold text-gray-900">
-          📁 Uploaded Files ({datasets.length})
-        </h3>
+        <h3 className="text-xl font-bold text-gray-900">📁 Uploaded Files ({datasets.length})</h3>
 
         {datasets.length > 1 && (
           <div className="flex gap-2">
@@ -81,7 +73,7 @@ export function FileManager() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {datasets.map((dataset) => (
+        {datasets.map(dataset => (
           <div
             key={dataset.id}
             onClick={() => viewMode === 'single' && switchDataset(dataset.id)}
@@ -92,7 +84,7 @@ export function FileManager() {
             }`}
           >
             <button
-              onClick={(e) => handleRemove(dataset.id, e)}
+              onClick={e => handleRemove(dataset.id, e)}
               className="absolute top-2 right-2 w-8 h-8 flex items-center justify-center rounded-full bg-red-100 text-red-600 hover:bg-red-200 transition-colors"
               title="Remove file"
             >
@@ -103,12 +95,8 @@ export function FileManager() {
               <div className="flex items-start gap-2 mb-2">
                 <span className="text-2xl">📦</span>
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-semibold text-gray-900 truncate">
-                    {dataset.name}
-                  </h4>
-                  <p className="text-sm text-gray-500">
-                    {formatDate(dataset.uploadDate)}
-                  </p>
+                  <h4 className="font-semibold text-gray-900 truncate">{dataset.name}</h4>
+                  <p className="text-sm text-gray-500">{formatDate(dataset.uploadDate)}</p>
                 </div>
               </div>
 
@@ -148,7 +136,8 @@ export function FileManager() {
       {viewMode === 'compare' && datasets.length > 1 && (
         <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
           <p className="text-sm text-blue-800">
-            💡 <strong>Compare Mode:</strong> View side-by-side statistics and charts for all uploaded files to identify trends and differences.
+            💡 <strong>Compare Mode:</strong> View side-by-side statistics and charts for all
+            uploaded files to identify trends and differences.
           </p>
         </div>
       )}
@@ -156,7 +145,8 @@ export function FileManager() {
       {viewMode === 'combined' && datasets.length > 1 && (
         <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
           <p className="text-sm text-green-800">
-            💡 <strong>Combined Mode:</strong> All data is merged together to show your complete purchasing history across all files.
+            💡 <strong>Combined Mode:</strong> All data is merged together to show your complete
+            purchasing history across all files.
           </p>
         </div>
       )}

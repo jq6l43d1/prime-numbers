@@ -6,18 +6,11 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLORS } from '../../constants/chartConfig';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function OrdersByMonthChart({ data, onMonthClick }) {
   if (!data || data.length === 0) {
@@ -36,9 +29,9 @@ export function OrdersByMonthChart({ data, onMonthClick }) {
         borderRadius: 4,
         hoverBackgroundColor: 'rgba(59, 130, 246, 0.95)',
         hoverBorderColor: 'rgba(59, 130, 246, 1)',
-        hoverBorderWidth: 2
-      }
-    ]
+        hoverBorderWidth: 2,
+      },
+    ],
   };
 
   const options = {
@@ -51,24 +44,23 @@ export function OrdersByMonthChart({ data, onMonthClick }) {
       }
     },
     onHover: (event, activeElements) => {
-      event.native.target.style.cursor = activeElements.length > 0 && onMonthClick
-        ? 'pointer'
-        : 'default';
+      event.native.target.style.cursor =
+        activeElements.length > 0 && onMonthClick ? 'pointer' : 'default';
     },
     plugins: {
       ...BAR_CHART_OPTIONS.plugins,
       tooltip: {
         ...BAR_CHART_OPTIONS.plugins.tooltip,
         callbacks: {
-          title: function(context) {
+          title: function (context) {
             return onMonthClick ? 'Click to view orders' : context[0].label;
           },
-          label: function(context) {
+          label: function (context) {
             return `Orders: ${context.parsed.y}`;
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 
   return <Bar data={chartData} options={options} />;

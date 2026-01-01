@@ -2,21 +2,24 @@ import { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 export function FileUploader({ onFileSelect, error, showAddAnother = false }) {
-  const onDrop = useCallback((acceptedFiles) => {
-    if (acceptedFiles && acceptedFiles.length > 0) {
-      onFileSelect(acceptedFiles[0]);
-    }
-  }, [onFileSelect]);
+  const onDrop = useCallback(
+    acceptedFiles => {
+      if (acceptedFiles && acceptedFiles.length > 0) {
+        onFileSelect(acceptedFiles[0]);
+      }
+    },
+    [onFileSelect]
+  );
 
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     onDrop,
     accept: {
-      'application/zip': ['.zip']
+      'application/zip': ['.zip'],
     },
     maxFiles: 1,
     multiple: false,
     noClick: false,
-    noKeyboard: false
+    noKeyboard: false,
   });
 
   return (
@@ -26,42 +29,40 @@ export function FileUploader({ onFileSelect, error, showAddAnother = false }) {
         className={`
           border-2 border-dashed rounded-lg p-12 text-center cursor-pointer
           transition-colors duration-200
-          ${isDragActive
-            ? 'border-primary bg-primary-50'
-            : 'border-gray-300 hover:border-primary hover:bg-gray-50'
+          ${
+            isDragActive
+              ? 'border-primary bg-primary-50'
+              : 'border-gray-300 hover:border-primary hover:bg-gray-50'
           }
           ${error ? 'border-red-300 bg-red-50' : ''}
         `}
       >
         <input {...getInputProps()} />
-        <div className="text-6xl mb-4">
-          {isDragActive ? '📂' : '📦'}
-        </div>
+        <div className="text-6xl mb-4">{isDragActive ? '📂' : '📦'}</div>
         <h3 className="text-xl font-semibold text-gray-900 mb-2">
           {isDragActive
             ? 'Drop your file here'
             : showAddAnother
-            ? 'Add another file'
-            : 'Click or drag file to upload'
-          }
+              ? 'Add another file'
+              : 'Click or drag file to upload'}
         </h3>
         <p className="text-gray-600 mb-4">
           {showAddAnother
             ? 'Upload another Amazon order file to compare or combine data'
-            : 'Drag and drop your Amazon "Your Orders.zip" file here, or click anywhere in this area to browse'
-          }
+            : 'Drag and drop your Amazon "Your Orders.zip" file here, or click anywhere in this area to browse'}
         </p>
         <div className="inline-flex items-center text-primary font-semibold">
           <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+            />
           </svg>
           Choose File
         </div>
-        {error && (
-          <div className="mt-4 text-red-600 font-medium">
-            {error}
-          </div>
-        )}
+        {error && <div className="mt-4 text-red-600 font-medium">{error}</div>}
       </div>
 
       <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">

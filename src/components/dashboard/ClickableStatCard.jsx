@@ -1,4 +1,11 @@
-export function ClickableStatCard({ icon, label, value, subtitle, onClick, gradient = 'from-blue-500 to-blue-600' }) {
+export function ClickableStatCard({
+  icon,
+  label,
+  value,
+  subtitle,
+  onClick,
+  gradient = 'from-blue-500 to-blue-600',
+}) {
   return (
     <div
       onClick={onClick}
@@ -9,9 +16,7 @@ export function ClickableStatCard({ icon, label, value, subtitle, onClick, gradi
         <div className="text-right">
           <p className="text-white text-opacity-90 text-sm font-medium mb-1">{label}</p>
           <p className="text-white text-3xl font-bold">{value}</p>
-          {subtitle && (
-            <p className="text-white text-opacity-75 text-xs mt-1">{subtitle}</p>
-          )}
+          {subtitle && <p className="text-white text-opacity-75 text-xs mt-1">{subtitle}</p>}
         </div>
       </div>
       <div className="mt-4 pt-4 border-t border-white border-opacity-20">

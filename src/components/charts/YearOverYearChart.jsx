@@ -6,18 +6,11 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { format } from 'date-fns';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function YearOverYearChart({ orders }) {
   if (!orders || orders.length === 0) {
@@ -45,7 +38,10 @@ export function YearOverYearChart({ orders }) {
   });
 
   // Sort years and take most recent ones (max 3 years for readability)
-  const sortedYears = Array.from(years).sort((a, b) => b - a).slice(0, 3).reverse();
+  const sortedYears = Array.from(years)
+    .sort((a, b) => b - a)
+    .slice(0, 3)
+    .reverse();
 
   if (sortedYears.length === 0) {
     return <div className="text-center text-gray-500">No data available</div>;
@@ -55,7 +51,7 @@ export function YearOverYearChart({ orders }) {
   const colors = [
     { bg: 'rgba(59, 130, 246, 0.7)', border: 'rgba(59, 130, 246, 1)' }, // Blue
     { bg: 'rgba(16, 185, 129, 0.7)', border: 'rgba(16, 185, 129, 1)' }, // Green
-    { bg: 'rgba(251, 146, 60, 0.7)', border: 'rgba(251, 146, 60, 1)' }  // Orange
+    { bg: 'rgba(251, 146, 60, 0.7)', border: 'rgba(251, 146, 60, 1)' }, // Orange
   ];
 
   const datasets = sortedYears.map((year, index) => {
@@ -67,13 +63,13 @@ export function YearOverYearChart({ orders }) {
       borderColor: color.border,
       borderWidth: 2,
       borderRadius: 6,
-      hoverBackgroundColor: color.border
+      hoverBackgroundColor: color.border,
     };
   });
 
   const data = {
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-    datasets
+    datasets,
   };
 
   const options = {
@@ -91,59 +87,59 @@ export function YearOverYearChart({ orders }) {
           font: { size: 13, weight: 'bold' },
           padding: 15,
           usePointStyle: true,
-          pointStyle: 'rectRounded'
-        }
+          pointStyle: 'rectRounded',
+        },
       },
       tooltip: {
         callbacks: {
-          title: (context) => {
+          title: context => {
             return context[0].label;
           },
-          label: (context) => {
+          label: context => {
             return `${context.dataset.label}: $${parseFloat(context.parsed.y).toFixed(2)}`;
           },
-          footer: (tooltipItems) => {
+          footer: tooltipItems => {
             if (tooltipItems.length > 1) {
               const values = tooltipItems.map(item => parseFloat(item.parsed.y));
               const max = Math.max(...values);
               const min = Math.min(...values.filter(v => v > 0));
               if (max > 0 && min > 0 && max !== min) {
-                const change = ((max - min) / min * 100).toFixed(1);
+                const change = (((max - min) / min) * 100).toFixed(1);
                 return `\nChange: ${change}%`;
               }
             }
             return '';
-          }
+          },
         },
         backgroundColor: 'rgba(0, 0, 0, 0.85)',
         padding: 14,
         titleFont: { size: 14, weight: 'bold' },
         bodyFont: { size: 13 },
-        footerFont: { size: 12, style: 'italic' }
-      }
+        footerFont: { size: 12, style: 'italic' },
+      },
     },
     scales: {
       y: {
         beginAtZero: true,
         ticks: {
-          callback: (value) => `$${value.toFixed(0)}`,
-          font: { size: 11 }
+          callback: value => `$${value.toFixed(0)}`,
+          font: { size: 11 },
         },
         grid: {
           color: 'rgba(0, 0, 0, 0.05)',
-          drawBorder: false
-        }
+          drawBorder: false,
+        },
       },
       x: {
         ticks: {
-          font: { size: 11 }
+          font: { size: 11 },
         },
         grid: {
           display: false,
-          drawBorder: false
-        }
-      }
-    }
+          drawBorder: false,
+        },
+      },
+    },
   };
 
   return (

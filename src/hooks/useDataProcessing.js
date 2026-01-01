@@ -7,7 +7,7 @@ export function useDataProcessing() {
   const [processedData, setProcessedData] = useState(null);
   const [error, setError] = useState(null);
 
-  const processFile = async (file) => {
+  const processFile = async file => {
     setIsProcessing(true);
     setError(null);
     setProgress({ step: 'starting', progress: 0, message: 'Starting...' });
@@ -16,7 +16,7 @@ export function useDataProcessing() {
     await new Promise(resolve => setTimeout(resolve, 100));
 
     try {
-      const result = await processAmazonData(file, (progressInfo) => {
+      const result = await processAmazonData(file, progressInfo => {
         setProgress(progressInfo);
       });
 
@@ -47,6 +47,6 @@ export function useDataProcessing() {
     processedData,
     error,
     processFile,
-    clearData
+    clearData,
   };
 }

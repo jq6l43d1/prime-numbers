@@ -19,7 +19,7 @@ export function ProductConditionChart({ orders, onClick }) {
       conditionStats[condition] = {
         count: 0,
         totalSpent: 0,
-        items: 0
+        items: 0,
       };
     }
 
@@ -29,8 +29,7 @@ export function ProductConditionChart({ orders, onClick }) {
   });
 
   // Sort by count
-  const sortedConditions = Object.entries(conditionStats)
-    .sort((a, b) => b[1].count - a[1].count);
+  const sortedConditions = Object.entries(conditionStats).sort((a, b) => b[1].count - a[1].count);
 
   const labels = sortedConditions.map(([condition]) => condition);
   const countData = sortedConditions.map(([, stats]) => stats.count);
@@ -38,7 +37,7 @@ export function ProductConditionChart({ orders, onClick }) {
   const itemsData = sortedConditions.map(([, stats]) => stats.items);
 
   // Color mapping for different conditions
-  const getColorForCondition = (condition) => {
+  const getColorForCondition = condition => {
     if (condition === 'New') return '#10B981'; // green
     if (condition === 'Used') return '#F59E0B'; // orange
     if (condition === 'Refurbished') return '#6366F1'; // indigo
@@ -56,34 +55,36 @@ export function ProductConditionChart({ orders, onClick }) {
         data: countData,
         backgroundColor: colors,
         borderColor: '#fff',
-        borderWidth: 3
-      }
-    ]
+        borderWidth: 3,
+      },
+    ],
   };
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
-    onClick: onClick ? (event, elements) => {
-      if (elements.length > 0) {
-        const index = elements[0].index;
-        const condition = labels[index];
-        const stats = sortedConditions[index][1];
+    onClick: onClick
+      ? (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const condition = labels[index];
+            const stats = sortedConditions[index][1];
 
-        // Find all orders with this condition
-        const conditionOrders = orders.filter(o =>
-          (o.productCondition || 'Unknown') === condition
-        );
+            // Find all orders with this condition
+            const conditionOrders = orders.filter(
+              o => (o.productCondition || 'Unknown') === condition
+            );
 
-        onClick({
-          condition,
-          count: stats.count,
-          totalSpent: stats.totalSpent,
-          items: stats.items,
-          orders: conditionOrders
-        });
-      }
-    } : undefined,
+            onClick({
+              condition,
+              count: stats.count,
+              totalSpent: stats.totalSpent,
+              items: stats.items,
+              orders: conditionOrders,
+            });
+          }
+        }
+      : undefined,
     plugins: {
       legend: {
         position: 'bottom',
@@ -91,9 +92,9 @@ export function ProductConditionChart({ orders, onClick }) {
           padding: 15,
           font: {
             size: 12,
-            weight: '600'
+            weight: '600',
           },
-          generateLabels: (chart) => {
+          generateLabels: chart => {
             const data = chart.data;
             return data.labels.map((label, i) => ({
               text: label,
@@ -101,14 +102,14 @@ export function ProductConditionChart({ orders, onClick }) {
               strokeStyle: '#fff',
               lineWidth: 2,
               hidden: false,
-              index: i
+              index: i,
             }));
-          }
-        }
+          },
+        },
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             const condition = context.label;
             const count = countData[context.dataIndex];
             const spending = spendingData[context.dataIndex];
@@ -121,17 +122,17 @@ export function ProductConditionChart({ orders, onClick }) {
               `Orders: ${count} (${percentage}%)`,
               `Items: ${items}`,
               `Total: $${spending.toFixed(2)}`,
-              `Avg/Order: $${avgOrderValue}`
+              `Avg/Order: $${avgOrderValue}`,
             ];
-          }
+          },
         },
         backgroundColor: 'rgba(0, 0, 0, 0.85)',
         padding: 12,
         titleFont: { size: 14, weight: 'bold' },
         bodyFont: { size: 13 },
-        bodySpacing: 6
-      }
-    }
+        bodySpacing: 6,
+      },
+    },
   };
 
   const totalOrders = sortedConditions.reduce((sum, [, stats]) => sum + stats.count, 0);
@@ -154,7 +155,7 @@ export function ProductConditionChart({ orders, onClick }) {
                 className="rounded p-3 transition-all hover:shadow-md cursor-pointer"
                 style={{
                   backgroundColor: `${getColorForCondition(condition)}15`,
-                  borderLeft: `4px solid ${getColorForCondition(condition)}`
+                  borderLeft: `4px solid ${getColorForCondition(condition)}`,
                 }}
               >
                 <div className="font-semibold text-gray-900">{condition}</div>

@@ -26,9 +26,9 @@ export function CategoryBreakdownChart({ data, onCategoryClick }) {
         data: categories.map(d => d.amount),
         backgroundColor: CHART_COLOR_PALETTE,
         borderWidth: 2,
-        borderColor: '#ffffff'
-      }
-    ]
+        borderColor: '#ffffff',
+      },
+    ],
   };
 
   const options = {
@@ -38,27 +38,29 @@ export function CategoryBreakdownChart({ data, onCategoryClick }) {
       tooltip: {
         ...PIE_CHART_OPTIONS.plugins.tooltip,
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             const label = context.label || '';
             const value = context.parsed || 0;
             const total = context.dataset.data.reduce((a, b) => a + b, 0);
             const percentage = ((value / total) * 100).toFixed(1);
             const formatted = new Intl.NumberFormat('en-US', {
               style: 'currency',
-              currency: 'USD'
+              currency: 'USD',
             }).format(value);
             return `${label}: ${formatted} (${percentage}%) - Click to view details`;
+          },
+        },
+      },
+    },
+    onClick: onCategoryClick
+      ? (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const category = categories[index].category;
+            onCategoryClick(category);
           }
         }
-      }
-    },
-    onClick: onCategoryClick ? (event, elements) => {
-      if (elements.length > 0) {
-        const index = elements[0].index;
-        const category = categories[index].category;
-        onCategoryClick(category);
-      }
-    } : undefined
+      : undefined,
   };
 
   return <Doughnut data={chartData} options={options} />;

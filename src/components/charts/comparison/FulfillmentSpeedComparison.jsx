@@ -6,18 +6,11 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function FulfillmentSpeedComparison({ datasetStats }) {
   if (!datasetStats || datasetStats.length === 0) {
@@ -25,7 +18,14 @@ export function FulfillmentSpeedComparison({ datasetStats }) {
   }
 
   // Define speed buckets
-  const speedCategories = ['Same Day', '1-2 Days', '3-5 Days', '6-10 Days', '11+ Days', 'Not Shipped'];
+  const speedCategories = [
+    'Same Day',
+    '1-2 Days',
+    '3-5 Days',
+    '6-10 Days',
+    '11+ Days',
+    'Not Shipped',
+  ];
 
   const datasets = datasetStats.map((item, index) => {
     const orders = item.dataset.orders || [];
@@ -37,7 +37,7 @@ export function FulfillmentSpeedComparison({ datasetStats }) {
       '3-5 Days': [],
       '6-10 Days': [],
       '11+ Days': [],
-      'Not Shipped': []
+      'Not Shipped': [],
     };
 
     orders.forEach(order => {
@@ -73,13 +73,13 @@ export function FulfillmentSpeedComparison({ datasetStats }) {
       data: data,
       backgroundColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
       borderColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
-      borderWidth: 1
+      borderWidth: 1,
     };
   });
 
   const chartData = {
     labels: speedCategories,
-    datasets: datasets
+    datasets: datasets,
   };
 
   const options = {
@@ -91,12 +91,12 @@ export function FulfillmentSpeedComparison({ datasetStats }) {
         text: 'Fulfillment Speed Comparison',
         font: {
           size: 16,
-          weight: 'bold'
-        }
+          weight: 'bold',
+        },
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             const label = context.dataset.label || '';
             const value = context.parsed.y;
 
@@ -106,35 +106,36 @@ export function FulfillmentSpeedComparison({ datasetStats }) {
             const orders = item.dataset.orders || [];
             const shippedOrders = orders.filter(o => o.shipDate && o.shipDate !== 'Not Available');
 
-            const avgDays = shippedOrders.length > 0
-              ? shippedOrders.reduce((sum, order) => {
-                  const orderDate = new Date(order.orderDate);
-                  const shipDate = new Date(order.shipDate);
-                  const days = Math.floor((shipDate - orderDate) / (1000 * 60 * 60 * 24));
-                  return sum + (days >= 0 ? days : 0);
-                }, 0) / shippedOrders.length
-              : 0;
+            const avgDays =
+              shippedOrders.length > 0
+                ? shippedOrders.reduce((sum, order) => {
+                    const orderDate = new Date(order.orderDate);
+                    const shipDate = new Date(order.shipDate);
+                    const days = Math.floor((shipDate - orderDate) / (1000 * 60 * 60 * 24));
+                    return sum + (days >= 0 ? days : 0);
+                  }, 0) / shippedOrders.length
+                : 0;
 
             return `${label}: ${value} orders (Avg: ${avgDays.toFixed(1)} days)`;
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       ...BAR_CHART_OPTIONS.scales,
       y: {
         ...BAR_CHART_OPTIONS.scales.y,
         ticks: {
-          callback: function(value) {
+          callback: function (value) {
             return value.toLocaleString();
-          }
+          },
         },
         title: {
           display: true,
-          text: 'Number of Orders'
-        }
-      }
-    }
+          text: 'Number of Orders',
+        },
+      },
+    },
   };
 
   return (

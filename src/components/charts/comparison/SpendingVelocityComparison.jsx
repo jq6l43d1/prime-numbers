@@ -9,11 +9,20 @@ import {
   Title,
   Tooltip,
   Legend,
-  Filler
+  Filler,
 } from 'chart.js';
 import { LINE_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
 
 export function SpendingVelocityComparison({ datasetStats }) {
   if (!datasetStats || datasetStats.length === 0) {
@@ -22,8 +31,8 @@ export function SpendingVelocityComparison({ datasetStats }) {
 
   const velocityData = useMemo(() => {
     return datasetStats.map(item => {
-      const orders = [...item.dataset.orders].sort((a, b) =>
-        new Date(a.orderDate) - new Date(b.orderDate)
+      const orders = [...item.dataset.orders].sort(
+        (a, b) => new Date(a.orderDate) - new Date(b.orderDate)
       );
 
       let cumulative = 0;
@@ -31,7 +40,7 @@ export function SpendingVelocityComparison({ datasetStats }) {
         cumulative += order.totalOwed || 0;
         return {
           date: new Date(order.orderDate),
-          cumulative: cumulative
+          cumulative: cumulative,
         };
       });
 
@@ -69,7 +78,7 @@ export function SpendingVelocityComparison({ datasetStats }) {
       fill: true,
       tension: 0.4,
       pointRadius: 2,
-      pointHoverRadius: 5
+      pointHoverRadius: 5,
     };
   });
 
@@ -79,7 +88,7 @@ export function SpendingVelocityComparison({ datasetStats }) {
       const date = new Date(year, parseInt(month) - 1);
       return date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
     }),
-    datasets: datasets
+    datasets: datasets,
   };
 
   const options = {
@@ -91,17 +100,17 @@ export function SpendingVelocityComparison({ datasetStats }) {
         text: 'Spending Velocity Comparison (Cumulative)',
         font: {
           size: 16,
-          weight: 'bold'
-        }
+          weight: 'bold',
+        },
       },
       tooltip: {
         callbacks: {
-          label: (context) => {
+          label: context => {
             return `${context.dataset.label}: $${context.parsed.y.toFixed(2)}`;
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 
   return (

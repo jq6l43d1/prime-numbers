@@ -6,7 +6,7 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -53,7 +53,7 @@ function parseAddress(addressString) {
     city,
     state,
     zip,
-    fullAddress: addressString
+    fullAddress: addressString,
   };
 }
 
@@ -84,7 +84,7 @@ export function ShippingDestinationsChart({ orders, onDrillDown }) {
         ...parsed,
         orders: [],
         totalSpent: 0,
-        orderCount: 0
+        orderCount: 0,
       });
     }
 
@@ -95,8 +95,7 @@ export function ShippingDestinationsChart({ orders, onDrillDown }) {
   });
 
   // Convert to array and sort by order count
-  const addressStats = Array.from(addressMap.values())
-    .sort((a, b) => b.orderCount - a.orderCount);
+  const addressStats = Array.from(addressMap.values()).sort((a, b) => b.orderCount - a.orderCount);
 
   // Find the primary address (most orders)
   const primaryAddress = addressStats[0];
@@ -107,10 +106,7 @@ export function ShippingDestinationsChart({ orders, onDrillDown }) {
 
   if (addressStats.length > 10) {
     // Show primary + top 9 secondary addresses
-    topAddresses = [
-      primaryAddress,
-      ...addressStats.slice(1, 10)
-    ];
+    topAddresses = [primaryAddress, ...addressStats.slice(1, 10)];
     showingSecondaryOnly = true;
   } else {
     topAddresses = addressStats.slice(0, 10);
@@ -130,8 +126,8 @@ export function ShippingDestinationsChart({ orders, onDrillDown }) {
         ),
         borderWidth: 1,
         hoverBackgroundColor: 'rgba(79, 70, 229, 0.9)',
-      }
-    ]
+      },
+    ],
   };
 
   const options = {
@@ -148,62 +144,62 @@ export function ShippingDestinationsChart({ orders, onDrillDown }) {
           metadata: {
             fullAddress: addressData.fullAddress,
             totalSpent: addressData.totalSpent,
-            orderCount: addressData.orderCount
-          }
+            orderCount: addressData.orderCount,
+          },
         });
       }
     },
     plugins: {
       legend: {
-        display: false
+        display: false,
       },
       title: {
-        display: false
+        display: false,
       },
       tooltip: {
         callbacks: {
-          title: (context) => {
+          title: context => {
             const addressData = topAddresses[context[0].dataIndex];
             return addressData.displayName;
           },
-          afterTitle: (context) => {
+          afterTitle: context => {
             const addressData = topAddresses[context[0].dataIndex];
             if (addressData.fullAddress.length > 50) {
               return addressData.fullAddress.substring(50);
             }
             return '';
           },
-          label: (context) => {
+          label: context => {
             const addressData = topAddresses[context.dataIndex];
             return [
               `${addressData.orderCount} orders`,
               `$${addressData.totalSpent.toFixed(2)} total`,
-              `Click to view details`
+              `Click to view details`,
             ];
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       x: {
         beginAtZero: true,
         ticks: {
-          precision: 0
+          precision: 0,
         },
         title: {
           display: true,
-          text: 'Number of Orders'
-        }
+          text: 'Number of Orders',
+        },
       },
       y: {
         ticks: {
           autoSkip: false,
           font: {
-            size: 11
-          }
-        }
-      }
-    }
+            size: 11,
+          },
+        },
+      },
+    },
   };
 
   // Calculate summary stats
@@ -240,8 +236,8 @@ export function ShippingDestinationsChart({ orders, onDrillDown }) {
 
       {showingSecondaryOnly && (
         <p className="text-xs text-gray-500 mt-4 text-center">
-          Showing primary address and top 9 secondary addresses.
-          Total unique addresses: {uniqueAddresses}
+          Showing primary address and top 9 secondary addresses. Total unique addresses:{' '}
+          {uniqueAddresses}
         </p>
       )}
 

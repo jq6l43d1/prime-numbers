@@ -6,7 +6,7 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
@@ -28,7 +28,7 @@ export function ShippingDestinationsComparison({ datasetStats }) {
       if (!addressMap.has(address)) {
         addressMap.set(address, {
           count: 0,
-          totalSpent: 0
+          totalSpent: 0,
         });
       }
 
@@ -40,12 +40,14 @@ export function ShippingDestinationsComparison({ datasetStats }) {
     const addresses = Array.from(addressMap.values());
     const uniqueAddresses = addresses.length;
     const primaryAddress = addresses.sort((a, b) => b.count - a.count)[0];
-    const primaryPercentage = primaryAddress ? (primaryAddress.count / item.dataset.orders.length * 100) : 0;
+    const primaryPercentage = primaryAddress
+      ? (primaryAddress.count / item.dataset.orders.length) * 100
+      : 0;
 
     return {
       name: item.dataset.name,
       uniqueAddresses,
-      primaryPercentage
+      primaryPercentage,
     };
   });
 
@@ -55,12 +57,16 @@ export function ShippingDestinationsComparison({ datasetStats }) {
       {
         label: 'Unique Addresses',
         data: destinationData.map(d => d.uniqueAddresses),
-        backgroundColor: destinationData.map((_, i) => `${CHART_COLOR_PALETTE[i % CHART_COLOR_PALETTE.length]}80`),
-        borderColor: destinationData.map((_, i) => CHART_COLOR_PALETTE[i % CHART_COLOR_PALETTE.length]),
+        backgroundColor: destinationData.map(
+          (_, i) => `${CHART_COLOR_PALETTE[i % CHART_COLOR_PALETTE.length]}80`
+        ),
+        borderColor: destinationData.map(
+          (_, i) => CHART_COLOR_PALETTE[i % CHART_COLOR_PALETTE.length]
+        ),
         borderWidth: 2,
-        borderRadius: 6
-      }
-    ]
+        borderRadius: 6,
+      },
+    ],
   };
 
   const options = {
@@ -72,21 +78,21 @@ export function ShippingDestinationsComparison({ datasetStats }) {
         text: 'Shipping Destinations Comparison',
         font: {
           size: 16,
-          weight: 'bold'
-        }
+          weight: 'bold',
+        },
       },
       tooltip: {
         callbacks: {
-          label: (context) => {
+          label: context => {
             const data = destinationData[context.dataIndex];
             return [
               `Unique addresses: ${data.uniqueAddresses}`,
-              `Primary address: ${data.primaryPercentage.toFixed(1)}% of orders`
+              `Primary address: ${data.primaryPercentage.toFixed(1)}% of orders`,
             ];
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 
   return (

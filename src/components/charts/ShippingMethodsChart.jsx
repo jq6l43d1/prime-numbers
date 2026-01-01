@@ -26,39 +26,43 @@ export function ShippingMethodsChart({ data, onMethodClick }) {
         data: methods.map(d => d.count),
         backgroundColor: CHART_COLOR_PALETTE,
         borderWidth: 2,
-        borderColor: '#ffffff'
-      }
-    ]
+        borderColor: '#ffffff',
+      },
+    ],
   };
 
   const options = {
     ...PIE_CHART_OPTIONS,
-    onClick: onMethodClick ? (event, elements) => {
-      if (elements.length > 0) {
-        const index = elements[0].index;
-        const method = methods[index].method;
-        onMethodClick(method);
-      }
-    } : undefined,
-    onHover: onMethodClick ? (event, elements) => {
-      event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
-    } : undefined,
+    onClick: onMethodClick
+      ? (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const method = methods[index].method;
+            onMethodClick(method);
+          }
+        }
+      : undefined,
+    onHover: onMethodClick
+      ? (event, elements) => {
+          event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+        }
+      : undefined,
     plugins: {
       ...PIE_CHART_OPTIONS.plugins,
       tooltip: {
         ...PIE_CHART_OPTIONS.plugins.tooltip,
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             const label = context.label || '';
             const value = context.parsed || 0;
             const total = context.dataset.data.reduce((a, b) => a + b, 0);
             const percentage = ((value / total) * 100).toFixed(1);
             return `${label}: ${value} orders (${percentage}%)`;
           },
-          afterLabel: onMethodClick ? () => 'Click to view details' : undefined
-        }
-      }
-    }
+          afterLabel: onMethodClick ? () => 'Click to view details' : undefined,
+        },
+      },
+    },
   };
 
   return <Doughnut data={chartData} options={options} />;

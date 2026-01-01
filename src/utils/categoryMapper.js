@@ -32,7 +32,7 @@ export function categorizeProduct(productName) {
 export function categorizeProducts(products) {
   return products.map(product => ({
     ...product,
-    category: categorizeProduct(product.productName)
+    category: categorizeProduct(product.productName),
   }));
 }
 

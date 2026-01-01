@@ -21,9 +21,7 @@ export function UploadProgress({ progress }) {
             />
           </div>
         </div>
-        <p className="text-center text-sm text-gray-500">
-          Processing your Amazon order data...
-        </p>
+        <p className="text-center text-sm text-gray-500">Processing your Amazon order data...</p>
       </div>
     </div>
   );

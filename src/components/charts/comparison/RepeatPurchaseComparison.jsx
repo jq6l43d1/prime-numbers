@@ -7,7 +7,7 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
@@ -42,7 +42,7 @@ export function RepeatPurchaseComparison({ datasetStats }) {
         name: item.dataset.name,
         totalRepeats,
         totalProducts,
-        repeatRate: totalProducts > 0 ? (totalRepeats / totalProducts * 100) : 0
+        repeatRate: totalProducts > 0 ? (totalRepeats / totalProducts) * 100 : 0,
       };
     });
   }, [datasetStats]);
@@ -53,12 +53,16 @@ export function RepeatPurchaseComparison({ datasetStats }) {
       {
         label: 'Repeat Purchases',
         data: repeatCounts.map(d => d.totalRepeats),
-        backgroundColor: repeatCounts.map((_, i) => `${CHART_COLOR_PALETTE[i % CHART_COLOR_PALETTE.length]}80`),
-        borderColor: repeatCounts.map((_, i) => CHART_COLOR_PALETTE[i % CHART_COLOR_PALETTE.length]),
+        backgroundColor: repeatCounts.map(
+          (_, i) => `${CHART_COLOR_PALETTE[i % CHART_COLOR_PALETTE.length]}80`
+        ),
+        borderColor: repeatCounts.map(
+          (_, i) => CHART_COLOR_PALETTE[i % CHART_COLOR_PALETTE.length]
+        ),
         borderWidth: 2,
-        borderRadius: 6
-      }
-    ]
+        borderRadius: 6,
+      },
+    ],
   };
 
   const options = {
@@ -70,22 +74,22 @@ export function RepeatPurchaseComparison({ datasetStats }) {
         text: 'Repeat Purchase Patterns Comparison',
         font: {
           size: 16,
-          weight: 'bold'
-        }
+          weight: 'bold',
+        },
       },
       tooltip: {
         callbacks: {
-          label: (context) => {
+          label: context => {
             const data = repeatCounts[context.dataIndex];
             return [
               `Repeat purchases: ${data.totalRepeats}`,
               `Total products: ${data.totalProducts}`,
-              `Repeat rate: ${data.repeatRate.toFixed(1)}%`
+              `Repeat rate: ${data.repeatRate.toFixed(1)}%`,
             ];
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 
   return (

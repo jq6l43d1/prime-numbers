@@ -6,7 +6,7 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
@@ -32,7 +32,7 @@ export function SubscriptionDetectionComparison({ datasetStats }) {
         productMonthMap[productKey] = {
           months: new Set(),
           totalSpent: 0,
-          count: 0
+          count: 0,
         };
       }
 
@@ -42,8 +42,9 @@ export function SubscriptionDetectionComparison({ datasetStats }) {
     });
 
     // Filter for potential subscriptions (appeared in 3+ different months)
-    const subscriptions = Object.entries(productMonthMap)
-      .filter(([_, data]) => data.months.size >= 3);
+    const subscriptions = Object.entries(productMonthMap).filter(
+      ([_, data]) => data.months.size >= 3
+    );
 
     const totalRecurringItems = subscriptions.length;
     const totalRecurringOrders = subscriptions.reduce((sum, [_, data]) => sum + data.count, 0);
@@ -53,7 +54,7 @@ export function SubscriptionDetectionComparison({ datasetStats }) {
       name: item.dataset.name,
       totalRecurringItems,
       totalRecurringOrders,
-      totalRecurringSpend
+      totalRecurringSpend,
     };
   });
 
@@ -63,12 +64,16 @@ export function SubscriptionDetectionComparison({ datasetStats }) {
       {
         label: 'Recurring Items',
         data: subscriptionData.map(d => d.totalRecurringItems),
-        backgroundColor: subscriptionData.map((_, i) => `${CHART_COLOR_PALETTE[i % CHART_COLOR_PALETTE.length]}80`),
-        borderColor: subscriptionData.map((_, i) => CHART_COLOR_PALETTE[i % CHART_COLOR_PALETTE.length]),
+        backgroundColor: subscriptionData.map(
+          (_, i) => `${CHART_COLOR_PALETTE[i % CHART_COLOR_PALETTE.length]}80`
+        ),
+        borderColor: subscriptionData.map(
+          (_, i) => CHART_COLOR_PALETTE[i % CHART_COLOR_PALETTE.length]
+        ),
         borderWidth: 2,
-        borderRadius: 6
-      }
-    ]
+        borderRadius: 6,
+      },
+    ],
   };
 
   const options = {
@@ -80,22 +85,22 @@ export function SubscriptionDetectionComparison({ datasetStats }) {
         text: 'Recurring Purchases Comparison',
         font: {
           size: 16,
-          weight: 'bold'
-        }
+          weight: 'bold',
+        },
       },
       tooltip: {
         callbacks: {
-          label: (context) => {
+          label: context => {
             const data = subscriptionData[context.dataIndex];
             return [
               `Recurring items: ${data.totalRecurringItems}`,
               `Total orders: ${data.totalRecurringOrders}`,
-              `Total spent: $${data.totalRecurringSpend.toFixed(2)}`
+              `Total spent: $${data.totalRecurringSpend.toFixed(2)}`,
             ];
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 
   return (

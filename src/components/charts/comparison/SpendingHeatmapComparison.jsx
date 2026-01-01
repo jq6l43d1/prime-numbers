@@ -41,7 +41,7 @@ export function SpendingHeatmapComparison({ datasetStats }) {
         monthlySpending,
         maxSpending,
         years,
-        color: index === 0 ? 'blue' : index === 1 ? 'purple' : index === 2 ? 'green' : 'orange'
+        color: index === 0 ? 'blue' : index === 1 ? 'purple' : index === 2 ? 'green' : 'orange',
       };
     });
   }, [datasetStats]);
@@ -54,7 +54,7 @@ export function SpendingHeatmapComparison({ datasetStats }) {
       blue: ['bg-blue-200', 'bg-blue-300', 'bg-blue-400', 'bg-blue-500', 'bg-blue-600'],
       purple: ['bg-purple-200', 'bg-purple-300', 'bg-purple-400', 'bg-purple-500', 'bg-purple-600'],
       green: ['bg-green-200', 'bg-green-300', 'bg-green-400', 'bg-green-500', 'bg-green-600'],
-      orange: ['bg-orange-200', 'bg-orange-300', 'bg-orange-400', 'bg-orange-500', 'bg-orange-600']
+      orange: ['bg-orange-200', 'bg-orange-300', 'bg-orange-400', 'bg-orange-500', 'bg-orange-600'],
     };
 
     const colors = colorMap[color] || colorMap.blue;
@@ -72,7 +72,20 @@ export function SpendingHeatmapComparison({ datasetStats }) {
     return intensity > 40 ? 'text-white' : 'text-gray-700';
   };
 
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
 
   return (
     <div className="space-y-8">
@@ -95,9 +108,7 @@ export function SpendingHeatmapComparison({ datasetStats }) {
               <div className="space-y-1">
                 {dataset.years.map(year => (
                   <div key={year} className="flex items-center gap-2">
-                    <div className="w-16 text-sm font-semibold text-gray-700">
-                      {year}
-                    </div>
+                    <div className="w-16 text-sm font-semibold text-gray-700">{year}</div>
                     <div className="flex gap-1">
                       {months.map((_, monthIndex) => {
                         const key = `${year}-${monthIndex}`;

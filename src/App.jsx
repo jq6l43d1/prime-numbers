@@ -15,7 +15,7 @@ function AppContent() {
   const { isProcessing, progress, processFile, error: processingError } = useDataProcessing();
   const { isDataLoaded, datasets, viewMode, addDataset, clearAllDatasets } = useData();
 
-  const handleFileSelect = async (selectedFile) => {
+  const handleFileSelect = async selectedFile => {
     console.log('File selected:', selectedFile.name, selectedFile.size, 'bytes');
 
     const isValid = validateFile(selectedFile);
@@ -55,8 +55,9 @@ function AppContent() {
                 Discover Your Amazon Order Insights
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Upload your Amazon "Your Orders.zip" file to get detailed insights into your spending habits,
-                order history, and purchasing patterns. All processing happens securely in your browser.
+                Upload your Amazon "Your Orders.zip" file to get detailed insights into your
+                spending habits, order history, and purchasing patterns. All processing happens
+                securely in your browser.
               </p>
             </div>
           )}

@@ -6,18 +6,11 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function DiscountAnalysisComparison({ datasetStats }) {
   if (!datasetStats || datasetStats.length === 0) {
@@ -28,30 +21,33 @@ export function DiscountAnalysisComparison({ datasetStats }) {
     const orders = item.dataset.orders || [];
 
     // Calculate discount statistics
-    const discountStats = orders.reduce((acc, order) => {
-      const discount = Math.abs(parseFloat(order.totalDiscounts) || 0);
-      acc.totalDiscounts += discount;
-      if (discount > 0) {
-        acc.ordersWithDiscounts++;
+    const discountStats = orders.reduce(
+      (acc, order) => {
+        const discount = Math.abs(parseFloat(order.totalDiscounts) || 0);
+        acc.totalDiscounts += discount;
+        if (discount > 0) {
+          acc.ordersWithDiscounts++;
+        }
+        return acc;
+      },
+      {
+        totalDiscounts: 0,
+        ordersWithDiscounts: 0,
       }
-      return acc;
-    }, {
-      totalDiscounts: 0,
-      ordersWithDiscounts: 0
-    });
+    );
 
     return {
       label: item.dataset.name,
       data: [discountStats.totalDiscounts],
       backgroundColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
       borderColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
-      borderWidth: 1
+      borderWidth: 1,
     };
   });
 
   const chartData = {
     labels: ['Total Discounts Received'],
-    datasets: datasets
+    datasets: datasets,
   };
 
   const options = {
@@ -63,12 +59,12 @@ export function DiscountAnalysisComparison({ datasetStats }) {
         text: 'Discount Analysis Comparison',
         font: {
           size: 16,
-          weight: 'bold'
-        }
+          weight: 'bold',
+        },
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             const label = context.dataset.label || '';
             const value = context.parsed.y;
 
@@ -77,43 +73,47 @@ export function DiscountAnalysisComparison({ datasetStats }) {
             const item = datasetStats[datasetIndex];
             const orders = item.dataset.orders || [];
 
-            const discountStats = orders.reduce((acc, order) => {
-              const discount = Math.abs(parseFloat(order.totalDiscounts) || 0);
-              acc.totalDiscounts += discount;
-              if (discount > 0) {
-                acc.ordersWithDiscounts++;
-              }
-              return acc;
-            }, { totalDiscounts: 0, ordersWithDiscounts: 0 });
+            const discountStats = orders.reduce(
+              (acc, order) => {
+                const discount = Math.abs(parseFloat(order.totalDiscounts) || 0);
+                acc.totalDiscounts += discount;
+                if (discount > 0) {
+                  acc.ordersWithDiscounts++;
+                }
+                return acc;
+              },
+              { totalDiscounts: 0, ordersWithDiscounts: 0 }
+            );
 
-            const avgDiscount = discountStats.ordersWithDiscounts > 0
-              ? discountStats.totalDiscounts / discountStats.ordersWithDiscounts
-              : 0;
+            const avgDiscount =
+              discountStats.ordersWithDiscounts > 0
+                ? discountStats.totalDiscounts / discountStats.ordersWithDiscounts
+                : 0;
 
             return [
               `${label}: $${value.toFixed(2)}`,
               `Orders with Discounts: ${discountStats.ordersWithDiscounts}`,
-              `Avg Discount: $${avgDiscount.toFixed(2)}`
+              `Avg Discount: $${avgDiscount.toFixed(2)}`,
             ];
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       ...BAR_CHART_OPTIONS.scales,
       y: {
         ...BAR_CHART_OPTIONS.scales.y,
         ticks: {
-          callback: function(value) {
+          callback: function (value) {
             return '$' + value.toLocaleString();
-          }
+          },
         },
         title: {
           display: true,
-          text: 'Total Discounts Received ($)'
-        }
-      }
-    }
+          text: 'Total Discounts Received ($)',
+        },
+      },
+    },
   };
 
   return (

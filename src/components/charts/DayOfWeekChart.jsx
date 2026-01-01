@@ -6,17 +6,10 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function DayOfWeekChart({ orders, onDayClick }) {
   if (!orders || orders.length === 0) {
@@ -46,8 +39,8 @@ export function DayOfWeekChart({ orders, onDayClick }) {
         borderColor: 'rgba(59, 130, 246, 1)',
         borderWidth: 2,
         borderRadius: 8,
-      }
-    ]
+      },
+    ],
   };
 
   const options = {
@@ -59,53 +52,55 @@ export function DayOfWeekChart({ orders, onDayClick }) {
         position: 'top',
         labels: {
           font: { size: 12, weight: 'bold' },
-          padding: 15
-        }
+          padding: 15,
+        },
       },
       tooltip: {
         callbacks: {
-          afterLabel: (context) => {
+          afterLabel: context => {
             const dayIndex = context.dataIndex;
             return [`Total Spent: $${daySpending[dayIndex].toFixed(2)}`, 'Click to view details'];
-          }
+          },
         },
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         padding: 12,
         titleFont: { size: 14, weight: 'bold' },
-        bodyFont: { size: 13 }
-      }
+        bodyFont: { size: 13 },
+      },
     },
     scales: {
       y: {
         beginAtZero: true,
         ticks: {
           precision: 0,
-          font: { size: 11 }
+          font: { size: 11 },
         },
         grid: {
-          color: 'rgba(0, 0, 0, 0.05)'
-        }
+          color: 'rgba(0, 0, 0, 0.05)',
+        },
       },
       x: {
         ticks: {
-          font: { size: 11 }
+          font: { size: 11 },
         },
         grid: {
-          display: false
-        }
-      }
+          display: false,
+        },
+      },
     },
-    onClick: onDayClick ? (event, elements) => {
-      if (elements.length > 0) {
-        const index = elements[0].index;
-        onDayClick({
-          dayName: dayNames[index],
-          dayIndex: index,
-          count: dayData[index],
-          spending: daySpending[index]
-        });
-      }
-    } : undefined
+    onClick: onDayClick
+      ? (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            onDayClick({
+              dayName: dayNames[index],
+              dayIndex: index,
+              count: dayData[index],
+              spending: daySpending[index],
+            });
+          }
+        }
+      : undefined,
   };
 
   return <Bar data={data} options={options} />;

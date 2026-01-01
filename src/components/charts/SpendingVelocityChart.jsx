@@ -9,19 +9,26 @@ import {
   Title,
   Tooltip,
   Legend,
-  Filler
+  Filler,
 } from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
 
 export function SpendingVelocityChart({ orders }) {
   const velocityData = useMemo(() => {
     if (!orders || orders.length === 0) return null;
 
     // Sort orders by date
-    const sortedOrders = [...orders].sort((a, b) =>
-      new Date(a.orderDate) - new Date(b.orderDate)
-    );
+    const sortedOrders = [...orders].sort((a, b) => new Date(a.orderDate) - new Date(b.orderDate));
 
     // Calculate cumulative spending
     let cumulative = 0;
@@ -29,7 +36,7 @@ export function SpendingVelocityChart({ orders }) {
       cumulative += order.totalOwed || 0;
       return {
         date: new Date(order.orderDate),
-        cumulative: cumulative
+        cumulative: cumulative,
       };
     });
 
@@ -74,8 +81,8 @@ export function SpendingVelocityChart({ orders }) {
         pointBackgroundColor: 'rgb(59, 130, 246)',
         pointBorderColor: '#fff',
         pointBorderWidth: 2,
-      }
-    ]
+      },
+    ],
   };
 
   const options = {
@@ -87,42 +94,42 @@ export function SpendingVelocityChart({ orders }) {
     },
     plugins: {
       legend: {
-        display: false
+        display: false,
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             return `Total: $${context.parsed.y.toFixed(2)}`;
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       x: {
         grid: {
-          display: false
+          display: false,
         },
         ticks: {
           maxRotation: 45,
           minRotation: 45,
           font: {
-            size: 10
-          }
-        }
+            size: 10,
+          },
+        },
       },
       y: {
         beginAtZero: true,
         ticks: {
-          callback: function(value) {
+          callback: function (value) {
             return '$' + value.toLocaleString();
-          }
+          },
         },
         title: {
           display: true,
-          text: 'Cumulative Spending'
-        }
-      }
-    }
+          text: 'Cumulative Spending',
+        },
+      },
+    },
   };
 
   const totalSpent = velocityData.values[velocityData.values.length - 1];
@@ -136,7 +143,9 @@ export function SpendingVelocityChart({ orders }) {
       </div>
       <div className="mt-4 text-sm text-gray-600">
         <div className="flex justify-between items-center">
-          <span>Total spending from {firstMonth} to {lastMonth}</span>
+          <span>
+            Total spending from {firstMonth} to {lastMonth}
+          </span>
           <span className="font-bold text-lg text-blue-600">${totalSpent.toFixed(2)}</span>
         </div>
       </div>

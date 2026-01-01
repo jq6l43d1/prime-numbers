@@ -15,7 +15,7 @@ export function formatCurrency(amount, currency = 'USD', decimals = 2) {
       style: 'currency',
       currency: currency,
       minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals
+      maximumFractionDigits: decimals,
     }).format(amount);
   } catch (error) {
     // Fallback if currency code is invalid
@@ -36,7 +36,7 @@ export function formatNumber(number, decimals = 0) {
 
   return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: decimals,
-    maximumFractionDigits: decimals
+    maximumFractionDigits: decimals,
   }).format(number);
 }
 

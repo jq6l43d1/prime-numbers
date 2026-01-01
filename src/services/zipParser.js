@@ -22,7 +22,7 @@ export async function extractZipFile(file) {
             files[relativePath] = {
               name: relativePath,
               content,
-              type: 'csv'
+              type: 'csv',
             };
           });
           filePromises.push(promise);
@@ -33,7 +33,7 @@ export async function extractZipFile(file) {
             files[relativePath] = {
               name: relativePath,
               content,
-              type: 'image'
+              type: 'image',
             };
           });
           filePromises.push(promise);
@@ -47,14 +47,14 @@ export async function extractZipFile(file) {
     return {
       success: true,
       files,
-      fileCount: Object.keys(files).length
+      fileCount: Object.keys(files).length,
     };
   } catch (error) {
     console.error('Error extracting ZIP file:', error);
     return {
       success: false,
       error: error.message,
-      files: {}
+      files: {},
     };
   }
 }
@@ -79,7 +79,7 @@ export function categorizeFiles(files) {
     rentalItems: [],
     concessions: [],
     photos: [],
-    other: []
+    other: [],
   };
 
   Object.keys(files).forEach(filePath => {
@@ -132,7 +132,7 @@ export function validateAmazonData(categorizedFiles) {
   if (!hasRetailOrders && !hasDigitalItems) {
     return {
       valid: false,
-      message: 'No Amazon order data found. Please upload the "Your Orders.zip" file from Amazon.'
+      message: 'No Amazon order data found. Please upload the "Your Orders.zip" file from Amazon.',
     };
   }
 
@@ -140,6 +140,6 @@ export function validateAmazonData(categorizedFiles) {
     valid: true,
     message: 'Valid Amazon order data detected.',
     hasRetailOrders,
-    hasDigitalItems
+    hasDigitalItems,
   };
 }

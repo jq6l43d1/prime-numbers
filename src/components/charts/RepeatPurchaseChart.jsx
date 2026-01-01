@@ -7,7 +7,7 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -27,7 +27,7 @@ export function RepeatPurchaseChart({ orders }) {
           asin: order.asin,
           count: 0,
           dates: [],
-          totalSpent: 0
+          totalSpent: 0,
         };
       }
       productPurchases[key].count += order.quantity || 1;
@@ -57,8 +57,8 @@ export function RepeatPurchaseChart({ orders }) {
         borderColor: 'rgba(99, 102, 241, 1)',
         borderWidth: 2,
         borderRadius: 6,
-      }
-    ]
+      },
+    ],
   };
 
   const options = {
@@ -67,43 +67,43 @@ export function RepeatPurchaseChart({ orders }) {
     indexAxis: 'y',
     plugins: {
       legend: {
-        display: false
+        display: false,
       },
       tooltip: {
         callbacks: {
-          title: function(context) {
+          title: function (context) {
             return repeatData[context[0].dataIndex].name;
           },
-          label: function(context) {
+          label: function (context) {
             const product = repeatData[context.dataIndex];
             return [
               `Purchased: ${product.count} times`,
               `Total spent: $${product.totalSpent.toFixed(2)}`,
-              `ASIN: ${product.asin || 'N/A'}`
+              `ASIN: ${product.asin || 'N/A'}`,
             ];
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       x: {
         beginAtZero: true,
         ticks: {
-          stepSize: 1
+          stepSize: 1,
         },
         title: {
           display: true,
-          text: 'Number of Purchases'
-        }
+          text: 'Number of Purchases',
+        },
       },
       y: {
         ticks: {
           font: {
-            size: 10
-          }
-        }
-      }
-    }
+            size: 10,
+          },
+        },
+      },
+    },
   };
 
   if (repeatData.length === 0) {
@@ -120,11 +120,10 @@ export function RepeatPurchaseChart({ orders }) {
         <Bar data={chartData} options={options} />
       </div>
       <div className="mt-4 text-sm text-gray-600">
-        <p className="font-medium">
-          You've made {repeatData.length} repeat purchases
-        </p>
+        <p className="font-medium">You've made {repeatData.length} repeat purchases</p>
         <p className="text-xs mt-1">
-          Your most repurchased item: <span className="font-semibold">{repeatData[0]?.name}</span> ({repeatData[0]?.count}x)
+          Your most repurchased item: <span className="font-semibold">{repeatData[0]?.name}</span> (
+          {repeatData[0]?.count}x)
         </p>
       </div>
     </div>

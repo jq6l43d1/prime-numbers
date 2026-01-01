@@ -8,7 +8,7 @@ import {
   Title,
   Tooltip,
   Legend,
-  Filler
+  Filler,
 } from 'chart.js';
 import { LINE_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
@@ -57,13 +57,13 @@ export function SpendingOverTimeComparison({ datasetStats }) {
       tension: 0.4,
       fill: true,
       pointRadius: 3,
-      pointHoverRadius: 5
+      pointHoverRadius: 5,
     };
   });
 
   const chartData = {
     labels: allMonths,
-    datasets: datasets
+    datasets: datasets,
   };
 
   const options = {
@@ -75,10 +75,10 @@ export function SpendingOverTimeComparison({ datasetStats }) {
         text: 'Spending Over Time Comparison',
         font: {
           size: 16,
-          weight: 'bold'
-        }
-      }
-    }
+          weight: 'bold',
+        },
+      },
+    },
   };
 
   return (

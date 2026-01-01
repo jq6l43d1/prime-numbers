@@ -6,18 +6,11 @@ import {
   LineElement,
   Filler,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { DEFAULT_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
-ChartJS.register(
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend
-);
+ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
 export function DayOfWeekComparison({ datasetStats }) {
   if (!datasetStats || datasetStats.length === 0) {
@@ -44,13 +37,13 @@ export function DayOfWeekComparison({ datasetStats }) {
       borderColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
       backgroundColor: `${CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length]}40`,
       pointRadius: 3,
-      pointHoverRadius: 5
+      pointHoverRadius: 5,
     };
   });
 
   const chartData = {
     labels: daysOrder,
-    datasets: datasets
+    datasets: datasets,
   };
 
   const options = {
@@ -62,28 +55,28 @@ export function DayOfWeekComparison({ datasetStats }) {
         text: 'Orders by Day of Week Comparison',
         font: {
           size: 16,
-          weight: 'bold'
-        }
+          weight: 'bold',
+        },
       },
       tooltip: {
         ...DEFAULT_CHART_OPTIONS.plugins?.tooltip,
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             const label = context.dataset.label || '';
             const value = context.parsed.r;
             return `${label}: ${value} orders`;
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       r: {
         beginAtZero: true,
         ticks: {
-          stepSize: 1
-        }
-      }
-    }
+          stepSize: 1,
+        },
+      },
+    },
   };
 
   return (

@@ -20,7 +20,7 @@ export function calculateAllStatistics(orders, returns = []) {
     returns: calculateReturnStats(orders, returns),
     shipping: calculateShippingStats(orders),
     payments: calculatePaymentStats(orders),
-    trends: calculateTrends(orders)
+    trends: calculateTrends(orders),
   };
 }
 
@@ -36,7 +36,7 @@ function getEmptyStatistics() {
     returns: {},
     shipping: {},
     payments: {},
-    trends: {}
+    trends: {},
   };
 }
 
@@ -73,7 +73,7 @@ export function calculateOverviewStats(orders) {
     firstOrderDate,
     lastOrderDate,
     retailOrders: orders.filter(o => !o.isDigital).length,
-    digitalOrders: orders.filter(o => o.isDigital).length
+    digitalOrders: orders.filter(o => o.isDigital).length,
   };
 }
 
@@ -89,7 +89,7 @@ export function calculateSpendingStats(orders) {
     .map(([year, yearOrders]) => ({
       year: parseInt(year),
       amount: roundToTwo(sum(yearOrders.map(o => o.totalOwed))),
-      orders: yearOrders.length
+      orders: yearOrders.length,
     }))
     .sort((a, b) => a.year - b.year);
 
@@ -100,7 +100,7 @@ export function calculateSpendingStats(orders) {
       month,
       amount: roundToTwo(sum(monthOrders.map(o => o.totalOwed))),
       orders: monthOrders.length,
-      date: monthOrders[0].orderDate
+      date: monthOrders[0].orderDate,
     }))
     .sort((a, b) => a.date - b.date);
 
@@ -113,7 +113,7 @@ export function calculateSpendingStats(orders) {
     .map(([category, amount]) => ({
       category,
       amount: roundToTwo(amount),
-      percentage: 0 // Will be calculated below
+      percentage: 0, // Will be calculated below
     }))
     .sort((a, b) => b.amount - a.amount);
 
@@ -124,17 +124,17 @@ export function calculateSpendingStats(orders) {
 
   // Highest and lowest spending months
   const monthlyAmounts = spendingByMonth.map(m => m.amount);
-  const highestMonth = spendingByMonth.length > 0
-    ? spendingByMonth.reduce((max, m) => m.amount > max.amount ? m : max)
-    : null;
-  const lowestMonth = spendingByMonth.length > 0
-    ? spendingByMonth.reduce((min, m) => m.amount < min.amount ? m : min)
-    : null;
+  const highestMonth =
+    spendingByMonth.length > 0
+      ? spendingByMonth.reduce((max, m) => (m.amount > max.amount ? m : max))
+      : null;
+  const lowestMonth =
+    spendingByMonth.length > 0
+      ? spendingByMonth.reduce((min, m) => (m.amount < min.amount ? m : min))
+      : null;
 
   // Monthly average
-  const monthlyAverage = monthlyAmounts.length > 0
-    ? roundToTwo(average(monthlyAmounts))
-    : 0;
+  const monthlyAverage = monthlyAmounts.length > 0 ? roundToTwo(average(monthlyAmounts)) : 0;
 
   // Year over year growth
   let yoyGrowth = 0;
@@ -166,7 +166,7 @@ export function calculateSpendingStats(orders) {
     digitalSpending,
     retailSpending,
     digitalPercentage: roundToTwo(calculatePercentage(digitalSpending, totalSpent)),
-    retailPercentage: roundToTwo(calculatePercentage(retailSpending, totalSpent))
+    retailPercentage: roundToTwo(calculatePercentage(retailSpending, totalSpent)),
   };
 }
 
@@ -194,7 +194,7 @@ export function calculateProductStats(orders) {
       productInfo[key] = {
         name: order.productName,
         asin: order.asin,
-        category: order.category
+        category: order.category,
       };
     }
   });
@@ -203,7 +203,7 @@ export function calculateProductStats(orders) {
     .map(([key, quantity]) => ({
       ...productInfo[key],
       quantity,
-      totalSpent: roundToTwo(productSpending[key])
+      totalSpent: roundToTwo(productSpending[key]),
     }))
     .sort((a, b) => b.quantity - a.quantity)
     .slice(0, 10);
@@ -212,7 +212,7 @@ export function calculateProductStats(orders) {
     .map(([key, amount]) => ({
       ...productInfo[key],
       totalSpent: roundToTwo(amount),
-      quantity: productQuantities[key]
+      quantity: productQuantities[key],
     }))
     .sort((a, b) => b.totalSpent - a.totalSpent)
     .slice(0, 10);
@@ -228,14 +228,12 @@ export function calculateProductStats(orders) {
     .map(([category, count]) => ({
       category,
       count,
-      percentage: roundToTwo(calculatePercentage(count, orders.length))
+      percentage: roundToTwo(calculatePercentage(count, orders.length)),
     }))
     .sort((a, b) => b.count - a.count);
 
   // Average product price
-  const avgProductPrice = orders.length > 0
-    ? roundToTwo(average(orders.map(o => o.unitPrice)))
-    : 0;
+  const avgProductPrice = orders.length > 0 ? roundToTwo(average(orders.map(o => o.unitPrice))) : 0;
 
   // Price ranges
   const priceRanges = {
@@ -243,7 +241,7 @@ export function calculateProductStats(orders) {
     '10to50': orders.filter(o => o.unitPrice >= 10 && o.unitPrice < 50).length,
     '50to100': orders.filter(o => o.unitPrice >= 50 && o.unitPrice < 100).length,
     '100to500': orders.filter(o => o.unitPrice >= 100 && o.unitPrice < 500).length,
-    over500: orders.filter(o => o.unitPrice >= 500).length
+    over500: orders.filter(o => o.unitPrice >= 500).length,
   };
 
   return {
@@ -252,7 +250,7 @@ export function calculateProductStats(orders) {
     topBySpending,
     topCategories,
     avgProductPrice,
-    priceRanges
+    priceRanges,
   };
 }
 
@@ -265,13 +263,10 @@ export function calculateProductStats(orders) {
 export function calculateReturnStats(orders, returns) {
   const ordersWithReturns = orders.filter(o => o.hasReturn);
   const totalReturns = ordersWithReturns.length;
-  const returnRate = orders.length > 0
-    ? roundToTwo(calculatePercentage(totalReturns, orders.length))
-    : 0;
+  const returnRate =
+    orders.length > 0 ? roundToTwo(calculatePercentage(totalReturns, orders.length)) : 0;
 
-  const totalRefunded = returns.length > 0
-    ? roundToTwo(sum(returns.map(r => r.returnAmount)))
-    : 0;
+  const totalRefunded = returns.length > 0 ? roundToTwo(sum(returns.map(r => r.returnAmount))) : 0;
 
   // Returns by category
   const returnsByCategory = {};
@@ -284,9 +279,7 @@ export function calculateReturnStats(orders, returns) {
     .map(([category, count]) => ({
       category,
       count,
-      percentage: totalReturns > 0
-        ? roundToTwo(calculatePercentage(count, totalReturns))
-        : 0
+      percentage: totalReturns > 0 ? roundToTwo(calculatePercentage(count, totalReturns)) : 0,
     }))
     .sort((a, b) => b.count - a.count);
 
@@ -307,7 +300,7 @@ export function calculateReturnStats(orders, returns) {
     returnRate,
     totalRefunded,
     topReturnCategories,
-    topReturnReasons
+    topReturnReasons,
   };
 }
 
@@ -319,15 +312,15 @@ export function calculateReturnStats(orders, returns) {
 export function calculateShippingStats(orders) {
   const totalShippingCost = roundToTwo(sum(orders.map(o => o.shippingCharge)));
   const totalSpent = sum(orders.map(o => o.totalOwed));
-  const shippingPercentage = totalSpent > 0
-    ? roundToTwo(calculatePercentage(totalShippingCost, totalSpent))
-    : 0;
+  const shippingPercentage =
+    totalSpent > 0 ? roundToTwo(calculatePercentage(totalShippingCost, totalSpent)) : 0;
 
   const ordersWithShipping = orders.filter(o => o.shippingCharge > 0);
   const freeShippingOrders = orders.length - ordersWithShipping.length;
-  const avgShippingCost = ordersWithShipping.length > 0
-    ? roundToTwo(average(ordersWithShipping.map(o => o.shippingCharge)))
-    : 0;
+  const avgShippingCost =
+    ordersWithShipping.length > 0
+      ? roundToTwo(average(ordersWithShipping.map(o => o.shippingCharge)))
+      : 0;
 
   // Shipping methods
   const shippingMethods = {};
@@ -340,7 +333,7 @@ export function calculateShippingStats(orders) {
     .map(([method, count]) => ({
       method,
       count,
-      percentage: roundToTwo(calculatePercentage(count, orders.length))
+      percentage: roundToTwo(calculatePercentage(count, orders.length)),
     }))
     .sort((a, b) => b.count - a.count);
 
@@ -350,7 +343,7 @@ export function calculateShippingStats(orders) {
     freeShippingOrders,
     paidShippingOrders: ordersWithShipping.length,
     avgShippingCost,
-    methods: methodsArray
+    methods: methodsArray,
   };
 }
 
@@ -374,7 +367,7 @@ export function calculatePaymentStats(orders) {
       method,
       count,
       amount: roundToTwo(paymentSpending[method]),
-      percentage: roundToTwo(calculatePercentage(count, orders.length))
+      percentage: roundToTwo(calculatePercentage(count, orders.length)),
     }))
     .sort((a, b) => b.count - a.count);
 
@@ -382,7 +375,7 @@ export function calculatePaymentStats(orders) {
 
   return {
     methods: methodsArray,
-    mostUsedMethod
+    mostUsedMethod,
   };
 }
 
@@ -398,14 +391,15 @@ export function calculateTrends(orders) {
       month,
       orders: monthOrders.length,
       spending: sum(monthOrders.map(o => o.totalOwed)),
-      date: monthOrders[0].orderDate
+      date: monthOrders[0].orderDate,
     }))
     .sort((a, b) => a.date - b.date);
 
   // Most active month
-  const mostActiveMonth = monthlyData.length > 0
-    ? monthlyData.reduce((max, m) => m.orders > max.orders ? m : max)
-    : null;
+  const mostActiveMonth =
+    monthlyData.length > 0
+      ? monthlyData.reduce((max, m) => (m.orders > max.orders ? m : max))
+      : null;
 
   // Calculate average days between orders
   const validDates = orders
@@ -434,7 +428,7 @@ export function calculateTrends(orders) {
     .map(([status, count]) => ({
       status,
       count,
-      percentage: roundToTwo(calculatePercentage(count, orders.length))
+      percentage: roundToTwo(calculatePercentage(count, orders.length)),
     }))
     .sort((a, b) => b.count - a.count);
 
@@ -442,6 +436,6 @@ export function calculateTrends(orders) {
     monthlyData,
     mostActiveMonth,
     avgDaysBetweenOrders,
-    statusDistribution: statusArray
+    statusDistribution: statusArray,
   };
 }

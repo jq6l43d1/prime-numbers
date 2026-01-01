@@ -7,19 +7,11 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { format } from 'date-fns';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 export function CategorySpendingTrendChart({ orders }) {
   if (!orders || orders.length === 0) {
@@ -74,7 +66,7 @@ export function CategorySpendingTrendChart({ orders }) {
     { bg: 'rgba(16, 185, 129, 0.8)', border: 'rgba(16, 185, 129, 1)' },
     { bg: 'rgba(251, 146, 60, 0.8)', border: 'rgba(251, 146, 60, 1)' },
     { bg: 'rgba(236, 72, 153, 0.8)', border: 'rgba(236, 72, 153, 1)' },
-    { bg: 'rgba(139, 92, 246, 0.8)', border: 'rgba(139, 92, 246, 1)' }
+    { bg: 'rgba(139, 92, 246, 0.8)', border: 'rgba(139, 92, 246, 1)' },
   ];
 
   const datasets = topCategories.map((category, index) => {
@@ -92,7 +84,7 @@ export function CategorySpendingTrendChart({ orders }) {
       pointHoverRadius: 6,
       pointBackgroundColor: color.border,
       pointBorderColor: '#fff',
-      pointBorderWidth: 2
+      pointBorderWidth: 2,
     };
   });
 
@@ -101,7 +93,7 @@ export function CategorySpendingTrendChart({ orders }) {
       const [year, monthNum] = month.split('-');
       return format(new Date(year, parseInt(monthNum) - 1, 1), 'MMM yyyy');
     }),
-    datasets
+    datasets,
   };
 
   const options = {
@@ -119,43 +111,43 @@ export function CategorySpendingTrendChart({ orders }) {
           font: { size: 12, weight: 'bold' },
           padding: 15,
           usePointStyle: true,
-          pointStyle: 'circle'
-        }
+          pointStyle: 'circle',
+        },
       },
       tooltip: {
         callbacks: {
-          label: (context) => {
+          label: context => {
             return `${context.dataset.label}: $${parseFloat(context.parsed.y).toFixed(2)}`;
-          }
+          },
         },
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         padding: 12,
         titleFont: { size: 14, weight: 'bold' },
-        bodyFont: { size: 13 }
-      }
+        bodyFont: { size: 13 },
+      },
     },
     scales: {
       y: {
         beginAtZero: true,
         ticks: {
-          callback: (value) => `$${value}`,
-          font: { size: 11 }
+          callback: value => `$${value}`,
+          font: { size: 11 },
         },
         grid: {
-          color: 'rgba(0, 0, 0, 0.05)'
-        }
+          color: 'rgba(0, 0, 0, 0.05)',
+        },
       },
       x: {
         ticks: {
           font: { size: 11 },
           maxRotation: 45,
-          minRotation: 45
+          minRotation: 45,
         },
         grid: {
-          display: false
-        }
-      }
-    }
+          display: false,
+        },
+      },
+    },
   };
 
   return <Line data={data} options={options} />;

@@ -6,17 +6,10 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function SubscriptionDetectionChart({ orders, onSubscriptionClick }) {
   if (!orders || orders.length === 0) {
@@ -39,7 +32,7 @@ export function SubscriptionDetectionChart({ orders, onSubscriptionClick }) {
         months: new Set(),
         totalSpent: 0,
         count: 0,
-        orders: []
+        orders: [],
       };
     }
 
@@ -58,7 +51,7 @@ export function SubscriptionDetectionChart({ orders, onSubscriptionClick }) {
       totalSpent: data.totalSpent,
       avgPrice: data.totalSpent / data.count,
       count: data.count,
-      orders: data.orders
+      orders: data.orders,
     }))
     .sort((a, b) => b.frequency - a.frequency)
     .slice(0, 10); // Top 10 recurring items
@@ -67,7 +60,9 @@ export function SubscriptionDetectionChart({ orders, onSubscriptionClick }) {
     return (
       <div className="text-center text-gray-500 py-8">
         <p className="text-lg mb-2">No recurring purchases detected</p>
-        <p className="text-sm">Products need to appear in 3+ different months to be considered recurring</p>
+        <p className="text-sm">
+          Products need to appear in 3+ different months to be considered recurring
+        </p>
       </div>
     );
   }
@@ -85,8 +80,8 @@ export function SubscriptionDetectionChart({ orders, onSubscriptionClick }) {
         borderColor: 'rgba(147, 51, 234, 1)',
         borderWidth: 2,
         borderRadius: 6,
-      }
-    ]
+      },
+    ],
   };
 
   const options = {
@@ -95,59 +90,61 @@ export function SubscriptionDetectionChart({ orders, onSubscriptionClick }) {
     indexAxis: 'y', // Horizontal bar chart
     plugins: {
       legend: {
-        display: false
+        display: false,
       },
       tooltip: {
         callbacks: {
-          label: (context) => {
+          label: context => {
             const sub = subscriptions[context.dataIndex];
             return [
               `Active: ${sub.frequency} months`,
               `Orders: ${sub.count}`,
               `Total Spent: $${sub.totalSpent.toFixed(2)}`,
-              `Avg: $${sub.avgPrice.toFixed(2)}/order`
+              `Avg: $${sub.avgPrice.toFixed(2)}/order`,
             ];
           },
-          afterLabel: () => 'Click to view details'
+          afterLabel: () => 'Click to view details',
         },
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         padding: 12,
         titleFont: { size: 13, weight: 'bold' },
-        bodyFont: { size: 12 }
-      }
+        bodyFont: { size: 12 },
+      },
     },
     scales: {
       x: {
         beginAtZero: true,
         ticks: {
           precision: 0,
-          font: { size: 11 }
+          font: { size: 11 },
         },
         grid: {
-          color: 'rgba(0, 0, 0, 0.05)'
+          color: 'rgba(0, 0, 0, 0.05)',
         },
         title: {
           display: true,
           text: 'Number of Months',
-          font: { size: 12, weight: 'bold' }
-        }
+          font: { size: 12, weight: 'bold' },
+        },
       },
       y: {
         ticks: {
-          font: { size: 10 }
+          font: { size: 10 },
         },
         grid: {
-          display: false
-        }
-      }
+          display: false,
+        },
+      },
     },
-    onClick: onSubscriptionClick ? (event, elements) => {
-      if (elements.length > 0) {
-        const index = elements[0].index;
-        const subscription = subscriptions[index];
-        onSubscriptionClick(subscription);
-      }
-    } : undefined
+    onClick: onSubscriptionClick
+      ? (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const subscription = subscriptions[index];
+            onSubscriptionClick(subscription);
+          }
+        }
+      : undefined,
   };
 
   // Summary stats
@@ -167,7 +164,9 @@ export function SubscriptionDetectionChart({ orders, onSubscriptionClick }) {
           <div className="text-xs text-indigo-700 font-medium">Total Orders</div>
         </div>
         <div className="bg-gradient-to-br from-violet-50 to-violet-100 rounded-lg p-3 text-center">
-          <div className="text-2xl font-bold text-violet-900">${totalRecurringSpend.toFixed(0)}</div>
+          <div className="text-2xl font-bold text-violet-900">
+            ${totalRecurringSpend.toFixed(0)}
+          </div>
           <div className="text-xs text-violet-700 font-medium">Total Spent</div>
         </div>
       </div>

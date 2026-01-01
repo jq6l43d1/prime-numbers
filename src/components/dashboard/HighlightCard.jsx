@@ -23,14 +23,8 @@ export function HighlightCard({ icon, title, value, subtitle, gradient, delay = 
         </div>
 
         <div className="space-y-1">
-          <div className="text-3xl font-bold text-white drop-shadow-lg">
-            {value}
-          </div>
-          {subtitle && (
-            <div className="text-sm text-white text-opacity-90">
-              {subtitle}
-            </div>
-          )}
+          <div className="text-3xl font-bold text-white drop-shadow-lg">{value}</div>
+          {subtitle && <div className="text-sm text-white text-opacity-90">{subtitle}</div>}
         </div>
       </div>
 

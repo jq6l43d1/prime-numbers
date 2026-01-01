@@ -7,19 +7,11 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { LINE_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 export function SeasonalSpendingComparison({ datasetStats }) {
   if (!datasetStats || datasetStats.length === 0) {
@@ -57,13 +49,13 @@ export function SeasonalSpendingComparison({ datasetStats }) {
       tension: 0.4,
       fill: false,
       pointRadius: 4,
-      pointHoverRadius: 6
+      pointHoverRadius: 6,
     };
   });
 
   const chartData = {
     labels: allSeasons,
-    datasets: datasets
+    datasets: datasets,
   };
 
   const options = {
@@ -75,10 +67,10 @@ export function SeasonalSpendingComparison({ datasetStats }) {
         text: 'Seasonal Spending Comparison',
         font: {
           size: 16,
-          weight: 'bold'
-        }
-      }
-    }
+          weight: 'bold',
+        },
+      },
+    },
   };
 
   return (

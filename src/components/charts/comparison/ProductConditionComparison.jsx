@@ -6,18 +6,11 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function ProductConditionComparison({ datasetStats }) {
   if (!datasetStats || datasetStats.length === 0) {
@@ -28,7 +21,7 @@ export function ProductConditionComparison({ datasetStats }) {
   const allConditionsSet = new Set();
   datasetStats.forEach(({ dataset }) => {
     const orders = dataset.orders || [];
-    orders.forEach((order) => {
+    orders.forEach(order => {
       const condition = order.productCondition || 'Unknown';
       allConditionsSet.add(condition);
     });
@@ -40,7 +33,7 @@ export function ProductConditionComparison({ datasetStats }) {
     const conditionCounts = {};
     const orders = item.dataset.orders || [];
 
-    orders.forEach((order) => {
+    orders.forEach(order => {
       const condition = order.productCondition || 'Unknown';
       conditionCounts[condition] = (conditionCounts[condition] || 0) + 1;
     });
@@ -53,13 +46,13 @@ export function ProductConditionComparison({ datasetStats }) {
       data: data,
       backgroundColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
       borderColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
-      borderWidth: 1
+      borderWidth: 1,
     };
   });
 
   const chartData = {
     labels: allConditions,
-    datasets: datasets
+    datasets: datasets,
   };
 
   const options = {
@@ -71,25 +64,25 @@ export function ProductConditionComparison({ datasetStats }) {
         text: 'Product Condition Comparison',
         font: {
           size: 16,
-          weight: 'bold'
-        }
-      }
+          weight: 'bold',
+        },
+      },
     },
     scales: {
       ...BAR_CHART_OPTIONS.scales,
       y: {
         ...BAR_CHART_OPTIONS.scales.y,
         ticks: {
-          callback: function(value) {
+          callback: function (value) {
             return value.toLocaleString();
-          }
+          },
         },
         title: {
           display: true,
-          text: 'Number of Orders'
-        }
-      }
-    }
+          text: 'Number of Orders',
+        },
+      },
+    },
   };
 
   return (

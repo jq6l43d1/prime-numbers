@@ -14,26 +14,26 @@ export function parseCSV(csvContent, options = {}) {
       skipEmptyLines: true,
       chunk: options.chunk, // Allow chunked processing for large files
       chunkSize: 1024 * 1024, // 1MB chunks
-      transformHeader: (header) => {
+      transformHeader: header => {
         // Clean up header names (remove BOM, trim spaces)
         return header.replace(/^\uFEFF/, '').trim();
       },
-      complete: (results) => {
+      complete: results => {
         resolve({
           success: true,
           data: results.data,
           errors: results.errors,
-          meta: results.meta
+          meta: results.meta,
         });
       },
-      error: (error) => {
+      error: error => {
         reject({
           success: false,
           error: error.message,
-          data: []
+          data: [],
         });
       },
-      ...options
+      ...options,
     });
   });
 }
@@ -52,7 +52,7 @@ export async function parseRetailOrders(csvContent) {
     }
 
     // Helper function to clean and parse numeric values
-    const parseNumeric = (value) => {
+    const parseNumeric = value => {
       if (!value) return 0;
       // Remove quotes and other non-numeric characters except . and -
       const cleaned = value.toString().replace(/['"]/g, '').trim();
@@ -87,7 +87,7 @@ export async function parseRetailOrders(csvContent) {
       giftMessage: (row['Gift Message'] || '').trim(),
       giftSenderName: (row['Gift Sender Name'] || '').trim(),
       giftRecipientContactDetails: (row['Gift Recipient Contact Details'] || '').trim(),
-      isDigital: false
+      isDigital: false,
     }));
 
     return orders.filter(order => order.orderId); // Filter out empty rows
@@ -111,7 +111,7 @@ export async function parseDigitalItems(csvContent) {
     }
 
     // Helper function to clean and parse numeric values
-    const parseNumeric = (value) => {
+    const parseNumeric = value => {
       if (!value) return 0;
       const cleaned = value.toString().replace(/['"]/g, '').trim();
       return parseFloat(cleaned) || 0;
@@ -138,7 +138,7 @@ export async function parseDigitalItems(csvContent) {
       shippingCharge: 0,
       totalDiscounts: 0,
       totalOwed: parseNumeric(row['OurPrice']),
-      paymentInstrumentType: 'Digital Payment'
+      paymentInstrumentType: 'Digital Payment',
     }));
 
     return items.filter(item => item.orderId); // Filter out empty rows
@@ -162,7 +162,7 @@ export async function parseReturns(csvContent) {
     }
 
     // Helper function to clean and parse numeric values
-    const parseNumeric = (value) => {
+    const parseNumeric = value => {
       if (!value) return 0;
       const cleaned = value.toString().replace(/['"]/g, '').trim();
       return parseFloat(cleaned) || 0;
@@ -175,7 +175,7 @@ export async function parseReturns(csvContent) {
       returnAmount: parseNumeric(row['Return Amount'] || row['refund amount']),
       returnReason: row['Return Reason'] || row['return reason'] || '',
       returnStatus: row['Return Status'] || row['return status'] || '',
-      quantityReturned: parseInt(row['Quantity Returned']) || 1
+      quantityReturned: parseInt(row['Quantity Returned']) || 1,
     }));
 
     return returns.filter(ret => ret.orderId); // Filter out empty rows

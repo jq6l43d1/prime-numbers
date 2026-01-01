@@ -6,18 +6,11 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function GiftOrdersComparison({ datasetStats }) {
   if (!datasetStats || datasetStats.length === 0) {
@@ -50,13 +43,13 @@ export function GiftOrdersComparison({ datasetStats }) {
       data: [giftSpending, personalSpending],
       backgroundColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
       borderColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
-      borderWidth: 1
+      borderWidth: 1,
     };
   });
 
   const chartData = {
     labels: categories,
-    datasets: datasets
+    datasets: datasets,
   };
 
   const options = {
@@ -68,12 +61,12 @@ export function GiftOrdersComparison({ datasetStats }) {
         text: 'Gift vs Personal Orders Comparison',
         font: {
           size: 16,
-          weight: 'bold'
-        }
+          weight: 'bold',
+        },
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             const label = context.dataset.label || '';
             const value = context.parsed.y;
 
@@ -97,21 +90,21 @@ export function GiftOrdersComparison({ datasetStats }) {
             const count = context.dataIndex === 0 ? giftOrders.length : personalOrders.length;
 
             return `${label}: $${value.toFixed(2)} (${count} orders)`;
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       ...BAR_CHART_OPTIONS.scales,
       y: {
         ...BAR_CHART_OPTIONS.scales.y,
         ticks: {
-          callback: function(value) {
+          callback: function (value) {
             return '$' + value.toLocaleString();
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 
   return (

@@ -26,7 +26,7 @@ export function AdvancedFilters({ orders, onFilteredOrdersChange }) {
     return {
       statuses: Array.from(statuses).sort(),
       shippingOptions: Array.from(shippingOptions).sort(),
-      priceStats: { min: Math.floor(minPrice), max: Math.ceil(maxPrice) }
+      priceStats: { min: Math.floor(minPrice), max: Math.ceil(maxPrice) },
     };
   }, [orders]);
 
@@ -54,13 +54,21 @@ export function AdvancedFilters({ orders, onFilteredOrdersChange }) {
   // Update parent component when filters change
   useEffect(() => {
     const hasActiveFilters =
-      priceRange.min || priceRange.max ||
+      priceRange.min ||
+      priceRange.max ||
       orderStatusFilter !== 'all' ||
       quantityFilter !== 'all' ||
       shippingFilter !== 'all';
 
     onFilteredOrdersChange(hasActiveFilters ? filteredOrders : null);
-  }, [filteredOrders, priceRange, orderStatusFilter, quantityFilter, shippingFilter, onFilteredOrdersChange]);
+  }, [
+    filteredOrders,
+    priceRange,
+    orderStatusFilter,
+    quantityFilter,
+    shippingFilter,
+    onFilteredOrdersChange,
+  ]);
 
   const clearFilters = () => {
     setPriceRange({ min: '', max: '' });
@@ -70,7 +78,8 @@ export function AdvancedFilters({ orders, onFilteredOrdersChange }) {
   };
 
   const hasActiveFilters =
-    priceRange.min || priceRange.max ||
+    priceRange.min ||
+    priceRange.max ||
     orderStatusFilter !== 'all' ||
     quantityFilter !== 'all' ||
     shippingFilter !== 'all';
@@ -108,15 +117,13 @@ export function AdvancedFilters({ orders, onFilteredOrdersChange }) {
         <div className="space-y-4 animate-slideUp">
           {/* Price Range */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Price Range
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Price Range</label>
             <div className="flex items-center gap-3">
               <input
                 type="number"
                 placeholder={`Min ($${priceStats.min})`}
                 value={priceRange.min}
-                onChange={(e) => setPriceRange({ ...priceRange, min: e.target.value })}
+                onChange={e => setPriceRange({ ...priceRange, min: e.target.value })}
                 className="input flex-1"
                 min={priceStats.min}
                 max={priceStats.max}
@@ -126,7 +133,7 @@ export function AdvancedFilters({ orders, onFilteredOrdersChange }) {
                 type="number"
                 placeholder={`Max ($${priceStats.max})`}
                 value={priceRange.max}
-                onChange={(e) => setPriceRange({ ...priceRange, max: e.target.value })}
+                onChange={e => setPriceRange({ ...priceRange, max: e.target.value })}
                 className="input flex-1"
                 min={priceStats.min}
                 max={priceStats.max}
@@ -138,29 +145,27 @@ export function AdvancedFilters({ orders, onFilteredOrdersChange }) {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Order Status */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Order Status
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Order Status</label>
               <select
                 value={orderStatusFilter}
-                onChange={(e) => setOrderStatusFilter(e.target.value)}
+                onChange={e => setOrderStatusFilter(e.target.value)}
                 className="input"
               >
                 <option value="all">All Statuses</option>
                 {statuses.map(status => (
-                  <option key={status} value={status}>{status}</option>
+                  <option key={status} value={status}>
+                    {status}
+                  </option>
                 ))}
               </select>
             </div>
 
             {/* Quantity */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Quantity
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
               <select
                 value={quantityFilter}
-                onChange={(e) => setQuantityFilter(e.target.value)}
+                onChange={e => setQuantityFilter(e.target.value)}
                 className="input"
               >
                 <option value="all">All Quantities</option>
@@ -176,13 +181,14 @@ export function AdvancedFilters({ orders, onFilteredOrdersChange }) {
               </label>
               <select
                 value={shippingFilter}
-                onChange={(e) => setShippingFilter(e.target.value)}
+                onChange={e => setShippingFilter(e.target.value)}
                 className="input"
               >
                 <option value="all">All Methods</option>
                 {shippingOptions.slice(0, 10).map(option => (
                   <option key={option} value={option}>
-                    {option.substring(0, 30)}{option.length > 30 ? '...' : ''}
+                    {option.substring(0, 30)}
+                    {option.length > 30 ? '...' : ''}
                   </option>
                 ))}
               </select>
@@ -193,7 +199,8 @@ export function AdvancedFilters({ orders, onFilteredOrdersChange }) {
           {hasActiveFilters && (
             <div className="mt-4 pt-4 border-t border-gray-200">
               <p className="text-sm text-gray-600">
-                Showing <span className="font-bold text-blue-600">{filteredOrders.length}</span> of {orders.length} orders
+                Showing <span className="font-bold text-blue-600">{filteredOrders.length}</span> of{' '}
+                {orders.length} orders
               </p>
             </div>
           )}

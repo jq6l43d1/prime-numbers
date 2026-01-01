@@ -7,7 +7,7 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { format } from 'date-fns';
 import { LINE_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
@@ -28,8 +28,7 @@ export function CategorySpendingTrendComparison({ datasetStats }) {
     categoryTotals[category] = (categoryTotals[category] || 0) + (order.totalOwed || 0);
   });
 
-  const topCategory = Object.entries(categoryTotals)
-    .sort((a, b) => b[1] - a[1])[0]?.[0] || 'Other';
+  const topCategory = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1])[0]?.[0] || 'Other';
 
   // Get monthly spending for this category across all datasets
   const allMonthsSet = new Set();
@@ -67,7 +66,7 @@ export function CategorySpendingTrendComparison({ datasetStats }) {
       tension: 0.4,
       pointRadius: 4,
       pointHoverRadius: 6,
-      fill: false
+      fill: false,
     };
   });
 
@@ -76,7 +75,7 @@ export function CategorySpendingTrendComparison({ datasetStats }) {
       const [year, monthNum] = month.split('-');
       return format(new Date(year, parseInt(monthNum) - 1, 1), 'MMM yy');
     }),
-    datasets: datasets
+    datasets: datasets,
   };
 
   const options = {
@@ -88,17 +87,17 @@ export function CategorySpendingTrendComparison({ datasetStats }) {
         text: `${topCategory} Spending Trend Comparison`,
         font: {
           size: 16,
-          weight: 'bold'
-        }
+          weight: 'bold',
+        },
       },
       tooltip: {
         callbacks: {
-          label: (context) => {
+          label: context => {
             return `${context.dataset.label}: $${context.parsed.y.toFixed(2)}`;
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 
   return (

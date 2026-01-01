@@ -45,7 +45,15 @@ export function Dashboard() {
   const [productFilteredOrders, setProductFilteredOrders] = useState(null);
   const [advancedFilteredOrders, setAdvancedFilteredOrders] = useState(null);
   const [isPending, startTransition] = useTransition();
-  const { orders, returns, viewMode, getCombinedData, dateFilter, setDateFilter, getFilteredOrders } = useData();
+  const {
+    orders,
+    returns,
+    viewMode,
+    getCombinedData,
+    dateFilter,
+    setDateFilter,
+    getFilteredOrders,
+  } = useData();
 
   // Use combined data if in combined mode, otherwise use single dataset
   const dataToUse = useMemo(() => {
@@ -57,32 +65,33 @@ export function Dashboard() {
   }, [viewMode, orders, returns, getCombinedData]);
 
   // Apply filters in order: date -> product search -> advanced - all memoized
-  const dateFilteredOrders = useMemo(() =>
-    getFilteredOrders(dataToUse.orders),
+  const dateFilteredOrders = useMemo(
+    () => getFilteredOrders(dataToUse.orders),
     [dataToUse.orders, getFilteredOrders]
   );
 
-  const afterProductFilter = useMemo(() =>
-    productFilteredOrders !== null ? productFilteredOrders : dateFilteredOrders,
+  const afterProductFilter = useMemo(
+    () => (productFilteredOrders !== null ? productFilteredOrders : dateFilteredOrders),
     [productFilteredOrders, dateFilteredOrders]
   );
 
-  const filteredOrders = useMemo(() =>
-    advancedFilteredOrders !== null ? advancedFilteredOrders : afterProductFilter,
+  const filteredOrders = useMemo(
+    () => (advancedFilteredOrders !== null ? advancedFilteredOrders : afterProductFilter),
     [advancedFilteredOrders, afterProductFilter]
   );
 
-  const filteredReturns = useMemo(() =>
-    dataToUse.returns.filter(ret => {
-      const matchingOrder = filteredOrders.find(o => o.orderId === ret.orderId);
-      return !!matchingOrder;
-    }),
+  const filteredReturns = useMemo(
+    () =>
+      dataToUse.returns.filter(ret => {
+        const matchingOrder = filteredOrders.find(o => o.orderId === ret.orderId);
+        return !!matchingOrder;
+      }),
     [dataToUse.returns, filteredOrders]
   );
 
   const statistics = useStatistics(filteredOrders, filteredReturns);
 
-  const handleDateFilterChange = (filter) => {
+  const handleDateFilterChange = filter => {
     startTransition(() => {
       setDateFilter(filter);
     });
@@ -96,16 +105,19 @@ export function Dashboard() {
     setModalData({ isOpen: false, data: null, type: null });
   };
 
-  const handleCategoryClick = (category) => {
+  const handleCategoryClick = category => {
     const categoryOrders = filteredOrders.filter(o => (o.category || 'Other') === category);
-    openDrillDown({
-      title: category,
-      subtitle: `${categoryOrders.length} orders in this category`,
-      orders: categoryOrders
-    }, 'category');
+    openDrillDown(
+      {
+        title: category,
+        subtitle: `${categoryOrders.length} orders in this category`,
+        orders: categoryOrders,
+      },
+      'category'
+    );
   };
 
-  const handleMonthClick = (monthData) => {
+  const handleMonthClick = monthData => {
     // Parse the month string (e.g., "Jan 2024") to get date range
     const monthOrders = filteredOrders.filter(order => {
       const orderDate = new Date(order.orderDate);
@@ -113,180 +125,229 @@ export function Dashboard() {
       return orderMonthYear === monthData.month;
     });
 
-    openDrillDown({
-      title: monthData.month,
-      subtitle: `${monthOrders.length} orders • $${monthData.amount.toFixed(2)} spent`,
-      orders: monthOrders
-    }, 'time');
+    openDrillDown(
+      {
+        title: monthData.month,
+        subtitle: `${monthOrders.length} orders • $${monthData.amount.toFixed(2)} spent`,
+        orders: monthOrders,
+      },
+      'time'
+    );
   };
 
-  const handleYearClick = (yearData) => {
+  const handleYearClick = yearData => {
     const yearOrders = filteredOrders.filter(order => {
       const orderDate = new Date(order.orderDate);
       return orderDate.getFullYear() === yearData.year;
     });
 
-    openDrillDown({
-      title: `${yearData.year}`,
-      subtitle: `${yearOrders.length} orders • $${yearData.amount.toFixed(2)} spent`,
-      orders: yearOrders
-    }, 'time');
+    openDrillDown(
+      {
+        title: `${yearData.year}`,
+        subtitle: `${yearOrders.length} orders • $${yearData.amount.toFixed(2)} spent`,
+        orders: yearOrders,
+      },
+      'time'
+    );
   };
 
-  const handleDayClick = (dayData) => {
+  const handleDayClick = dayData => {
     const dayOrders = filteredOrders.filter(order => {
       const orderDate = new Date(order.orderDate);
       return orderDate.getDay() === dayData.dayIndex;
     });
 
-    openDrillDown({
-      title: `${dayData.dayName} Orders`,
-      subtitle: `${dayOrders.length} orders • $${dayData.spending.toFixed(2)} spent`,
-      orders: dayOrders
-    }, 'time');
+    openDrillDown(
+      {
+        title: `${dayData.dayName} Orders`,
+        subtitle: `${dayOrders.length} orders • $${dayData.spending.toFixed(2)} spent`,
+        orders: dayOrders,
+      },
+      'time'
+    );
   };
 
-  const handleSubscriptionClick = (subscriptionData) => {
-    openDrillDown({
-      title: subscriptionData.product,
-      subtitle: `${subscriptionData.count} orders across ${subscriptionData.frequency} months • $${subscriptionData.totalSpent.toFixed(2)} total`,
-      orders: subscriptionData.orders
-    }, 'product');
+  const handleSubscriptionClick = subscriptionData => {
+    openDrillDown(
+      {
+        title: subscriptionData.product,
+        subtitle: `${subscriptionData.count} orders across ${subscriptionData.frequency} months • $${subscriptionData.totalSpent.toFixed(2)} total`,
+        orders: subscriptionData.orders,
+      },
+      'product'
+    );
   };
 
-  const handleShippingDestinationClick = (destinationData) => {
-    openDrillDown({
-      title: destinationData.title,
-      subtitle: `${destinationData.orders.length} orders • $${destinationData.metadata.totalSpent.toFixed(2)} total`,
-      orders: destinationData.orders,
-      metadata: {
-        address: destinationData.metadata.fullAddress
-      }
-    }, 'location');
+  const handleShippingDestinationClick = destinationData => {
+    openDrillDown(
+      {
+        title: destinationData.title,
+        subtitle: `${destinationData.orders.length} orders • $${destinationData.metadata.totalSpent.toFixed(2)} total`,
+        orders: destinationData.orders,
+        metadata: {
+          address: destinationData.metadata.fullAddress,
+        },
+      },
+      'location'
+    );
   };
 
-  const handleMerchantClick = (merchantData) => {
-    openDrillDown({
-      title: merchantData.merchant,
-      subtitle: `${merchantData.orderCount} orders • $${merchantData.totalSpent.toFixed(2)} total`,
-      orders: merchantData.orders
-    }, 'merchant');
+  const handleMerchantClick = merchantData => {
+    openDrillDown(
+      {
+        title: merchantData.merchant,
+        subtitle: `${merchantData.orderCount} orders • $${merchantData.totalSpent.toFixed(2)} total`,
+        orders: merchantData.orders,
+      },
+      'merchant'
+    );
   };
 
-  const handleProductClick = (productData) => {
+  const handleProductClick = productData => {
     // Find all orders for this product
-    const productOrders = filteredOrders.filter(o =>
-      o.productName === productData.name ||
-      o.asin === productData.asin
+    const productOrders = filteredOrders.filter(
+      o => o.productName === productData.name || o.asin === productData.asin
     );
 
-    openDrillDown({
-      title: productData.name,
-      subtitle: `${productData.quantity} items ordered • $${productData.totalSpent.toFixed(2)} total`,
-      orders: productOrders
-    }, 'product');
-  };
-
-  const handleReturnReasonClick = (reasonData) => {
-    openDrillDown({
-      title: `Returns: ${reasonData.reason}`,
-      subtitle: `${reasonData.count} returns`,
-      orders: reasonData.orders,
-      metadata: {
-        returnReason: reasonData.reason
-      }
-    }, 'returns');
-  };
-
-  const handleShippingMethodClick = (method) => {
-    const methodOrders = filteredOrders.filter(o =>
-      (o.shippingOption || 'Unknown') === method
+    openDrillDown(
+      {
+        title: productData.name,
+        subtitle: `${productData.quantity} items ordered • $${productData.totalSpent.toFixed(2)} total`,
+        orders: productOrders,
+      },
+      'product'
     );
-    openDrillDown({
-      title: `Shipping: ${method}`,
-      subtitle: `${methodOrders.length} orders with this shipping method`,
-      orders: methodOrders
-    }, 'shipping');
   };
 
-  const handleOrderStatusClick = (status) => {
-    const statusOrders = filteredOrders.filter(o =>
-      (o.orderStatus || 'Unknown') === status
+  const handleReturnReasonClick = reasonData => {
+    openDrillDown(
+      {
+        title: `Returns: ${reasonData.reason}`,
+        subtitle: `${reasonData.count} returns`,
+        orders: reasonData.orders,
+        metadata: {
+          returnReason: reasonData.reason,
+        },
+      },
+      'returns'
     );
-    openDrillDown({
-      title: `Status: ${status}`,
-      subtitle: `${statusOrders.length} orders with this status`,
-      orders: statusOrders
-    }, 'status');
   };
 
-  const handlePriceRangeClick = (range) => {
+  const handleShippingMethodClick = method => {
+    const methodOrders = filteredOrders.filter(o => (o.shippingOption || 'Unknown') === method);
+    openDrillDown(
+      {
+        title: `Shipping: ${method}`,
+        subtitle: `${methodOrders.length} orders with this shipping method`,
+        orders: methodOrders,
+      },
+      'shipping'
+    );
+  };
+
+  const handleOrderStatusClick = status => {
+    const statusOrders = filteredOrders.filter(o => (o.orderStatus || 'Unknown') === status);
+    openDrillDown(
+      {
+        title: `Status: ${status}`,
+        subtitle: `${statusOrders.length} orders with this status`,
+        orders: statusOrders,
+      },
+      'status'
+    );
+  };
+
+  const handlePriceRangeClick = range => {
     const rangeOrders = filteredOrders.filter(o => {
       const price = parseFloat(o.unitPrice) || 0;
       return price >= range.min && price < range.max;
     });
-    openDrillDown({
-      title: `Price Range: ${range.label}`,
-      subtitle: `${rangeOrders.length} items in this price range`,
-      orders: rangeOrders
-    }, 'price');
+    openDrillDown(
+      {
+        title: `Price Range: ${range.label}`,
+        subtitle: `${rangeOrders.length} items in this price range`,
+        orders: rangeOrders,
+      },
+      'price'
+    );
   };
 
-  const handleDigitalRetailClick = (type) => {
+  const handleDigitalRetailClick = type => {
     const typeOrders = filteredOrders.filter(o => o.isDigital === (type === 'digital'));
-    openDrillDown({
-      title: type === 'digital' ? 'Digital Orders' : 'Retail Orders',
-      subtitle: `${typeOrders.length} ${type} orders`,
-      orders: typeOrders
-    }, 'type');
+    openDrillDown(
+      {
+        title: type === 'digital' ? 'Digital Orders' : 'Retail Orders',
+        subtitle: `${typeOrders.length} ${type} orders`,
+        orders: typeOrders,
+      },
+      'type'
+    );
   };
 
   const handleCarrierClick = (carrier, orders) => {
-    openDrillDown({
-      title: `Carrier: ${carrier}`,
-      subtitle: `${orders.length} shipments`,
-      orders: orders
-    }, 'carrier');
+    openDrillDown(
+      {
+        title: `Carrier: ${carrier}`,
+        subtitle: `${orders.length} shipments`,
+        orders: orders,
+      },
+      'carrier'
+    );
   };
 
-  const handlePaymentMethodClick = (methodData) => {
-    openDrillDown({
-      title: `Payment: ${methodData.method}`,
-      subtitle: `${methodData.count} orders • $${methodData.totalSpent.toFixed(2)} total`,
-      orders: methodData.orders
-    }, 'payment');
+  const handlePaymentMethodClick = methodData => {
+    openDrillDown(
+      {
+        title: `Payment: ${methodData.method}`,
+        subtitle: `${methodData.count} orders • $${methodData.totalSpent.toFixed(2)} total`,
+        orders: methodData.orders,
+      },
+      'payment'
+    );
   };
 
-  const handleSeasonalClick = (seasonData) => {
-    openDrillDown({
-      title: `${seasonData.season} ${seasonData.year}`,
-      subtitle: `${seasonData.orders.length} orders • $${seasonData.totalSpent.toFixed(2)} total`,
-      orders: seasonData.orders
-    }, 'seasonal');
+  const handleSeasonalClick = seasonData => {
+    openDrillDown(
+      {
+        title: `${seasonData.season} ${seasonData.year}`,
+        subtitle: `${seasonData.orders.length} orders • $${seasonData.totalSpent.toFixed(2)} total`,
+        orders: seasonData.orders,
+      },
+      'seasonal'
+    );
   };
 
-  const handleGiftClick = (giftData) => {
-    openDrillDown({
-      title: giftData.type,
-      subtitle: `${giftData.orders.length} orders • $${giftData.totalSpent.toFixed(2)} total`,
-      orders: giftData.orders
-    }, giftData.isGift ? 'gift' : 'personal');
+  const handleGiftClick = giftData => {
+    openDrillDown(
+      {
+        title: giftData.type,
+        subtitle: `${giftData.orders.length} orders • $${giftData.totalSpent.toFixed(2)} total`,
+        orders: giftData.orders,
+      },
+      giftData.isGift ? 'gift' : 'personal'
+    );
   };
 
-  const handleConditionClick = (conditionData) => {
-    openDrillDown({
-      title: `Condition: ${conditionData.condition}`,
-      subtitle: `${conditionData.count} orders • ${conditionData.items} items • $${conditionData.totalSpent.toFixed(2)} total`,
-      orders: conditionData.orders
-    }, 'condition');
+  const handleConditionClick = conditionData => {
+    openDrillDown(
+      {
+        title: `Condition: ${conditionData.condition}`,
+        subtitle: `${conditionData.count} orders • ${conditionData.items} items • $${conditionData.totalSpent.toFixed(2)} total`,
+        orders: conditionData.orders,
+      },
+      'condition'
+    );
   };
 
-  const handleFulfillmentSpeedClick = (speedData) => {
-    openDrillDown({
-      title: `Fulfillment: ${speedData.bucket}`,
-      subtitle: `${speedData.count} orders • $${speedData.totalSpent.toFixed(2)} total`,
-      orders: speedData.orders
-    }, 'fulfillment');
+  const handleFulfillmentSpeedClick = speedData => {
+    openDrillDown(
+      {
+        title: `Fulfillment: ${speedData.bucket}`,
+        subtitle: `${speedData.count} orders • $${speedData.totalSpent.toFixed(2)} total`,
+        orders: speedData.orders,
+      },
+      'fulfillment'
+    );
   };
 
   if (!statistics) {
@@ -331,19 +392,12 @@ export function Dashboard() {
               )}
             </div>
           </div>
-          <ExportButton
-            orders={filteredOrders}
-            statistics={statistics}
-            dateFilter={dateFilter}
-          />
+          <ExportButton orders={filteredOrders} statistics={statistics} dateFilter={dateFilter} />
         </div>
       </div>
 
       {/* Date Range Filter */}
-      <DateRangeFilter
-        orders={dataToUse.orders}
-        onFilterChange={handleDateFilterChange}
-      />
+      <DateRangeFilter orders={dataToUse.orders} onFilterChange={handleDateFilterChange} />
 
       {/* Product Search Filter */}
       <ProductSearchFilter
@@ -359,35 +413,54 @@ export function Dashboard() {
 
       {/* Clickable Stat Cards for Quick Insights */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="animate-fade-in-up" style={{ animationDelay: '0.1s', animationFillMode: 'both' }}>
+        <div
+          className="animate-fade-in-up"
+          style={{ animationDelay: '0.1s', animationFillMode: 'both' }}
+        >
           <ClickableStatCard
             icon="💰"
             label="Total Spending"
             value={`$${statistics.overview.totalSpent.toFixed(2)}`}
             subtitle={`${statistics.overview.totalOrders} orders`}
             gradient="from-blue-500 to-blue-600"
-            onClick={() => openDrillDown({
-              title: 'All Orders',
-              subtitle: `Total spending across ${statistics.overview.totalOrders} orders`,
-              orders: filteredOrders
-            }, 'time')}
+            onClick={() =>
+              openDrillDown(
+                {
+                  title: 'All Orders',
+                  subtitle: `Total spending across ${statistics.overview.totalOrders} orders`,
+                  orders: filteredOrders,
+                },
+                'time'
+              )
+            }
           />
         </div>
-        <div className="animate-fade-in-up" style={{ animationDelay: '0.2s', animationFillMode: 'both' }}>
+        <div
+          className="animate-fade-in-up"
+          style={{ animationDelay: '0.2s', animationFillMode: 'both' }}
+        >
           <ClickableStatCard
             icon="📦"
             label="Total Items"
             value={statistics.overview.totalItems}
             subtitle={`${statistics.overview.avgItemsPerOrder.toFixed(1)} per order`}
             gradient="from-green-500 to-green-600"
-            onClick={() => openDrillDown({
-              title: 'Order Details',
-              subtitle: `${statistics.overview.totalItems} items ordered`,
-              orders: filteredOrders
-            }, 'time')}
+            onClick={() =>
+              openDrillDown(
+                {
+                  title: 'Order Details',
+                  subtitle: `${statistics.overview.totalItems} items ordered`,
+                  orders: filteredOrders,
+                },
+                'time'
+              )
+            }
           />
         </div>
-        <div className="animate-fade-in-up" style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
+        <div
+          className="animate-fade-in-up"
+          style={{ animationDelay: '0.3s', animationFillMode: 'both' }}
+        >
           <ClickableStatCard
             icon="🎯"
             label="Top Category"
@@ -401,18 +474,26 @@ export function Dashboard() {
             }}
           />
         </div>
-        <div className="animate-fade-in-up" style={{ animationDelay: '0.4s', animationFillMode: 'both' }}>
+        <div
+          className="animate-fade-in-up"
+          style={{ animationDelay: '0.4s', animationFillMode: 'both' }}
+        >
           <ClickableStatCard
             icon="📈"
             label="Avg Order Value"
             value={`$${statistics.overview.avgOrderValue.toFixed(2)}`}
             subtitle="per order"
             gradient="from-orange-500 to-orange-600"
-            onClick={() => openDrillDown({
-              title: 'Order Value Distribution',
-              subtitle: 'Breakdown of order values',
-              orders: filteredOrders
-            }, 'time')}
+            onClick={() =>
+              openDrillDown(
+                {
+                  title: 'Order Value Distribution',
+                  subtitle: 'Breakdown of order values',
+                  orders: filteredOrders,
+                },
+                'time'
+              )
+            }
           />
         </div>
       </div>
@@ -423,9 +504,14 @@ export function Dashboard() {
         {/* Spending Over Time - Full Width */}
         <div className="card bg-gradient-to-br from-white to-blue-50 shadow-lg overflow-hidden">
           <h3 className="text-xl font-bold text-gray-900 mb-4">📈 Spending Over Time</h3>
-          <p className="text-sm text-gray-600 mb-4">Click any point to view orders from that month</p>
+          <p className="text-sm text-gray-600 mb-4">
+            Click any point to view orders from that month
+          </p>
           <div className="h-80">
-            <SpendingOverTimeChart data={statistics.spending.last12Months} onMonthClick={handleMonthClick} />
+            <SpendingOverTimeChart
+              data={statistics.spending.last12Months}
+              onMonthClick={handleMonthClick}
+            />
           </div>
         </div>
 
@@ -435,7 +521,10 @@ export function Dashboard() {
             <h3 className="text-xl font-bold text-gray-900 mb-4">🎯 Spending by Category</h3>
             <p className="text-sm text-gray-600 mb-4">Click any category to view orders</p>
             <div className="h-80">
-              <CategoryBreakdownChart data={statistics.spending.byCategory} onCategoryClick={handleCategoryClick} />
+              <CategoryBreakdownChart
+                data={statistics.spending.byCategory}
+                onCategoryClick={handleCategoryClick}
+              />
             </div>
           </div>
 
@@ -443,7 +532,10 @@ export function Dashboard() {
             <h3 className="text-xl font-bold text-gray-900 mb-4">📊 Orders by Month</h3>
             <p className="text-sm text-gray-600 mb-4">Click any month to view orders</p>
             <div className="h-80">
-              <OrdersByMonthChart data={statistics.spending.last12Months} onMonthClick={handleMonthClick} />
+              <OrdersByMonthChart
+                data={statistics.spending.last12Months}
+                onMonthClick={handleMonthClick}
+              />
             </div>
           </div>
         </div>
@@ -454,7 +546,10 @@ export function Dashboard() {
             <h3 className="text-xl font-bold text-gray-900 mb-4">💵 Price Distribution</h3>
             <p className="text-sm text-gray-600 mb-4">Click any price range to view items</p>
             <div className="h-80">
-              <PriceDistributionChart data={statistics.products.priceRanges} onPriceRangeClick={handlePriceRangeClick} />
+              <PriceDistributionChart
+                data={statistics.products.priceRanges}
+                onPriceRangeClick={handlePriceRangeClick}
+              />
             </div>
           </div>
 
@@ -474,7 +569,10 @@ export function Dashboard() {
             <h3 className="text-xl font-bold text-gray-900 mb-4">🚚 Shipping Methods</h3>
             <p className="text-sm text-gray-600 mb-4">Click any method to view orders</p>
             <div className="h-80">
-              <ShippingMethodsChart data={statistics.shipping.methods} onMethodClick={handleShippingMethodClick} />
+              <ShippingMethodsChart
+                data={statistics.shipping.methods}
+                onMethodClick={handleShippingMethodClick}
+              />
             </div>
           </div>
         </div>
@@ -482,7 +580,9 @@ export function Dashboard() {
         {/* Orders by Year - Full Width */}
         <div className="card bg-gradient-to-br from-white to-teal-50 shadow-lg overflow-hidden">
           <h3 className="text-xl font-bold text-gray-900 mb-4">📅 Orders by Year</h3>
-          <p className="text-sm text-gray-600 mb-4">Click any year to view all orders from that year</p>
+          <p className="text-sm text-gray-600 mb-4">
+            Click any year to view all orders from that year
+          </p>
           <div className="h-80">
             <OrdersByYearChart data={statistics.spending.byYear} onYearClick={handleYearClick} />
           </div>
@@ -494,7 +594,11 @@ export function Dashboard() {
             <h3 className="text-xl font-bold text-gray-900 mb-4">🏆 Top Products by Spending</h3>
             <p className="text-sm text-gray-600 mb-4">Click any product to view all orders</p>
             <div className="h-96">
-              <TopProductsChart data={statistics.products.topBySpending} type="spending" onProductClick={handleProductClick} />
+              <TopProductsChart
+                data={statistics.products.topBySpending}
+                type="spending"
+                onProductClick={handleProductClick}
+              />
             </div>
           </div>
 
@@ -502,7 +606,11 @@ export function Dashboard() {
             <h3 className="text-xl font-bold text-gray-900 mb-4">🔢 Most Ordered Products</h3>
             <p className="text-sm text-gray-600 mb-4">Click any product to view all orders</p>
             <div className="h-96">
-              <TopProductsChart data={statistics.products.topByQuantity} type="quantity" onProductClick={handleProductClick} />
+              <TopProductsChart
+                data={statistics.products.topByQuantity}
+                type="quantity"
+                onProductClick={handleProductClick}
+              />
             </div>
           </div>
         </div>
@@ -517,8 +625,12 @@ export function Dashboard() {
 
         {/* Year-over-Year Comparison */}
         <div className="card bg-gradient-to-br from-white to-amber-50 shadow-lg overflow-hidden">
-          <h3 className="text-xl font-bold text-gray-900 mb-4">📊 Year-over-Year Spending Comparison</h3>
-          <p className="text-sm text-gray-600 mb-4">Compare spending patterns across different years, month by month</p>
+          <h3 className="text-xl font-bold text-gray-900 mb-4">
+            📊 Year-over-Year Spending Comparison
+          </h3>
+          <p className="text-sm text-gray-600 mb-4">
+            Compare spending patterns across different years, month by month
+          </p>
           <div className="h-80">
             <YearOverYearChart orders={filteredOrders} />
           </div>
@@ -527,7 +639,9 @@ export function Dashboard() {
         {/* Spending Heatmap */}
         <div className="card bg-gradient-to-br from-white to-blue-50 shadow-lg overflow-hidden">
           <h3 className="text-xl font-bold text-gray-900 mb-4">🔥 Monthly Spending Heatmap</h3>
-          <p className="text-sm text-gray-600 mb-4">Visualize your spending intensity across months and years</p>
+          <p className="text-sm text-gray-600 mb-4">
+            Visualize your spending intensity across months and years
+          </p>
           <div className="h-auto py-4">
             <SpendingHeatmapChart orders={filteredOrders} />
           </div>
@@ -544,7 +658,9 @@ export function Dashboard() {
 
           <div className="card bg-gradient-to-br from-white to-sky-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">📅 Shopping by Day of Week</h3>
-            <p className="text-sm text-gray-600 mb-4">Click any day to view all orders from that day of the week</p>
+            <p className="text-sm text-gray-600 mb-4">
+              Click any day to view all orders from that day of the week
+            </p>
             <div className="h-96">
               <DayOfWeekChart orders={filteredOrders} onDayClick={handleDayClick} />
             </div>
@@ -564,7 +680,11 @@ export function Dashboard() {
             <h3 className="text-xl font-bold text-gray-900 mb-4">↩️ Return Reasons</h3>
             <p className="text-sm text-gray-600 mb-4">Click any reason to view returned orders</p>
             <div className="h-80">
-              <ReturnsAnalysisChart returns={filteredReturns} orders={filteredOrders} onReasonClick={handleReturnReasonClick} />
+              <ReturnsAnalysisChart
+                returns={filteredReturns}
+                orders={filteredOrders}
+                onReasonClick={handleReturnReasonClick}
+              />
             </div>
           </div>
         </div>
@@ -572,7 +692,9 @@ export function Dashboard() {
         {/* Spending Velocity - Full Width */}
         <div className="card bg-gradient-to-br from-white to-blue-50 shadow-lg overflow-hidden">
           <h3 className="text-xl font-bold text-gray-900 mb-4">🚀 Spending Velocity</h3>
-          <p className="text-sm text-gray-600 mb-4">Track your cumulative spending growth over time</p>
+          <p className="text-sm text-gray-600 mb-4">
+            Track your cumulative spending growth over time
+          </p>
           <div className="h-80">
             <SpendingVelocityChart orders={filteredOrders} />
           </div>
@@ -581,7 +703,9 @@ export function Dashboard() {
         {/* Cumulative Orders - Full Width */}
         <div className="card bg-gradient-to-br from-white to-green-50 shadow-lg overflow-hidden">
           <h3 className="text-xl font-bold text-gray-900 mb-4">📈 Cumulative Orders Over Time</h3>
-          <p className="text-sm text-gray-600 mb-4">See how your total order count has grown over time</p>
+          <p className="text-sm text-gray-600 mb-4">
+            See how your total order count has grown over time
+          </p>
           <div className="h-80">
             <CumulativeOrdersChart orders={filteredOrders} />
           </div>
@@ -591,9 +715,14 @@ export function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="card bg-gradient-to-br from-white to-indigo-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">🏪 Merchant Analysis</h3>
-            <p className="text-sm text-gray-600 mb-4">Where you shop most - click any merchant to view orders</p>
+            <p className="text-sm text-gray-600 mb-4">
+              Where you shop most - click any merchant to view orders
+            </p>
             <div className="h-96">
-              <MerchantAnalysisChart orders={filteredOrders} onMerchantClick={handleMerchantClick} />
+              <MerchantAnalysisChart
+                orders={filteredOrders}
+                onMerchantClick={handleMerchantClick}
+              />
             </div>
           </div>
 
@@ -610,7 +739,9 @@ export function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="card bg-gradient-to-br from-white to-teal-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">💳 Payment Methods</h3>
-            <p className="text-sm text-gray-600 mb-4">How you pay - click any payment method to view orders</p>
+            <p className="text-sm text-gray-600 mb-4">
+              How you pay - click any payment method to view orders
+            </p>
             <div className="h-96">
               <PaymentMethodChart orders={filteredOrders} onClick={handlePaymentMethodClick} />
             </div>
@@ -618,7 +749,9 @@ export function Dashboard() {
 
           <div className="card bg-gradient-to-br from-white to-pink-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">🎁 Gift Orders Analysis</h3>
-            <p className="text-sm text-gray-600 mb-4">Gift vs personal - click any bar to view orders</p>
+            <p className="text-sm text-gray-600 mb-4">
+              Gift vs personal - click any bar to view orders
+            </p>
             <div className="h-96">
               <GiftOrdersChart orders={filteredOrders} onClick={handleGiftClick} />
             </div>
@@ -636,7 +769,9 @@ export function Dashboard() {
           </div>
 
           <div className="card bg-gradient-to-br from-white to-green-50 shadow-lg overflow-hidden">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">💰 Discount Analysis by Category</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-4">
+              💰 Discount Analysis by Category
+            </h3>
             <p className="text-sm text-gray-600 mb-4">See where you save the most money</p>
             <div className="h-96">
               <DiscountAnalysisChart orders={filteredOrders} />
@@ -666,7 +801,10 @@ export function Dashboard() {
             <h3 className="text-xl font-bold text-gray-900 mb-4">🚛 Carrier Performance</h3>
             <p className="text-sm text-gray-600 mb-4">Click any carrier to view shipments</p>
             <div className="h-96">
-              <CarrierPerformanceChart orders={filteredOrders} onCarrierClick={handleCarrierClick} />
+              <CarrierPerformanceChart
+                orders={filteredOrders}
+                onCarrierClick={handleCarrierClick}
+              />
             </div>
           </div>
         </div>
@@ -675,7 +813,9 @@ export function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="card bg-gradient-to-br from-white to-emerald-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">📦 Product Condition Analysis</h3>
-            <p className="text-sm text-gray-600 mb-4">New vs Used vs Refurbished - click any segment</p>
+            <p className="text-sm text-gray-600 mb-4">
+              New vs Used vs Refurbished - click any segment
+            </p>
             <div className="h-96">
               <ProductConditionChart orders={filteredOrders} onClick={handleConditionClick} />
             </div>
@@ -683,9 +823,14 @@ export function Dashboard() {
 
           <div className="card bg-gradient-to-br from-white to-amber-50 shadow-lg overflow-hidden">
             <h3 className="text-xl font-bold text-gray-900 mb-4">⚡ Fulfillment Speed Analysis</h3>
-            <p className="text-sm text-gray-600 mb-4">How fast are your orders shipped? Click any bar</p>
+            <p className="text-sm text-gray-600 mb-4">
+              How fast are your orders shipped? Click any bar
+            </p>
             <div className="h-96">
-              <FulfillmentSpeedChart orders={filteredOrders} onClick={handleFulfillmentSpeedClick} />
+              <FulfillmentSpeedChart
+                orders={filteredOrders}
+                onClick={handleFulfillmentSpeedClick}
+              />
             </div>
           </div>
         </div>
@@ -693,20 +838,30 @@ export function Dashboard() {
         {/* Subscription Detection - Full Width */}
         <div className="card bg-gradient-to-br from-white to-purple-50 shadow-lg overflow-hidden border-2 border-purple-200">
           <h3 className="text-xl font-bold text-gray-900 mb-4">🔄 Recurring Purchases Detected</h3>
-          <p className="text-sm text-gray-600 mb-4">Items you purchase regularly across multiple months - click to view order history</p>
-          <SubscriptionDetectionChart orders={filteredOrders} onSubscriptionClick={handleSubscriptionClick} />
+          <p className="text-sm text-gray-600 mb-4">
+            Items you purchase regularly across multiple months - click to view order history
+          </p>
+          <SubscriptionDetectionChart
+            orders={filteredOrders}
+            onSubscriptionClick={handleSubscriptionClick}
+          />
         </div>
 
         {/* Time Period Comparison - Full Width */}
         <div className="card bg-gradient-to-br from-white to-indigo-50 shadow-lg overflow-hidden border-2 border-indigo-200">
           <h3 className="text-xl font-bold text-gray-900 mb-4">⚖️ Compare Time Periods</h3>
-          <p className="text-sm text-gray-600 mb-4">Compare your spending patterns across any two custom date ranges</p>
+          <p className="text-sm text-gray-600 mb-4">
+            Compare your spending patterns across any two custom date ranges
+          </p>
           <TimePeriodComparison />
         </div>
 
         {/* Shipping Destinations - Full Width */}
         <div className="card bg-gradient-to-br from-white to-teal-50 shadow-lg overflow-hidden border-2 border-teal-200">
-          <ShippingDestinationsChart orders={filteredOrders} onDrillDown={handleShippingDestinationClick} />
+          <ShippingDestinationsChart
+            orders={filteredOrders}
+            onDrillDown={handleShippingDestinationClick}
+          />
         </div>
 
         {/* Insights Section */}
@@ -717,18 +872,22 @@ export function Dashboard() {
               <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-purple-300">
                 <p className="font-semibold text-gray-900 mb-1">🎯 Top Category</p>
                 <p className="text-gray-600">
-                  You spend most on <span className="font-bold text-primary">
+                  You spend most on{' '}
+                  <span className="font-bold text-primary">
                     {statistics.spending.byCategory[0].category}
-                  </span> ({statistics.spending.byCategory[0].percentage}% of total)
+                  </span>{' '}
+                  ({statistics.spending.byCategory[0].percentage}% of total)
                 </p>
               </div>
             )}
             <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-blue-300">
               <p className="font-semibold text-gray-900 mb-1">📊 Monthly Average</p>
               <p className="text-gray-600">
-                You spend an average of <span className="font-bold text-primary">
+                You spend an average of{' '}
+                <span className="font-bold text-primary">
                   ${statistics.spending.monthlyAverage.toFixed(2)}
-                </span> per month
+                </span>{' '}
+                per month
               </p>
             </div>
             {statistics.spending.highestMonth && (
@@ -738,32 +897,37 @@ export function Dashboard() {
                   {statistics.spending.highestMonth.month} with{' '}
                   <span className="font-bold text-primary">
                     ${statistics.spending.highestMonth.amount.toFixed(2)}
-                  </span> spent
+                  </span>{' '}
+                  spent
                 </p>
               </div>
             )}
             <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-green-300">
               <p className="font-semibold text-gray-900 mb-1">💰 Total Savings</p>
               <p className="text-gray-600">
-                You saved <span className="font-bold text-green-600">
+                You saved{' '}
+                <span className="font-bold text-green-600">
                   ${statistics.overview.totalDiscounts.toFixed(2)}
-                </span> with discounts
+                </span>{' '}
+                with discounts
               </p>
             </div>
             <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-indigo-300">
               <p className="font-semibold text-gray-900 mb-1">⏱️ Order Frequency</p>
               <p className="text-gray-600">
-                You order something every <span className="font-bold text-primary">
+                You order something every{' '}
+                <span className="font-bold text-primary">
                   {statistics.trends.avgDaysBetweenOrders.toFixed(0)}
-                </span> days
+                </span>{' '}
+                days
               </p>
             </div>
             <div className="bg-white rounded-lg p-4 shadow-sm hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-pink-300">
               <p className="font-semibold text-gray-900 mb-1">🛍️ Unique Products</p>
               <p className="text-gray-600">
-                You've ordered <span className="font-bold text-primary">
-                  {statistics.products.uniqueProducts}
-                </span> different products
+                You've ordered{' '}
+                <span className="font-bold text-primary">{statistics.products.uniqueProducts}</span>{' '}
+                different products
               </p>
             </div>
           </div>

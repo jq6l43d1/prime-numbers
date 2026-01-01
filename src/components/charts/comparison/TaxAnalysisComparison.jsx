@@ -6,18 +6,11 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function TaxAnalysisComparison({ datasetStats }) {
   if (!datasetStats || datasetStats.length === 0) {
@@ -28,26 +21,29 @@ export function TaxAnalysisComparison({ datasetStats }) {
     const orders = item.dataset.orders || [];
 
     // Calculate tax statistics
-    const taxStats = orders.reduce((acc, order) => {
-      const tax = order.unitPriceTax || 0;
-      acc.totalTax += tax;
-      return acc;
-    }, {
-      totalTax: 0
-    });
+    const taxStats = orders.reduce(
+      (acc, order) => {
+        const tax = order.unitPriceTax || 0;
+        acc.totalTax += tax;
+        return acc;
+      },
+      {
+        totalTax: 0,
+      }
+    );
 
     return {
       label: item.dataset.name,
       data: [taxStats.totalTax],
       backgroundColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
       borderColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
-      borderWidth: 1
+      borderWidth: 1,
     };
   });
 
   const chartData = {
     labels: ['Total Tax Paid'],
-    datasets: datasets
+    datasets: datasets,
   };
 
   const options = {
@@ -59,12 +55,12 @@ export function TaxAnalysisComparison({ datasetStats }) {
         text: 'Tax Analysis Comparison',
         font: {
           size: 16,
-          weight: 'bold'
-        }
+          weight: 'bold',
+        },
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             const label = context.dataset.label || '';
             const value = context.parsed.y;
 
@@ -73,45 +69,47 @@ export function TaxAnalysisComparison({ datasetStats }) {
             const item = datasetStats[datasetIndex];
             const orders = item.dataset.orders || [];
 
-            const taxStats = orders.reduce((acc, order) => {
-              const tax = order.unitPriceTax || 0;
-              const subtotal = order.unitPrice * order.quantity;
-              acc.totalTax += tax;
-              acc.totalSubtotal += subtotal;
-              if (tax > 0) {
-                acc.taxedOrders++;
-              }
-              return acc;
-            }, { totalTax: 0, totalSubtotal: 0, taxedOrders: 0 });
+            const taxStats = orders.reduce(
+              (acc, order) => {
+                const tax = order.unitPriceTax || 0;
+                const subtotal = order.unitPrice * order.quantity;
+                acc.totalTax += tax;
+                acc.totalSubtotal += subtotal;
+                if (tax > 0) {
+                  acc.taxedOrders++;
+                }
+                return acc;
+              },
+              { totalTax: 0, totalSubtotal: 0, taxedOrders: 0 }
+            );
 
-            const avgTaxRate = taxStats.totalSubtotal > 0
-              ? (taxStats.totalTax / taxStats.totalSubtotal) * 100
-              : 0;
+            const avgTaxRate =
+              taxStats.totalSubtotal > 0 ? (taxStats.totalTax / taxStats.totalSubtotal) * 100 : 0;
 
             return [
               `${label}: $${value.toFixed(2)}`,
               `Taxed Orders: ${taxStats.taxedOrders}`,
-              `Avg Tax Rate: ${avgTaxRate.toFixed(2)}%`
+              `Avg Tax Rate: ${avgTaxRate.toFixed(2)}%`,
             ];
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       ...BAR_CHART_OPTIONS.scales,
       y: {
         ...BAR_CHART_OPTIONS.scales.y,
         ticks: {
-          callback: function(value) {
+          callback: function (value) {
             return '$' + value.toLocaleString();
-          }
+          },
         },
         title: {
           display: true,
-          text: 'Total Tax Paid ($)'
-        }
-      }
-    }
+          text: 'Total Tax Paid ($)',
+        },
+      },
+    },
   };
 
   return (

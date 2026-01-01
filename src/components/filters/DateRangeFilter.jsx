@@ -26,7 +26,7 @@ export function DateRangeFilter({ orders, onFilterChange }) {
 
     return {
       years: Array.from(yearSet).sort((a, b) => b - a),
-      months: Array.from(monthSet).sort((a, b) => b.localeCompare(a))
+      months: Array.from(monthSet).sort((a, b) => b.localeCompare(a)),
     };
   }, [orders]);
 
@@ -46,7 +46,7 @@ export function DateRangeFilter({ orders, onFilterChange }) {
       onFilterChange({
         startDate: startTime,
         endDate: endTime,
-        label: `Year ${selectedYear}`
+        label: `Year ${selectedYear}`,
       });
     } else if (filterType === 'month' && selectedMonth) {
       const [year, month] = selectedMonth.split('-');
@@ -56,7 +56,7 @@ export function DateRangeFilter({ orders, onFilterChange }) {
       onFilterChange({
         startDate: startTime,
         endDate: endTime,
-        label: format(date, 'MMMM yyyy')
+        label: format(date, 'MMMM yyyy'),
       });
     } else if (filterType === 'custom' && startDate && endDate) {
       startTime = new Date(startDate).getTime();
@@ -64,7 +64,7 @@ export function DateRangeFilter({ orders, onFilterChange }) {
       onFilterChange({
         startDate: startTime,
         endDate: endTime,
-        label: `${format(new Date(startDate), 'MMM dd, yyyy')} - ${format(new Date(endDate), 'MMM dd, yyyy')}`
+        label: `${format(new Date(startDate), 'MMM dd, yyyy')} - ${format(new Date(endDate), 'MMM dd, yyyy')}`,
       });
     } else if (filterType === 'quick' && quickFilter) {
       const now = new Date();
@@ -123,7 +123,10 @@ export function DateRangeFilter({ orders, onFilterChange }) {
       {/* Filter Type Selector */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mb-6">
         <button
-          onClick={() => { setFilterType('all'); handleReset(); }}
+          onClick={() => {
+            setFilterType('all');
+            handleReset();
+          }}
           className={`px-4 py-3 rounded-lg font-medium transition-all ${
             filterType === 'all'
               ? 'bg-blue-600 text-white shadow-lg scale-105'
@@ -183,7 +186,7 @@ export function DateRangeFilter({ orders, onFilterChange }) {
               { value: '90days', label: 'Last 90 Days' },
               { value: '6months', label: 'Last 6 Months' },
               { value: '1year', label: 'Last Year' },
-              { value: 'ytd', label: 'Year to Date' }
+              { value: 'ytd', label: 'Year to Date' },
             ].map(option => (
               <button
                 key={option.value}
@@ -214,17 +217,17 @@ export function DateRangeFilter({ orders, onFilterChange }) {
       {filterType === 'year' && (
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Select Year
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Select Year</label>
             <select
               value={selectedYear}
-              onChange={(e) => setSelectedYear(e.target.value)}
+              onChange={e => setSelectedYear(e.target.value)}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
             >
               <option value="">Choose a year...</option>
               {years.map(year => (
-                <option key={year} value={year}>{year}</option>
+                <option key={year} value={year}>
+                  {year}
+                </option>
               ))}
             </select>
           </div>
@@ -242,12 +245,10 @@ export function DateRangeFilter({ orders, onFilterChange }) {
       {filterType === 'month' && (
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Select Month
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Select Month</label>
             <select
               value={selectedMonth}
-              onChange={(e) => setSelectedMonth(e.target.value)}
+              onChange={e => setSelectedMonth(e.target.value)}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
             >
               <option value="">Choose a month...</option>
@@ -277,24 +278,20 @@ export function DateRangeFilter({ orders, onFilterChange }) {
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Start Date
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Start Date</label>
               <input
                 type="date"
                 value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
+                onChange={e => setStartDate(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                End Date
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">End Date</label>
               <input
                 type="date"
                 value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
+                onChange={e => setEndDate(e.target.value)}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>

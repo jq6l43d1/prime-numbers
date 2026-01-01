@@ -50,7 +50,11 @@ export function StatsGrid({ statistics }) {
         value={overview.firstOrderDate ? formatDate(overview.firstOrderDate, 'MMM yyyy') : '-'}
         format="text"
         icon="📅"
-        subtitle={overview.lastOrderDate ? `Last order: ${formatDate(overview.lastOrderDate, 'MMM d, yyyy')}` : ''}
+        subtitle={
+          overview.lastOrderDate
+            ? `Last order: ${formatDate(overview.lastOrderDate, 'MMM d, yyyy')}`
+            : ''
+        }
       />
     </div>
   );

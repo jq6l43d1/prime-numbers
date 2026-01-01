@@ -8,7 +8,7 @@ import {
   Title,
   Tooltip,
   Legend,
-  Filler
+  Filler,
 } from 'chart.js';
 import { LINE_CHART_OPTIONS, CHART_COLORS } from '../../constants/chartConfig';
 
@@ -39,29 +39,31 @@ export function SpendingOverTimeChart({ data, onMonthClick }) {
         tension: 0.4,
         fill: true,
         pointRadius: 4,
-        pointHoverRadius: 6
-      }
-    ]
+        pointHoverRadius: 6,
+      },
+    ],
   };
 
   const options = {
     ...LINE_CHART_OPTIONS,
-    onClick: onMonthClick ? (event, elements) => {
-      if (elements.length > 0) {
-        const index = elements[0].index;
-        const monthData = data[index];
-        onMonthClick(monthData);
-      }
-    } : undefined,
+    onClick: onMonthClick
+      ? (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const monthData = data[index];
+            onMonthClick(monthData);
+          }
+        }
+      : undefined,
     plugins: {
       ...LINE_CHART_OPTIONS.plugins,
       tooltip: {
         ...LINE_CHART_OPTIONS.plugins?.tooltip,
         callbacks: {
-          afterLabel: () => onMonthClick ? '(Click to view details)' : ''
-        }
-      }
-    }
+          afterLabel: () => (onMonthClick ? '(Click to view details)' : ''),
+        },
+      },
+    },
   };
 
   return <Line data={chartData} options={options} />;

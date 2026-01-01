@@ -6,18 +6,11 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function YearOverYearComparison({ datasetStats }) {
   if (!datasetStats || datasetStats.length === 0) {
@@ -34,7 +27,11 @@ export function YearOverYearComparison({ datasetStats }) {
       yearMap[year] = (yearMap[year] || 0) + (order.totalOwed || 0);
     });
 
-    return { name: item.dataset.name, yearMap, color: CHART_COLOR_PALETTE[datasetStats.indexOf(item) % CHART_COLOR_PALETTE.length] };
+    return {
+      name: item.dataset.name,
+      yearMap,
+      color: CHART_COLOR_PALETTE[datasetStats.indexOf(item) % CHART_COLOR_PALETTE.length],
+    };
   });
 
   // Get all unique years across all datasets
@@ -57,13 +54,13 @@ export function YearOverYearComparison({ datasetStats }) {
       backgroundColor: `${CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length]}80`,
       borderColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
       borderWidth: 2,
-      borderRadius: 6
+      borderRadius: 6,
     };
   });
 
   const chartData = {
     labels: sortedYears.map(y => y.toString()),
-    datasets: datasets
+    datasets: datasets,
   };
 
   const options = {
@@ -75,17 +72,17 @@ export function YearOverYearComparison({ datasetStats }) {
         text: 'Year-over-Year Spending Comparison',
         font: {
           size: 16,
-          weight: 'bold'
-        }
+          weight: 'bold',
+        },
       },
       tooltip: {
         callbacks: {
-          label: (context) => {
+          label: context => {
             return `${context.dataset.label}: $${context.parsed.y.toFixed(2)}`;
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 
   return (

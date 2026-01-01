@@ -6,17 +6,10 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function CarrierPerformanceChart({ orders, onCarrierClick }) {
   // Parse carrier information
@@ -35,7 +28,7 @@ export function CarrierPerformanceChart({ orders, onCarrierClick }) {
     if (!acc[carrier]) {
       acc[carrier] = {
         count: 0,
-        orders: []
+        orders: [],
       };
     }
 
@@ -62,9 +55,9 @@ export function CarrierPerformanceChart({ orders, onCarrierClick }) {
         borderRadius: 8,
         hoverBackgroundColor: 'rgba(59, 130, 246, 0.95)',
         hoverBorderColor: 'rgba(59, 130, 246, 1)',
-        hoverBorderWidth: 3
-      }
-    ]
+        hoverBorderWidth: 3,
+      },
+    ],
   };
 
   const options = {
@@ -79,13 +72,12 @@ export function CarrierPerformanceChart({ orders, onCarrierClick }) {
       }
     },
     onHover: (event, activeElements) => {
-      event.native.target.style.cursor = activeElements.length > 0 && onCarrierClick
-        ? 'pointer'
-        : 'default';
+      event.native.target.style.cursor =
+        activeElements.length > 0 && onCarrierClick ? 'pointer' : 'default';
     },
     plugins: {
       legend: {
-        display: false
+        display: false,
       },
       tooltip: {
         backgroundColor: 'rgba(0, 0, 0, 0.9)',
@@ -93,37 +85,37 @@ export function CarrierPerformanceChart({ orders, onCarrierClick }) {
         titleFont: { size: 14, weight: 'bold' },
         bodyFont: { size: 13 },
         callbacks: {
-          title: function(context) {
+          title: function (context) {
             return onCarrierClick ? 'Click to view orders' : context[0].label;
           },
-          label: function(context) {
+          label: function (context) {
             const value = context.parsed.x;
             const total = sortedCarriers.reduce((sum, [_, data]) => sum + data.count, 0);
             const percentage = ((value / total) * 100).toFixed(1);
             return `${value} shipments (${percentage}%)`;
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       x: {
         beginAtZero: true,
         grid: {
-          color: 'rgba(0, 0, 0, 0.05)'
+          color: 'rgba(0, 0, 0, 0.05)',
         },
         ticks: {
-          font: { size: 12 }
-        }
+          font: { size: 12 },
+        },
       },
       y: {
         grid: {
-          display: false
+          display: false,
         },
         ticks: {
-          font: { size: 12, weight: 'bold' }
-        }
-      }
-    }
+          font: { size: 12, weight: 'bold' },
+        },
+      },
+    },
   };
 
   return (

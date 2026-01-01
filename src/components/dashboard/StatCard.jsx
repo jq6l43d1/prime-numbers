@@ -24,16 +24,18 @@ export function StatCard({ title, value, subtitle, icon, trend, format = 'number
         <div className="flex-1">
           <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>
           <p className="text-3xl font-bold text-gray-900 animate-fade-in-up">{formattedValue()}</p>
-          {subtitle && (
-            <p className="text-sm text-gray-500 mt-1">{subtitle}</p>
-          )}
+          {subtitle && <p className="text-sm text-gray-500 mt-1">{subtitle}</p>}
         </div>
         {icon && (
-          <div className="text-4xl opacity-50 hover:opacity-100 transition-opacity duration-300 hover:scale-110 transform">{icon}</div>
+          <div className="text-4xl opacity-50 hover:opacity-100 transition-opacity duration-300 hover:scale-110 transform">
+            {icon}
+          </div>
         )}
       </div>
       {trend && (
-        <div className={`mt-2 text-sm font-medium ${trend > 0 ? 'text-green-600' : 'text-red-600'}`}>
+        <div
+          className={`mt-2 text-sm font-medium ${trend > 0 ? 'text-green-600' : 'text-red-600'}`}
+        >
           {trend > 0 ? '↑' : '↓'} {Math.abs(trend).toFixed(1)}%
         </div>
       )}

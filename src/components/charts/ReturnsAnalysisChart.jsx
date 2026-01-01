@@ -6,17 +6,10 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function ReturnsAnalysisChart({ returns, orders, onReasonClick }) {
   if (!returns || returns.length === 0) {
@@ -36,7 +29,7 @@ export function ReturnsAnalysisChart({ returns, orders, onReasonClick }) {
       reasonData[reason] = {
         count: 0,
         returns: [],
-        orders: []
+        orders: [],
       };
     }
     reasonData[reason].count += 1;
@@ -57,7 +50,7 @@ export function ReturnsAnalysisChart({ returns, orders, onReasonClick }) {
       reason,
       count: data.count,
       returns: data.returns,
-      orders: data.orders
+      orders: data.orders,
     }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 8);
@@ -76,9 +69,9 @@ export function ReturnsAnalysisChart({ returns, orders, onReasonClick }) {
         borderColor: 'rgba(239, 68, 68, 1)',
         borderWidth: 2,
         borderRadius: 8,
-        hoverBackgroundColor: 'rgba(239, 68, 68, 0.95)'
-      }
-    ]
+        hoverBackgroundColor: 'rgba(239, 68, 68, 0.95)',
+      },
+    ],
   };
 
   const options = {
@@ -91,60 +84,62 @@ export function ReturnsAnalysisChart({ returns, orders, onReasonClick }) {
         position: 'top',
         labels: {
           font: { size: 12, weight: 'bold' },
-          padding: 15
-        }
+          padding: 15,
+        },
       },
       tooltip: {
         callbacks: {
-          title: (context) => {
+          title: context => {
             const index = context[0].dataIndex;
             return sortedReasons[index].reason; // Show full reason in tooltip
           },
-          afterBody: function(context) {
+          afterBody: function (context) {
             if (onReasonClick) {
               return ['', 'Click to view returned orders'];
             }
             return '';
-          }
+          },
         },
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         padding: 12,
         titleFont: { size: 14, weight: 'bold' },
-        bodyFont: { size: 13 }
-      }
+        bodyFont: { size: 13 },
+      },
     },
-    onClick: onReasonClick ? (event, elements) => {
-      if (elements.length > 0) {
-        const index = elements[0].index;
-        const reasonItem = sortedReasons[index];
-        onReasonClick({
-          reason: reasonItem.reason,
-          count: reasonItem.count,
-          orders: reasonItem.orders,
-          returns: reasonItem.returns
-        });
-      }
-    } : undefined,
+    onClick: onReasonClick
+      ? (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const reasonItem = sortedReasons[index];
+            onReasonClick({
+              reason: reasonItem.reason,
+              count: reasonItem.count,
+              orders: reasonItem.orders,
+              returns: reasonItem.returns,
+            });
+          }
+        }
+      : undefined,
     scales: {
       x: {
         beginAtZero: true,
         ticks: {
           precision: 0,
-          font: { size: 11 }
+          font: { size: 11 },
         },
         grid: {
-          color: 'rgba(0, 0, 0, 0.05)'
-        }
+          color: 'rgba(0, 0, 0, 0.05)',
+        },
       },
       y: {
         ticks: {
-          font: { size: 11 }
+          font: { size: 11 },
         },
         grid: {
-          display: false
-        }
-      }
-    }
+          display: false,
+        },
+      },
+    },
   };
 
   return <Bar data={data} options={options} />;

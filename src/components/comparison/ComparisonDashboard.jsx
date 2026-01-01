@@ -51,7 +51,7 @@ export function ComparisonDashboard() {
     'bg-pink-500',
     'bg-indigo-500',
     'bg-teal-500',
-    'bg-red-500'
+    'bg-red-500',
   ];
 
   const borderColors = [
@@ -62,7 +62,7 @@ export function ComparisonDashboard() {
     'border-pink-500',
     'border-indigo-500',
     'border-teal-500',
-    'border-red-500'
+    'border-red-500',
   ];
 
   const bgColors = [
@@ -73,7 +73,7 @@ export function ComparisonDashboard() {
     'bg-pink-50',
     'bg-indigo-50',
     'bg-teal-50',
-    'bg-red-50'
+    'bg-red-50',
   ];
 
   // Calculate statistics for each dataset
@@ -84,25 +84,25 @@ export function ComparisonDashboard() {
       stats,
       color: colors[index % colors.length],
       borderColor: borderColors[index % borderColors.length],
-      bgColor: bgColors[index % bgColors.length]
+      bgColor: bgColors[index % bgColors.length],
     };
   });
 
-  const formatCurrency = (amount) => {
+  const formatCurrency = amount => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'USD',
       minimumFractionDigits: 0,
-      maximumFractionDigits: 0
+      maximumFractionDigits: 0,
     }).format(amount);
   };
 
-  const formatDate = (isoString) => {
+  const formatDate = isoString => {
     const date = new Date(isoString);
     return date.toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     });
   };
 
@@ -115,9 +115,7 @@ export function ComparisonDashboard() {
             Comparison View
           </span>
         </h2>
-        <p className="text-gray-600">
-          Side-by-side comparison of {datasets.length} files
-        </p>
+        <p className="text-gray-600">Side-by-side comparison of {datasets.length} files</p>
       </div>
 
       {/* Legend */}
@@ -131,12 +129,8 @@ export function ComparisonDashboard() {
             >
               <div className={`w-4 h-4 rounded-full ${item.color}`}></div>
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-gray-900 truncate">
-                  {item.dataset.name}
-                </p>
-                <p className="text-sm text-gray-500">
-                  {formatDate(item.dataset.uploadDate)}
-                </p>
+                <p className="font-semibold text-gray-900 truncate">{item.dataset.name}</p>
+                <p className="text-sm text-gray-500">{formatDate(item.dataset.uploadDate)}</p>
               </div>
             </div>
           ))}
@@ -151,7 +145,7 @@ export function ComparisonDashboard() {
           <div>
             <h4 className="text-sm font-semibold text-gray-700 mb-3">Total Spent</h4>
             <div className="space-y-2">
-              {datasetStats.map((item) => (
+              {datasetStats.map(item => (
                 <div key={item.dataset.id} className="flex items-center gap-3">
                   <div className={`w-3 h-3 rounded-full ${item.color}`}></div>
                   <div className="flex-1 flex items-center gap-2">
@@ -159,7 +153,7 @@ export function ComparisonDashboard() {
                       <div
                         className={`h-full ${item.color} transition-all duration-500 flex items-center justify-end px-3`}
                         style={{
-                          width: `${(item.stats.overview.totalSpent / Math.max(...datasetStats.map(d => d.stats.overview.totalSpent))) * 100}%`
+                          width: `${(item.stats.overview.totalSpent / Math.max(...datasetStats.map(d => d.stats.overview.totalSpent))) * 100}%`,
                         }}
                       >
                         <span className="text-white font-semibold text-sm">
@@ -177,7 +171,7 @@ export function ComparisonDashboard() {
           <div>
             <h4 className="text-sm font-semibold text-gray-700 mb-3">Total Orders</h4>
             <div className="space-y-2">
-              {datasetStats.map((item) => (
+              {datasetStats.map(item => (
                 <div key={item.dataset.id} className="flex items-center gap-3">
                   <div className={`w-3 h-3 rounded-full ${item.color}`}></div>
                   <div className="flex-1 flex items-center gap-2">
@@ -185,7 +179,7 @@ export function ComparisonDashboard() {
                       <div
                         className={`h-full ${item.color} transition-all duration-500 flex items-center justify-end px-3`}
                         style={{
-                          width: `${(item.stats.overview.totalOrders / Math.max(...datasetStats.map(d => d.stats.overview.totalOrders))) * 100}%`
+                          width: `${(item.stats.overview.totalOrders / Math.max(...datasetStats.map(d => d.stats.overview.totalOrders))) * 100}%`,
                         }}
                       >
                         <span className="text-white font-semibold text-sm">
@@ -203,7 +197,7 @@ export function ComparisonDashboard() {
           <div>
             <h4 className="text-sm font-semibold text-gray-700 mb-3">Average Order Value</h4>
             <div className="space-y-2">
-              {datasetStats.map((item) => (
+              {datasetStats.map(item => (
                 <div key={item.dataset.id} className="flex items-center gap-3">
                   <div className={`w-3 h-3 rounded-full ${item.color}`}></div>
                   <div className="flex-1 flex items-center gap-2">
@@ -211,7 +205,7 @@ export function ComparisonDashboard() {
                       <div
                         className={`h-full ${item.color} transition-all duration-500 flex items-center justify-end px-3`}
                         style={{
-                          width: `${(item.stats.overview.avgOrderValue / Math.max(...datasetStats.map(d => d.stats.overview.avgOrderValue))) * 100}%`
+                          width: `${(item.stats.overview.avgOrderValue / Math.max(...datasetStats.map(d => d.stats.overview.avgOrderValue))) * 100}%`,
                         }}
                       >
                         <span className="text-white font-semibold text-sm">
@@ -229,16 +223,14 @@ export function ComparisonDashboard() {
 
       {/* Detailed Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {datasetStats.map((item) => (
+        {datasetStats.map(item => (
           <div
             key={item.dataset.id}
             className={`card border-2 ${item.borderColor} ${item.bgColor} shadow-lg`}
           >
             <div className="flex items-center gap-3 mb-4">
               <div className={`w-4 h-4 rounded-full ${item.color}`}></div>
-              <h3 className="text-lg font-bold text-gray-900 truncate">
-                {item.dataset.name}
-              </h3>
+              <h3 className="text-lg font-bold text-gray-900 truncate">{item.dataset.name}</h3>
             </div>
 
             <div className="space-y-4">
@@ -277,7 +269,8 @@ export function ComparisonDashboard() {
                       {item.stats.spending.byCategory[0].category}
                     </p>
                     <p className="text-sm text-gray-600">
-                      {formatCurrency(item.stats.spending.byCategory[0].amount)} ({item.stats.spending.byCategory[0].percentage}%)
+                      {formatCurrency(item.stats.spending.byCategory[0].amount)} (
+                      {item.stats.spending.byCategory[0].percentage}%)
                     </p>
                   </>
                 ) : (
@@ -357,7 +350,8 @@ export function ComparisonDashboard() {
                 <div className="flex items-center gap-2">
                   <div className={`w-3 h-3 rounded-full ${highest.color}`}></div>
                   <p className="text-gray-700 flex-1">
-                    {highest.dataset.name} with {formatCurrency(highest.stats.overview.avgOrderValue)}
+                    {highest.dataset.name} with{' '}
+                    {formatCurrency(highest.stats.overview.avgOrderValue)}
                   </p>
                 </div>
               );
@@ -367,7 +361,10 @@ export function ComparisonDashboard() {
           <div className="bg-white rounded-lg p-4 shadow-sm">
             <p className="font-semibold text-gray-900 mb-2">Total Combined</p>
             <p className="text-gray-700">
-              {formatCurrency(datasetStats.reduce((sum, item) => sum + item.stats.overview.totalSpent, 0))} across all files
+              {formatCurrency(
+                datasetStats.reduce((sum, item) => sum + item.stats.overview.totalSpent, 0)
+              )}{' '}
+              across all files
             </p>
           </div>
         </div>

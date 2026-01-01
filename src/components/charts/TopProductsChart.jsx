@@ -1,5 +1,12 @@
 import { Bar } from 'react-chartjs-2';
-import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js';
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+} from 'chart.js';
 
 ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
@@ -20,14 +27,14 @@ export function TopProductsChart({ data, type = 'spending', onProductClick }) {
     datasets: [
       {
         label: type === 'spending' ? 'Total Spent ($)' : 'Quantity Ordered',
-        data: topItems.map(item => type === 'spending' ? item.totalSpent : item.quantity),
+        data: topItems.map(item => (type === 'spending' ? item.totalSpent : item.quantity)),
         backgroundColor: 'rgba(16, 185, 129, 0.8)',
         borderColor: 'rgba(16, 185, 129, 1)',
         borderWidth: 2,
         borderRadius: 8,
-        hoverBackgroundColor: 'rgba(16, 185, 129, 0.95)'
-      }
-    ]
+        hoverBackgroundColor: 'rgba(16, 185, 129, 0.95)',
+      },
+    ],
   };
 
   const options = {
@@ -36,20 +43,20 @@ export function TopProductsChart({ data, type = 'spending', onProductClick }) {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false
+        display: false,
       },
       tooltip: {
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         padding: 12,
         bodyFont: {
-          size: 13
+          size: 13,
         },
         callbacks: {
-          title: function(context) {
+          title: function (context) {
             const item = topItems[context[0].dataIndex];
             return item.name || 'Unknown Product';
           },
-          label: function(context) {
+          label: function (context) {
             const value = context.parsed.x;
             if (type === 'spending') {
               return `Total Spent: $${value.toFixed(2)}`;
@@ -57,7 +64,7 @@ export function TopProductsChart({ data, type = 'spending', onProductClick }) {
               return `Quantity: ${value}`;
             }
           },
-          afterLabel: function(context) {
+          afterLabel: function (context) {
             const item = topItems[context.dataIndex];
             const lines = [];
             if (type === 'spending') {
@@ -69,49 +76,51 @@ export function TopProductsChart({ data, type = 'spending', onProductClick }) {
               lines.push('Click to view details');
             }
             return lines;
+          },
+        },
+      },
+    },
+    onClick: onProductClick
+      ? (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const product = topItems[index];
+            onProductClick(product);
           }
         }
-      }
-    },
-    onClick: onProductClick ? (event, elements) => {
-      if (elements.length > 0) {
-        const index = elements[0].index;
-        const product = topItems[index];
-        onProductClick(product);
-      }
-    } : undefined,
+      : undefined,
     scales: {
       x: {
         beginAtZero: true,
         grid: {
-          color: 'rgba(0, 0, 0, 0.05)'
+          color: 'rgba(0, 0, 0, 0.05)',
         },
         ticks: {
           color: '#6b7280',
           font: {
-            size: 11
+            size: 11,
           },
-          callback: function(value) {
+          callback: function (value) {
             if (type === 'spending') {
               return '$' + value;
             }
             return value;
-          }
-        }
+          },
+        },
       },
       y: {
         grid: {
-          display: false
+          display: false,
         },
         ticks: {
           color: '#374151',
           font: {
             size: 11,
-            weight: '500'
-          }
-        }
-      }
-    }
+            weight: '500',
+          },
+        },
+      },
+    },
   };
 
   return <Bar data={chartData} options={options} />;

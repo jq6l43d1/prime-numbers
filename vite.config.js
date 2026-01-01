@@ -1,5 +1,5 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -8,12 +8,12 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'chart': ['chart.js', 'react-chartjs-2'],
-          'vendor': ['react', 'react-dom'],
-          'utils': ['date-fns']
-        }
-      }
+          chart: ['chart.js', 'react-chartjs-2'],
+          vendor: ['react', 'react-dom'],
+          utils: ['date-fns'],
+        },
+      },
     },
-    chunkSizeWarningLimit: 1000
-  }
-})
+    chunkSizeWarningLimit: 1000,
+  },
+});

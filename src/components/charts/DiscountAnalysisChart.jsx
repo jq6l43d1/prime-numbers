@@ -33,7 +33,7 @@ export function DiscountAnalysisChart({ orders }) {
     const categoryDiscounts = {};
     const monthlyDiscounts = {};
 
-    orders.forEach((order) => {
+    orders.forEach(order => {
       const discount = Math.abs(parseFloat(order.totalDiscounts) || 0);
       if (discount > 0) {
         const category = order.category || 'Other';
@@ -89,7 +89,7 @@ export function DiscountAnalysisChart({ orders }) {
       },
       tooltip: {
         callbacks: {
-          label: (context) => {
+          label: context => {
             return `Saved: $${context.parsed.x.toFixed(2)}`;
           },
         },
@@ -99,7 +99,7 @@ export function DiscountAnalysisChart({ orders }) {
       x: {
         beginAtZero: true,
         ticks: {
-          callback: (value) => `$${value}`,
+          callback: value => `$${value}`,
         },
         grid: {
           color: 'rgba(0, 0, 0, 0.05)',

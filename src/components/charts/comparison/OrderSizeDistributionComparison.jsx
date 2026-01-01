@@ -6,18 +6,11 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function OrderSizeDistributionComparison({ datasetStats }) {
   if (!datasetStats || datasetStats.length === 0) {
@@ -32,7 +25,7 @@ export function OrderSizeDistributionComparison({ datasetStats }) {
       '2-3 items': 0,
       '4-5 items': 0,
       '6-10 items': 0,
-      '11+ items': 0
+      '11+ items': 0,
     };
 
     // Group orders by order ID to get actual order sizes
@@ -58,13 +51,13 @@ export function OrderSizeDistributionComparison({ datasetStats }) {
       data: sizeLabels.map(label => sizeCategories[label]),
       backgroundColor: `${CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length]}80`,
       borderColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
-      borderWidth: 2
+      borderWidth: 2,
     };
   });
 
   const chartData = {
     labels: sizeLabels,
-    datasets: datasets
+    datasets: datasets,
   };
 
   const options = {
@@ -76,17 +69,17 @@ export function OrderSizeDistributionComparison({ datasetStats }) {
         text: 'Order Size Distribution Comparison',
         font: {
           size: 16,
-          weight: 'bold'
-        }
+          weight: 'bold',
+        },
       },
       tooltip: {
         callbacks: {
-          label: (context) => {
+          label: context => {
             return `${context.dataset.label}: ${context.parsed.y} orders`;
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 
   return (

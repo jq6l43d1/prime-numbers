@@ -60,10 +60,7 @@ export async function processAmazonData(zipFile, onProgress = () => {}) {
     // Step 5: Parse returns
     onProgress({ step: 'parsing-returns', progress: 60, message: 'Parsing return data...' });
     try {
-      const returnFiles = [
-        ...categorizedFiles.customerReturns,
-        ...categorizedFiles.ordersReturned
-      ];
+      const returnFiles = [...categorizedFiles.customerReturns, ...categorizedFiles.ordersReturned];
 
       for (const returnFile of returnFiles) {
         const parsedReturns = await parseReturns(returnFile.content);
@@ -79,7 +76,11 @@ export async function processAmazonData(zipFile, onProgress = () => {}) {
     const normalizedOrders = normalizeOrders(allOrders);
 
     // Step 7: Categorize products
-    onProgress({ step: 'categorizing-products', progress: 80, message: 'Categorizing products...' });
+    onProgress({
+      step: 'categorizing-products',
+      progress: 80,
+      message: 'Categorizing products...',
+    });
     const categorizedOrders = categorizeProducts(normalizedOrders);
 
     // Step 8: Link returns to orders
@@ -105,8 +106,8 @@ export async function processAmazonData(zipFile, onProgress = () => {}) {
         retailOrders: sortedOrders.filter(o => !o.isDigital).length,
         digitalOrders: sortedOrders.filter(o => o.isDigital).length,
         totalReturns: returns.length,
-        totalPhotos: categorizedFiles.photos.length
-      }
+        totalPhotos: categorizedFiles.photos.length,
+      },
     };
   } catch (error) {
     console.error('Error processing Amazon data:', error);
@@ -115,7 +116,7 @@ export async function processAmazonData(zipFile, onProgress = () => {}) {
       error: error.message,
       orders: [],
       returns: [],
-      photos: []
+      photos: [],
     };
   }
 }
@@ -153,7 +154,7 @@ function normalizeOrders(orders) {
 
       // Initialize return flag
       hasReturn: false,
-      returnInfo: null
+      returnInfo: null,
     };
   });
 }
@@ -203,7 +204,7 @@ function linkReturnsToOrders(orders, returns) {
       return {
         ...order,
         hasReturn: true,
-        returnInfo: orderReturns
+        returnInfo: orderReturns,
       };
     }
     return order;
@@ -221,15 +222,11 @@ export function filterOrders(orders, filters = {}) {
 
   // Filter by date range
   if (filters.startDate) {
-    filtered = filtered.filter(order =>
-      order.orderDate && order.orderDate >= filters.startDate
-    );
+    filtered = filtered.filter(order => order.orderDate && order.orderDate >= filters.startDate);
   }
 
   if (filters.endDate) {
-    filtered = filtered.filter(order =>
-      order.orderDate && order.orderDate <= filters.endDate
-    );
+    filtered = filtered.filter(order => order.orderDate && order.orderDate <= filters.endDate);
   }
 
   // Filter by category
@@ -252,8 +249,8 @@ export function filterOrders(orders, filters = {}) {
   // Search by product name
   if (filters.search) {
     const searchLower = filters.search.toLowerCase();
-    filtered = filtered.filter(order =>
-      order.productName && order.productName.toLowerCase().includes(searchLower)
+    filtered = filtered.filter(
+      order => order.productName && order.productName.toLowerCase().includes(searchLower)
     );
   }
 

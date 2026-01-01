@@ -1,16 +1,7 @@
 import { Doughnut } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend
-} from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
-ChartJS.register(
-  ArcElement,
-  Tooltip,
-  Legend
-);
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 export function OrderSizeDistributionChart({ orders }) {
   if (!orders || orders.length === 0) {
@@ -23,7 +14,7 @@ export function OrderSizeDistributionChart({ orders }) {
     '2-3 items': 0,
     '4-5 items': 0,
     '6-10 items': 0,
-    '11+ items': 0
+    '11+ items': 0,
   };
 
   // Group orders by order ID to get actual order sizes
@@ -54,18 +45,18 @@ export function OrderSizeDistributionChart({ orders }) {
           'rgba(16, 185, 129, 0.8)',
           'rgba(251, 146, 60, 0.8)',
           'rgba(236, 72, 153, 0.8)',
-          'rgba(139, 92, 246, 0.8)'
+          'rgba(139, 92, 246, 0.8)',
         ],
         borderColor: [
           'rgba(59, 130, 246, 1)',
           'rgba(16, 185, 129, 1)',
           'rgba(251, 146, 60, 1)',
           'rgba(236, 72, 153, 1)',
-          'rgba(139, 92, 246, 1)'
+          'rgba(139, 92, 246, 1)',
         ],
-        borderWidth: 2
-      }
-    ]
+        borderWidth: 2,
+      },
+    ],
   };
 
   const options = {
@@ -78,25 +69,25 @@ export function OrderSizeDistributionChart({ orders }) {
           font: { size: 12 },
           padding: 15,
           usePointStyle: true,
-          pointStyle: 'circle'
-        }
+          pointStyle: 'circle',
+        },
       },
       tooltip: {
         callbacks: {
-          label: (context) => {
+          label: context => {
             const label = context.label || '';
             const value = context.parsed || 0;
             const total = context.dataset.data.reduce((a, b) => a + b, 0);
             const percentage = ((value / total) * 100).toFixed(1);
             return `${label}: ${value} orders (${percentage}%)`;
-          }
+          },
         },
         backgroundColor: 'rgba(0, 0, 0, 0.8)',
         padding: 12,
         titleFont: { size: 14, weight: 'bold' },
-        bodyFont: { size: 13 }
-      }
-    }
+        bodyFont: { size: 13 },
+      },
+    },
   };
 
   return <Doughnut data={data} options={options} />;

@@ -6,46 +6,41 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function ShippingCostAnalysisChart({ orders }) {
   // Analyze shipping costs
-  const shippingAnalysis = orders.reduce((acc, order) => {
-    const shippingCost = order.shippingCharge || 0;
+  const shippingAnalysis = orders.reduce(
+    (acc, order) => {
+      const shippingCost = order.shippingCharge || 0;
 
-    if (shippingCost === 0) {
-      acc.free++;
-      acc.freeTotal += order.unitPrice * order.quantity;
-    } else {
-      acc.paid++;
-      acc.paidTotal += shippingCost;
-      acc.paidOrderValue += order.unitPrice * order.quantity;
+      if (shippingCost === 0) {
+        acc.free++;
+        acc.freeTotal += order.unitPrice * order.quantity;
+      } else {
+        acc.paid++;
+        acc.paidTotal += shippingCost;
+        acc.paidOrderValue += order.unitPrice * order.quantity;
+      }
+
+      acc.totalShippingPaid += shippingCost;
+      return acc;
+    },
+    {
+      free: 0,
+      freeTotal: 0,
+      paid: 0,
+      paidTotal: 0,
+      paidOrderValue: 0,
+      totalShippingPaid: 0,
     }
+  );
 
-    acc.totalShippingPaid += shippingCost;
-    return acc;
-  }, {
-    free: 0,
-    freeTotal: 0,
-    paid: 0,
-    paidTotal: 0,
-    paidOrderValue: 0,
-    totalShippingPaid: 0
-  });
-
-  const avgPaidShipping = shippingAnalysis.paid > 0
-    ? shippingAnalysis.paidTotal / shippingAnalysis.paid
-    : 0;
+  const avgPaidShipping =
+    shippingAnalysis.paid > 0 ? shippingAnalysis.paidTotal / shippingAnalysis.paid : 0;
 
   const data = {
     labels: ['Free Shipping', 'Paid Shipping'],
@@ -57,8 +52,8 @@ export function ShippingCostAnalysisChart({ orders }) {
         borderColor: ['rgba(34, 197, 94, 1)', 'rgba(239, 68, 68, 1)'],
         borderWidth: 2,
         borderRadius: 8,
-      }
-    ]
+      },
+    ],
   };
 
   const options = {
@@ -66,7 +61,7 @@ export function ShippingCostAnalysisChart({ orders }) {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false
+        display: false,
       },
       tooltip: {
         backgroundColor: 'rgba(0, 0, 0, 0.9)',
@@ -74,35 +69,35 @@ export function ShippingCostAnalysisChart({ orders }) {
         titleFont: { size: 14, weight: 'bold' },
         bodyFont: { size: 13 },
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             const label = context.dataset.label || '';
             const value = context.parsed.y;
             const total = shippingAnalysis.free + shippingAnalysis.paid;
             const percentage = ((value / total) * 100).toFixed(1);
             return `${label}: ${value} (${percentage}%)`;
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       y: {
         beginAtZero: true,
         grid: {
-          color: 'rgba(0, 0, 0, 0.05)'
+          color: 'rgba(0, 0, 0, 0.05)',
         },
         ticks: {
-          font: { size: 12 }
-        }
+          font: { size: 12 },
+        },
       },
       x: {
         grid: {
-          display: false
+          display: false,
         },
         ticks: {
-          font: { size: 12, weight: 'bold' }
-        }
-      }
-    }
+          font: { size: 12, weight: 'bold' },
+        },
+      },
+    },
   };
 
   return (

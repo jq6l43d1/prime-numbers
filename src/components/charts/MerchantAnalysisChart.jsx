@@ -14,7 +14,7 @@ export function MerchantAnalysisChart({ orders, onMerchantClick }) {
         merchantStats[merchant] = {
           count: 0,
           total: 0,
-          orders: []
+          orders: [],
         };
       }
       merchantStats[merchant].count += 1;
@@ -28,7 +28,7 @@ export function MerchantAnalysisChart({ orders, onMerchantClick }) {
         merchant,
         count: stats.count,
         total: stats.total,
-        orders: stats.orders
+        orders: stats.orders,
       }))
       .sort((a, b) => b.total - a.total)
       .slice(0, 8); // Top 8 merchants
@@ -68,36 +68,38 @@ export function MerchantAnalysisChart({ orders, onMerchantClick }) {
           boxWidth: 12,
           padding: 10,
           font: {
-            size: 11
-          }
-        }
+            size: 11,
+          },
+        },
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             const merchant = merchantData[context.dataIndex];
             return [
               `${context.label}`,
               `Spending: $${merchant.total.toFixed(2)}`,
               `Orders: ${merchant.count}`,
-              onMerchantClick ? 'Click to view details' : ''
+              onMerchantClick ? 'Click to view details' : '',
             ].filter(Boolean);
+          },
+        },
+      },
+    },
+    onClick: onMerchantClick
+      ? (event, elements) => {
+          if (elements.length > 0) {
+            const index = elements[0].index;
+            const merchant = merchantData[index];
+            onMerchantClick({
+              merchant: merchant.merchant,
+              orders: merchant.orders,
+              totalSpent: merchant.total,
+              orderCount: merchant.count,
+            });
           }
         }
-      }
-    },
-    onClick: onMerchantClick ? (event, elements) => {
-      if (elements.length > 0) {
-        const index = elements[0].index;
-        const merchant = merchantData[index];
-        onMerchantClick({
-          merchant: merchant.merchant,
-          orders: merchant.orders,
-          totalSpent: merchant.total,
-          orderCount: merchant.count
-        });
-      }
-    } : undefined
+      : undefined,
   };
 
   if (merchantData.length === 0) {

@@ -12,7 +12,7 @@ export function useFilters(orders) {
     category: 'all',
     status: 'all',
     type: 'all', // all, digital, retail
-    search: ''
+    search: '',
   });
 
   const filteredOrders = useMemo(() => {
@@ -26,13 +26,13 @@ export function useFilters(orders) {
       if (preset) {
         dateFilter = {
           startDate: preset.start,
-          endDate: preset.end
+          endDate: preset.end,
         };
       }
     } else if (filters.startDate || filters.endDate) {
       dateFilter = {
         startDate: filters.startDate,
-        endDate: filters.endDate
+        endDate: filters.endDate,
       };
     }
 
@@ -41,11 +41,11 @@ export function useFilters(orders) {
       category: filters.category,
       status: filters.status,
       type: filters.type,
-      search: filters.search
+      search: filters.search,
     });
   }, [orders, filters, dateRangePresets]);
 
-  const setDateRange = (range) => {
+  const setDateRange = range => {
     setFilters(prev => ({ ...prev, dateRange: range, startDate: null, endDate: null }));
   };
 
@@ -54,23 +54,23 @@ export function useFilters(orders) {
       ...prev,
       dateRange: 'custom',
       startDate,
-      endDate
+      endDate,
     }));
   };
 
-  const setCategory = (category) => {
+  const setCategory = category => {
     setFilters(prev => ({ ...prev, category }));
   };
 
-  const setStatus = (status) => {
+  const setStatus = status => {
     setFilters(prev => ({ ...prev, status }));
   };
 
-  const setType = (type) => {
+  const setType = type => {
     setFilters(prev => ({ ...prev, type }));
   };
 
-  const setSearch = (search) => {
+  const setSearch = search => {
     setFilters(prev => ({ ...prev, search }));
   };
 
@@ -82,7 +82,7 @@ export function useFilters(orders) {
       category: 'all',
       status: 'all',
       type: 'all',
-      search: ''
+      search: '',
     });
   };
 
@@ -96,6 +96,6 @@ export function useFilters(orders) {
     setType,
     setSearch,
     resetFilters,
-    dateRangePresets
+    dateRangePresets,
   };
 }

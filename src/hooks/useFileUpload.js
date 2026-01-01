@@ -6,7 +6,7 @@ export function useFileUpload() {
   const [error, setError] = useState(null);
   const [isValidating, setIsValidating] = useState(false);
 
-  const validateFile = (file) => {
+  const validateFile = file => {
     console.log('validateFile called with:', file);
     setError(null);
     setIsValidating(true);
@@ -58,6 +58,6 @@ export function useFileUpload() {
     error,
     isValidating,
     validateFile,
-    clearFile
+    clearFile,
   };
 }

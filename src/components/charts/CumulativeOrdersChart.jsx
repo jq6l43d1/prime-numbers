@@ -9,19 +9,26 @@ import {
   Title,
   Tooltip,
   Legend,
-  Filler
+  Filler,
 } from 'chart.js';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
 
 export function CumulativeOrdersChart({ orders }) {
   const cumulativeData = useMemo(() => {
     if (!orders || orders.length === 0) return null;
 
     // Sort orders by date
-    const sortedOrders = [...orders].sort((a, b) =>
-      new Date(a.orderDate) - new Date(b.orderDate)
-    );
+    const sortedOrders = [...orders].sort((a, b) => new Date(a.orderDate) - new Date(b.orderDate));
 
     // Calculate cumulative order count
     let cumulative = 0;
@@ -29,7 +36,7 @@ export function CumulativeOrdersChart({ orders }) {
       cumulative += 1;
       return {
         date: new Date(order.orderDate),
-        cumulative: cumulative
+        cumulative: cumulative,
       };
     });
 
@@ -74,8 +81,8 @@ export function CumulativeOrdersChart({ orders }) {
         pointBackgroundColor: 'rgb(16, 185, 129)',
         pointBorderColor: '#fff',
         pointBorderWidth: 2,
-      }
-    ]
+      },
+    ],
   };
 
   const options = {
@@ -87,42 +94,42 @@ export function CumulativeOrdersChart({ orders }) {
     },
     plugins: {
       legend: {
-        display: false
+        display: false,
       },
       tooltip: {
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             return `Total Orders: ${context.parsed.y}`;
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       x: {
         grid: {
-          display: false
+          display: false,
         },
         ticks: {
           maxRotation: 45,
           minRotation: 45,
           font: {
-            size: 10
-          }
-        }
+            size: 10,
+          },
+        },
       },
       y: {
         beginAtZero: true,
         ticks: {
-          callback: function(value) {
+          callback: function (value) {
             return value.toLocaleString();
-          }
+          },
         },
         title: {
           display: true,
-          text: 'Cumulative Orders'
-        }
-      }
-    }
+          text: 'Cumulative Orders',
+        },
+      },
+    },
   };
 
   const totalOrders = cumulativeData.values[cumulativeData.values.length - 1];
@@ -136,7 +143,9 @@ export function CumulativeOrdersChart({ orders }) {
       </div>
       <div className="mt-4 text-sm text-gray-600">
         <div className="flex justify-between items-center">
-          <span>Total orders from {firstMonth} to {lastMonth}</span>
+          <span>
+            Total orders from {firstMonth} to {lastMonth}
+          </span>
           <span className="font-bold text-lg text-green-600">{totalOrders} orders</span>
         </div>
       </div>

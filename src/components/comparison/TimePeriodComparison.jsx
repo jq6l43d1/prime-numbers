@@ -19,7 +19,7 @@ export function TimePeriodComparison() {
     });
   };
 
-  const calculateStats = (orders) => {
+  const calculateStats = orders => {
     const totalSpent = orders.reduce((sum, o) => sum + (o.totalOwed || 0), 0);
     const totalOrders = orders.length;
     const avgOrderValue = totalOrders > 0 ? totalSpent / totalOrders : 0;
@@ -43,7 +43,7 @@ export function TimePeriodComparison() {
       totalOrders,
       avgOrderValue,
       uniqueProducts,
-      byCategory
+      byCategory,
     };
   };
 
@@ -76,7 +76,7 @@ export function TimePeriodComparison() {
               <input
                 type="text"
                 value={period1.label}
-                onChange={(e) => setPeriod1({ ...period1, label: e.target.value })}
+                onChange={e => setPeriod1({ ...period1, label: e.target.value })}
                 className="w-full px-3 py-2 border border-blue-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="e.g., Q1 2024"
               />
@@ -86,7 +86,7 @@ export function TimePeriodComparison() {
               <input
                 type="date"
                 value={period1.start}
-                onChange={(e) => setPeriod1({ ...period1, start: e.target.value })}
+                onChange={e => setPeriod1({ ...period1, start: e.target.value })}
                 className="w-full px-3 py-2 border border-blue-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
@@ -95,7 +95,7 @@ export function TimePeriodComparison() {
               <input
                 type="date"
                 value={period1.end}
-                onChange={(e) => setPeriod1({ ...period1, end: e.target.value })}
+                onChange={e => setPeriod1({ ...period1, end: e.target.value })}
                 className="w-full px-3 py-2 border border-blue-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
@@ -111,7 +111,7 @@ export function TimePeriodComparison() {
               <input
                 type="text"
                 value={period2.label}
-                onChange={(e) => setPeriod2({ ...period2, label: e.target.value })}
+                onChange={e => setPeriod2({ ...period2, label: e.target.value })}
                 className="w-full px-3 py-2 border border-purple-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="e.g., Q1 2025"
               />
@@ -121,7 +121,7 @@ export function TimePeriodComparison() {
               <input
                 type="date"
                 value={period2.start}
-                onChange={(e) => setPeriod2({ ...period2, start: e.target.value })}
+                onChange={e => setPeriod2({ ...period2, start: e.target.value })}
                 className="w-full px-3 py-2 border border-purple-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
             </div>
@@ -130,7 +130,7 @@ export function TimePeriodComparison() {
               <input
                 type="date"
                 value={period2.end}
-                onChange={(e) => setPeriod2({ ...period2, end: e.target.value })}
+                onChange={e => setPeriod2({ ...period2, end: e.target.value })}
                 className="w-full px-3 py-2 border border-purple-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
               />
             </div>
@@ -161,15 +161,22 @@ export function TimePeriodComparison() {
                 <div className="grid grid-cols-2 gap-2 mb-2">
                   <div className="bg-blue-50 rounded p-2">
                     <div className="text-xs text-blue-700">{period1.label}</div>
-                    <div className="text-lg font-bold text-blue-900">${stats1.totalSpent.toFixed(0)}</div>
+                    <div className="text-lg font-bold text-blue-900">
+                      ${stats1.totalSpent.toFixed(0)}
+                    </div>
                   </div>
                   <div className="bg-purple-50 rounded p-2">
                     <div className="text-xs text-purple-700">{period2.label}</div>
-                    <div className="text-lg font-bold text-purple-900">${stats2.totalSpent.toFixed(0)}</div>
+                    <div className="text-lg font-bold text-purple-900">
+                      ${stats2.totalSpent.toFixed(0)}
+                    </div>
                   </div>
                 </div>
-                <div className={`text-sm font-semibold ${calculateChange(stats1.totalSpent, stats2.totalSpent) > 0 ? 'text-red-600' : 'text-green-600'}`}>
-                  {calculateChange(stats1.totalSpent, stats2.totalSpent) > 0 ? '↑' : '↓'} {Math.abs(calculateChange(stats1.totalSpent, stats2.totalSpent)).toFixed(1)}%
+                <div
+                  className={`text-sm font-semibold ${calculateChange(stats1.totalSpent, stats2.totalSpent) > 0 ? 'text-red-600' : 'text-green-600'}`}
+                >
+                  {calculateChange(stats1.totalSpent, stats2.totalSpent) > 0 ? '↑' : '↓'}{' '}
+                  {Math.abs(calculateChange(stats1.totalSpent, stats2.totalSpent)).toFixed(1)}%
                 </div>
               </div>
             </div>
@@ -188,8 +195,11 @@ export function TimePeriodComparison() {
                     <div className="text-lg font-bold text-purple-900">{stats2.totalOrders}</div>
                   </div>
                 </div>
-                <div className={`text-sm font-semibold ${calculateChange(stats1.totalOrders, stats2.totalOrders) > 0 ? 'text-red-600' : 'text-green-600'}`}>
-                  {calculateChange(stats1.totalOrders, stats2.totalOrders) > 0 ? '↑' : '↓'} {Math.abs(calculateChange(stats1.totalOrders, stats2.totalOrders)).toFixed(1)}%
+                <div
+                  className={`text-sm font-semibold ${calculateChange(stats1.totalOrders, stats2.totalOrders) > 0 ? 'text-red-600' : 'text-green-600'}`}
+                >
+                  {calculateChange(stats1.totalOrders, stats2.totalOrders) > 0 ? '↑' : '↓'}{' '}
+                  {Math.abs(calculateChange(stats1.totalOrders, stats2.totalOrders)).toFixed(1)}%
                 </div>
               </div>
             </div>
@@ -201,15 +211,23 @@ export function TimePeriodComparison() {
                 <div className="grid grid-cols-2 gap-2 mb-2">
                   <div className="bg-blue-50 rounded p-2">
                     <div className="text-xs text-blue-700">{period1.label}</div>
-                    <div className="text-lg font-bold text-blue-900">${stats1.avgOrderValue.toFixed(2)}</div>
+                    <div className="text-lg font-bold text-blue-900">
+                      ${stats1.avgOrderValue.toFixed(2)}
+                    </div>
                   </div>
                   <div className="bg-purple-50 rounded p-2">
                     <div className="text-xs text-purple-700">{period2.label}</div>
-                    <div className="text-lg font-bold text-purple-900">${stats2.avgOrderValue.toFixed(2)}</div>
+                    <div className="text-lg font-bold text-purple-900">
+                      ${stats2.avgOrderValue.toFixed(2)}
+                    </div>
                   </div>
                 </div>
-                <div className={`text-sm font-semibold ${calculateChange(stats1.avgOrderValue, stats2.avgOrderValue) > 0 ? 'text-red-600' : 'text-green-600'}`}>
-                  {calculateChange(stats1.avgOrderValue, stats2.avgOrderValue) > 0 ? '↑' : '↓'} {Math.abs(calculateChange(stats1.avgOrderValue, stats2.avgOrderValue)).toFixed(1)}%
+                <div
+                  className={`text-sm font-semibold ${calculateChange(stats1.avgOrderValue, stats2.avgOrderValue) > 0 ? 'text-red-600' : 'text-green-600'}`}
+                >
+                  {calculateChange(stats1.avgOrderValue, stats2.avgOrderValue) > 0 ? '↑' : '↓'}{' '}
+                  {Math.abs(calculateChange(stats1.avgOrderValue, stats2.avgOrderValue)).toFixed(1)}
+                  %
                 </div>
               </div>
             </div>
@@ -228,8 +246,14 @@ export function TimePeriodComparison() {
                     <div className="text-lg font-bold text-purple-900">{stats2.uniqueProducts}</div>
                   </div>
                 </div>
-                <div className={`text-sm font-semibold ${calculateChange(stats1.uniqueProducts, stats2.uniqueProducts) > 0 ? 'text-blue-600' : 'text-gray-600'}`}>
-                  {calculateChange(stats1.uniqueProducts, stats2.uniqueProducts) > 0 ? '↑' : '↓'} {Math.abs(calculateChange(stats1.uniqueProducts, stats2.uniqueProducts)).toFixed(1)}%
+                <div
+                  className={`text-sm font-semibold ${calculateChange(stats1.uniqueProducts, stats2.uniqueProducts) > 0 ? 'text-blue-600' : 'text-gray-600'}`}
+                >
+                  {calculateChange(stats1.uniqueProducts, stats2.uniqueProducts) > 0 ? '↑' : '↓'}{' '}
+                  {Math.abs(calculateChange(stats1.uniqueProducts, stats2.uniqueProducts)).toFixed(
+                    1
+                  )}
+                  %
                 </div>
               </div>
             </div>
@@ -256,7 +280,9 @@ export function TimePeriodComparison() {
                               style={{ width: `${maxSpent > 0 ? (spent1 / maxSpent) * 100 : 0}%` }}
                             ></div>
                           </div>
-                          <span className="text-xs font-semibold text-blue-900 w-16 text-right">${spent1.toFixed(0)}</span>
+                          <span className="text-xs font-semibold text-blue-900 w-16 text-right">
+                            ${spent1.toFixed(0)}
+                          </span>
                         </div>
                       </div>
                       <div>
@@ -267,7 +293,9 @@ export function TimePeriodComparison() {
                               style={{ width: `${maxSpent > 0 ? (spent2 / maxSpent) * 100 : 0}%` }}
                             ></div>
                           </div>
-                          <span className="text-xs font-semibold text-purple-900 w-16 text-right">${spent2.toFixed(0)}</span>
+                          <span className="text-xs font-semibold text-purple-900 w-16 text-right">
+                            ${spent2.toFixed(0)}
+                          </span>
                         </div>
                       </div>
                     </div>

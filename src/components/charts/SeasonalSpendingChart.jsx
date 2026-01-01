@@ -6,18 +6,11 @@ import {
   LineElement,
   Filler,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { getMonth, getYear } from 'date-fns';
 
-ChartJS.register(
-  RadialLinearScale,
-  PointElement,
-  LineElement,
-  Filler,
-  Tooltip,
-  Legend
-);
+ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
 export function SeasonalSpendingChart({ orders, onClick }) {
   if (!orders || orders.length === 0) {
@@ -25,7 +18,7 @@ export function SeasonalSpendingChart({ orders, onClick }) {
   }
 
   // Define seasons
-  const getSeason = (month) => {
+  const getSeason = month => {
     if (month >= 2 && month <= 4) return 'Spring';
     if (month >= 5 && month <= 7) return 'Summer';
     if (month >= 8 && month <= 10) return 'Fall';
@@ -40,7 +33,9 @@ export function SeasonalSpendingChart({ orders, onClick }) {
     }
   });
 
-  const sortedYears = Array.from(years).sort((a, b) => b - a).slice(0, 3);
+  const sortedYears = Array.from(years)
+    .sort((a, b) => b - a)
+    .slice(0, 3);
 
   // Group by year and season
   const yearSeasonData = {};
@@ -60,7 +55,7 @@ export function SeasonalSpendingChart({ orders, onClick }) {
         Spring: 0,
         Summer: 0,
         Fall: 0,
-        Winter: 0
+        Winter: 0,
       };
     }
 
@@ -72,18 +67,18 @@ export function SeasonalSpendingChart({ orders, onClick }) {
     {
       bg: 'rgba(59, 130, 246, 0.3)',
       border: 'rgba(59, 130, 246, 1)',
-      point: 'rgba(59, 130, 246, 1)'
+      point: 'rgba(59, 130, 246, 1)',
     },
     {
       bg: 'rgba(16, 185, 129, 0.3)',
       border: 'rgba(16, 185, 129, 1)',
-      point: 'rgba(16, 185, 129, 1)'
+      point: 'rgba(16, 185, 129, 1)',
     },
     {
       bg: 'rgba(251, 146, 60, 0.3)',
       border: 'rgba(251, 146, 60, 1)',
-      point: 'rgba(251, 146, 60, 1)'
-    }
+      point: 'rgba(251, 146, 60, 1)',
+    },
   ];
 
   const datasets = sortedYears.reverse().map((year, index) => {
@@ -92,12 +87,7 @@ export function SeasonalSpendingChart({ orders, onClick }) {
 
     return {
       label: year.toString(),
-      data: [
-        seasonData.Spring,
-        seasonData.Summer,
-        seasonData.Fall,
-        seasonData.Winter
-      ],
+      data: [seasonData.Spring, seasonData.Summer, seasonData.Fall, seasonData.Winter],
       backgroundColor: color.bg,
       borderColor: color.border,
       borderWidth: 3,
@@ -106,55 +96,57 @@ export function SeasonalSpendingChart({ orders, onClick }) {
       pointHoverBackgroundColor: '#fff',
       pointHoverBorderColor: color.border,
       pointRadius: 5,
-      pointHoverRadius: 7
+      pointHoverRadius: 7,
     };
   });
 
   const data = {
     labels: ['Spring', 'Summer', 'Fall', 'Winter'],
-    datasets
+    datasets,
   };
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
-    onClick: onClick ? (event, elements) => {
-      if (elements.length > 0) {
-        const element = elements[0];
-        const season = data.labels[element.index];
-        const datasetIndex = element.datasetIndex;
-        const year = sortedYears.reverse()[datasetIndex];
+    onClick: onClick
+      ? (event, elements) => {
+          if (elements.length > 0) {
+            const element = elements[0];
+            const season = data.labels[element.index];
+            const datasetIndex = element.datasetIndex;
+            const year = sortedYears.reverse()[datasetIndex];
 
-        // Get month range for season
-        let monthRange;
-        if (season === 'Spring') monthRange = [2, 4];
-        else if (season === 'Summer') monthRange = [5, 7];
-        else if (season === 'Fall') monthRange = [8, 10];
-        else monthRange = [11, 1]; // Winter spans Dec-Feb
+            // Get month range for season
+            let monthRange;
+            if (season === 'Spring') monthRange = [2, 4];
+            else if (season === 'Summer') monthRange = [5, 7];
+            else if (season === 'Fall') monthRange = [8, 10];
+            else monthRange = [11, 1]; // Winter spans Dec-Feb
 
-        // Find all orders in this season/year
-        const seasonOrders = orders.filter(order => {
-          const date = new Date(order.orderDate);
-          const orderYear = getYear(date);
-          const orderMonth = getMonth(date);
+            // Find all orders in this season/year
+            const seasonOrders = orders.filter(order => {
+              const date = new Date(order.orderDate);
+              const orderYear = getYear(date);
+              const orderMonth = getMonth(date);
 
-          if (orderYear !== year) return false;
+              if (orderYear !== year) return false;
 
-          if (season === 'Winter') {
-            return orderMonth === 11 || orderMonth === 0 || orderMonth === 1;
-          } else {
-            return orderMonth >= monthRange[0] && orderMonth <= monthRange[1];
+              if (season === 'Winter') {
+                return orderMonth === 11 || orderMonth === 0 || orderMonth === 1;
+              } else {
+                return orderMonth >= monthRange[0] && orderMonth <= monthRange[1];
+              }
+            });
+
+            onClick({
+              season,
+              year,
+              orders: seasonOrders,
+              totalSpent: seasonOrders.reduce((sum, o) => sum + (o.totalOwed || 0), 0),
+            });
           }
-        });
-
-        onClick({
-          season,
-          year,
-          orders: seasonOrders,
-          totalSpent: seasonOrders.reduce((sum, o) => sum + (o.totalOwed || 0), 0)
-        });
-      }
-    } : undefined,
+        }
+      : undefined,
     plugins: {
       legend: {
         display: true,
@@ -163,38 +155,38 @@ export function SeasonalSpendingChart({ orders, onClick }) {
           font: { size: 13, weight: 'bold' },
           padding: 15,
           usePointStyle: true,
-          pointStyle: 'circle'
-        }
+          pointStyle: 'circle',
+        },
       },
       tooltip: {
         callbacks: {
-          label: (context) => {
+          label: context => {
             return `${context.dataset.label}: $${parseFloat(context.parsed.r).toFixed(2)}`;
-          }
+          },
         },
         backgroundColor: 'rgba(0, 0, 0, 0.85)',
         padding: 12,
         titleFont: { size: 14, weight: 'bold' },
-        bodyFont: { size: 13 }
-      }
+        bodyFont: { size: 13 },
+      },
     },
     scales: {
       r: {
         beginAtZero: true,
         ticks: {
-          callback: (value) => `$${value}`,
+          callback: value => `$${value}`,
           font: { size: 10 },
-          backdropColor: 'transparent'
+          backdropColor: 'transparent',
         },
         grid: {
-          color: 'rgba(0, 0, 0, 0.1)'
+          color: 'rgba(0, 0, 0, 0.1)',
         },
         pointLabels: {
           font: { size: 13, weight: 'bold' },
-          color: '#374151'
-        }
-      }
-    }
+          color: '#374151',
+        },
+      },
+    },
   };
 
   return (

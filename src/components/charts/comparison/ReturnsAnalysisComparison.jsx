@@ -6,18 +6,11 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function ReturnsAnalysisComparison({ datasetStats }) {
   if (!datasetStats || datasetStats.length === 0) {
@@ -33,7 +26,7 @@ export function ReturnsAnalysisComparison({ datasetStats }) {
     backgroundColor: CHART_COLOR_PALETTE[0],
     borderColor: CHART_COLOR_PALETTE[0],
     borderWidth: 1,
-    yAxisID: 'y'
+    yAxisID: 'y',
   };
 
   const returnRateDataset = {
@@ -45,12 +38,12 @@ export function ReturnsAnalysisComparison({ datasetStats }) {
     backgroundColor: CHART_COLOR_PALETTE[1],
     borderColor: CHART_COLOR_PALETTE[1],
     borderWidth: 1,
-    yAxisID: 'y1'
+    yAxisID: 'y1',
   };
 
   const chartData = {
     labels: labels,
-    datasets: [returnCountsDataset, returnRateDataset]
+    datasets: [returnCountsDataset, returnRateDataset],
   };
 
   const options = {
@@ -62,22 +55,22 @@ export function ReturnsAnalysisComparison({ datasetStats }) {
         text: 'Returns Analysis Comparison',
         font: {
           size: 16,
-          weight: 'bold'
-        }
+          weight: 'bold',
+        },
       },
       tooltip: {
         ...BAR_CHART_OPTIONS.plugins?.tooltip,
         callbacks: {
-          label: function(context) {
+          label: function (context) {
             const label = context.dataset.label || '';
             const value = context.parsed.y;
             if (label.includes('%')) {
               return `${label}: ${value.toFixed(1)}%`;
             }
             return `${label}: ${value}`;
-          }
-        }
-      }
+          },
+        },
+      },
     },
     scales: {
       y: {
@@ -87,13 +80,13 @@ export function ReturnsAnalysisComparison({ datasetStats }) {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Total Returns'
+          text: 'Total Returns',
         },
         ticks: {
-          callback: function(value) {
+          callback: function (value) {
             return value.toLocaleString();
-          }
-        }
+          },
+        },
       },
       y1: {
         type: 'linear',
@@ -102,18 +95,18 @@ export function ReturnsAnalysisComparison({ datasetStats }) {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Return Rate (%)'
+          text: 'Return Rate (%)',
         },
         grid: {
-          drawOnChartArea: false
+          drawOnChartArea: false,
         },
         ticks: {
-          callback: function(value) {
+          callback: function (value) {
             return value.toFixed(1) + '%';
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 
   return (

@@ -1,0 +1,14 @@
+node_modules
+dist
+build
+coverage
+.git
+.cache
+package-lock.json
+*.min.js
+*.min.css
+public
+Retail.*
+Digital.*
+sample-data
+.husky

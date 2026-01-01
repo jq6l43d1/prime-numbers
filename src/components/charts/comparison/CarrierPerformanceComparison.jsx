@@ -6,18 +6,11 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function CarrierPerformanceComparison({ datasetStats }) {
   if (!datasetStats || datasetStats.length === 0) {
@@ -77,13 +70,13 @@ export function CarrierPerformanceComparison({ datasetStats }) {
       data: data,
       backgroundColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
       borderColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
-      borderWidth: 1
+      borderWidth: 1,
     };
   });
 
   const chartData = {
     labels: allCarriers,
-    datasets: datasets
+    datasets: datasets,
   };
 
   const options = {
@@ -96,29 +89,29 @@ export function CarrierPerformanceComparison({ datasetStats }) {
         text: 'Carrier Performance Comparison',
         font: {
           size: 16,
-          weight: 'bold'
-        }
-      }
+          weight: 'bold',
+        },
+      },
     },
     scales: {
       x: {
         beginAtZero: true,
         ticks: {
-          callback: function(value) {
+          callback: function (value) {
             return value.toLocaleString();
-          }
+          },
         },
         title: {
           display: true,
-          text: 'Number of Shipments'
-        }
+          text: 'Number of Shipments',
+        },
       },
       y: {
         grid: {
-          display: false
-        }
-      }
-    }
+          display: false,
+        },
+      },
+    },
   };
 
   return (

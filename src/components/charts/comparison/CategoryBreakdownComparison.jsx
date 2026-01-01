@@ -6,18 +6,11 @@ import {
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export function CategoryBreakdownComparison({ datasetStats }) {
   if (!datasetStats || datasetStats.length === 0) {
@@ -50,13 +43,13 @@ export function CategoryBreakdownComparison({ datasetStats }) {
       data: data,
       backgroundColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
       borderColor: CHART_COLOR_PALETTE[index % CHART_COLOR_PALETTE.length],
-      borderWidth: 1
+      borderWidth: 1,
     };
   });
 
   const chartData = {
     labels: allCategories,
-    datasets: datasets
+    datasets: datasets,
   };
 
   const options = {
@@ -68,21 +61,21 @@ export function CategoryBreakdownComparison({ datasetStats }) {
         text: 'Category Breakdown Comparison',
         font: {
           size: 16,
-          weight: 'bold'
-        }
-      }
+          weight: 'bold',
+        },
+      },
     },
     scales: {
       ...BAR_CHART_OPTIONS.scales,
       y: {
         ...BAR_CHART_OPTIONS.scales.y,
         ticks: {
-          callback: function(value) {
+          callback: function (value) {
             return '$' + value.toLocaleString();
-          }
-        }
-      }
-    }
+          },
+        },
+      },
+    },
   };
 
   return (

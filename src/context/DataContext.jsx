@@ -16,9 +16,13 @@ export function DataProvider({ children }) {
   const [viewMode, setViewMode] = useState('single'); // 'single', 'compare', 'combined'
 
   // Date filtering
-  const [dateFilter, setDateFilter] = useState({ startDate: null, endDate: null, label: 'All Time' });
+  const [dateFilter, setDateFilter] = useState({
+    startDate: null,
+    endDate: null,
+    label: 'All Time',
+  });
 
-  const setData = (processedData) => {
+  const setData = processedData => {
     setOrders(processedData.orders || []);
     setReturns(processedData.returns || []);
     setPhotos(processedData.photos || []);
@@ -36,7 +40,7 @@ export function DataProvider({ children }) {
       returns: processedData.returns || [],
       photos: processedData.photos || [],
       summary: processedData.summary || null,
-      ...metadata
+      ...metadata,
     };
 
     setDatasets(prev => {
@@ -52,7 +56,7 @@ export function DataProvider({ children }) {
   };
 
   // Remove a dataset
-  const removeDataset = (datasetId) => {
+  const removeDataset = datasetId => {
     setDatasets(prev => prev.filter(ds => ds.id !== datasetId));
 
     // If we removed the active dataset, switch to the first remaining one
@@ -68,7 +72,7 @@ export function DataProvider({ children }) {
   };
 
   // Switch active dataset
-  const switchDataset = (datasetId) => {
+  const switchDataset = datasetId => {
     const dataset = datasets.find(ds => ds.id === datasetId);
     if (dataset) {
       setActiveDatasetId(datasetId);
@@ -88,8 +92,8 @@ export function DataProvider({ children }) {
         totalSpent: 0,
         totalOrders: 0,
         averageOrderValue: 0,
-        totalItems: 0
-      }
+        totalItems: 0,
+      },
     };
 
     datasets.forEach(dataset => {
@@ -104,9 +108,10 @@ export function DataProvider({ children }) {
       }
     });
 
-    combined.summary.averageOrderValue = combined.summary.totalOrders > 0
-      ? combined.summary.totalSpent / combined.summary.totalOrders
-      : 0;
+    combined.summary.averageOrderValue =
+      combined.summary.totalOrders > 0
+        ? combined.summary.totalSpent / combined.summary.totalOrders
+        : 0;
 
     return combined;
   };
@@ -128,7 +133,7 @@ export function DataProvider({ children }) {
 
   // Filter orders by date range - memoized for performance
   const getFilteredOrders = useMemo(() => {
-    return (ordersToFilter) => {
+    return ordersToFilter => {
       if (!dateFilter.startDate && !dateFilter.endDate) {
         return ordersToFilter;
       }
@@ -167,7 +172,7 @@ export function DataProvider({ children }) {
     // Date filtering
     dateFilter,
     setDateFilter,
-    getFilteredOrders
+    getFilteredOrders,
   };
 
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
