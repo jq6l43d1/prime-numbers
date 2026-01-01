@@ -14,6 +14,11 @@ export function AmazonAnniversaryChart({ orders }) {
     return dateA - dateB;
   });
 
+  // Filter out Prime Membership Fee for first order calculation
+  const nonPrimeOrders = sortedOrders.filter(
+    order => !order.productName || !order.productName.toLowerCase().includes('prime membership')
+  );
+
   // Calculate years as customer
   const firstOrderDate = new Date(sortedOrders[0].orderDate);
   const lastOrderDate = new Date(sortedOrders[sortedOrders.length - 1].orderDate);
@@ -21,8 +26,8 @@ export function AmazonAnniversaryChart({ orders }) {
     1
   );
 
-  // First order details
-  const firstOrder = sortedOrders[0];
+  // First order details (excluding Prime Membership)
+  const firstOrder = nonPrimeOrders.length > 0 ? nonPrimeOrders[0] : sortedOrders[0];
 
   // Most expensive order
   const mostExpensiveOrder = orders.reduce((max, order) => {
