@@ -204,7 +204,8 @@ export function TimePeriodComparison() {
                   className={`text-sm font-semibold ${calculateChange(stats1.totalOrders, stats2.totalOrders) > 0 ? 'text-red-600' : 'text-green-600'}`}
                 >
                   {calculateChange(stats1.totalOrders, stats2.totalOrders) > 0 ? '↑' : '↓'}{' '}
-                  {Math.absformatNumber(calculateChange(stats1.totalOrders, stats2.totalOrders), 1)}%
+                  {Math.absformatNumber(calculateChange(stats1.totalOrders, stats2.totalOrders), 1)}
+                  %
                 </div>
               </div>
             </div>
@@ -231,7 +232,10 @@ export function TimePeriodComparison() {
                   className={`text-sm font-semibold ${calculateChange(stats1.avgOrderValue, stats2.avgOrderValue) > 0 ? 'text-red-600' : 'text-green-600'}`}
                 >
                   {calculateChange(stats1.avgOrderValue, stats2.avgOrderValue) > 0 ? '↑' : '↓'}{' '}
-                  {Math.absformatNumber(calculateChange(stats1.avgOrderValue, stats2.avgOrderValue), 1)}
+                  {Math.absformatNumber(
+                    calculateChange(stats1.avgOrderValue, stats2.avgOrderValue),
+                    1
+                  )}
                   %
                 </div>
               </div>

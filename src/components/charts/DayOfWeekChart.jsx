@@ -60,7 +60,10 @@ export function DayOfWeekChart({ orders, onDayClick }) {
         callbacks: {
           afterLabel: context => {
             const dayIndex = context.dataIndex;
-            return [`Total Spent: $${formatNumber(daySpending[dayIndex], 2)}`, 'Click to view details'];
+            return [
+              `Total Spent: $${formatNumber(daySpending[dayIndex], 2)}`,
+              'Click to view details',
+            ];
           },
         },
         backgroundColor: 'rgba(0, 0, 0, 0.8)',

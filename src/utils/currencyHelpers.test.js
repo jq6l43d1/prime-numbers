@@ -237,11 +237,7 @@ describe('detectPrimaryCurrency', () => {
   });
 
   it('should handle ties by returning first currency', () => {
-    const orders = [
-      { currency: 'USD' },
-      { currency: 'EUR' },
-      { currency: 'GBP' },
-    ];
+    const orders = [{ currency: 'USD' }, { currency: 'EUR' }, { currency: 'GBP' }];
     // Should return one of them based on iteration order
     const result = detectPrimaryCurrency(orders);
     expect(['USD', 'EUR', 'GBP']).toContain(result);

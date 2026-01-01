@@ -1,5 +1,5 @@
 import { useData } from '../../context/DataContext';
-import { useStatistics } from '../../hooks/useStatistics';
+import { calculateAllStatistics } from '../../utils/statistics';
 import { formatNumber } from '../../utils/currencyHelpers';
 import { SpendingOverTimeComparison } from '../charts/comparison/SpendingOverTimeComparison';
 import { CategoryBreakdownComparison } from '../charts/comparison/CategoryBreakdownComparison';
@@ -79,7 +79,7 @@ export function ComparisonDashboard() {
 
   // Calculate statistics for each dataset
   const datasetStats = datasets.map((dataset, index) => {
-    const stats = useStatistics(dataset.orders, dataset.returns);
+    const stats = calculateAllStatistics(dataset.orders, dataset.returns);
     return {
       dataset,
       stats,
@@ -123,7 +123,7 @@ export function ComparisonDashboard() {
       <div className="card bg-white shadow-lg mb-8">
         <h3 className="text-lg font-bold text-gray-900 mb-4">Files</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-          {datasetStats.map((item, index) => (
+          {datasetStats.map(item => (
             <div
               key={item.dataset.id}
               className={`flex items-center gap-3 p-3 rounded-lg border-2 ${item.borderColor} ${item.bgColor}`}
@@ -312,7 +312,6 @@ export function ComparisonDashboard() {
               const highest = datasetStats.reduce((max, item) =>
                 item.stats.overview.totalSpent > max.stats.overview.totalSpent ? item : max
               );
-              const highestIndex = datasetStats.indexOf(highest);
               return (
                 <div className="flex items-center gap-2">
                   <div className={`w-3 h-3 rounded-full ${highest.color}`}></div>
@@ -334,8 +333,8 @@ export function ComparisonDashboard() {
                 <div className="flex items-center gap-2">
                   <div className={`w-3 h-3 rounded-full ${highest.color}`}></div>
                   <p className="text-gray-700 flex-1">
-                    {highest.dataset.name} with {formatNumber(highest.stats.overview.totalOrders, 0)}{' '}
-                    orders
+                    {highest.dataset.name} with{' '}
+                    {formatNumber(highest.stats.overview.totalOrders, 0)} orders
                   </p>
                 </div>
               );
