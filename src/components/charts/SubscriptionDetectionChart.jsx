@@ -170,7 +170,7 @@ export function SubscriptionDetectionChart({ orders, onSubscriptionClick }) {
         </div>
         <div className="bg-gradient-to-br from-violet-50 to-violet-100 rounded-lg p-3 text-center">
           <div className="text-2xl font-bold text-violet-900">
-            ${formatNumber(totalRecurringSpend, 0)}
+            ${formatNumber(totalRecurringSpend, 2)}
           </div>
           <div className="text-xs text-violet-700 font-medium">Total Spent</div>
         </div>

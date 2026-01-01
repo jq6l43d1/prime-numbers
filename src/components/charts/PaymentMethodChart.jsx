@@ -122,7 +122,7 @@ export function PaymentMethodChart({ orders, onClick }) {
             return [
               `${method}`,
               `Spending: $${formatNumber(spending, 2)}`,
-              `Orders: ${count}`,
+              `Orders: ${formatNumber(count, 0)}`,
               `Percentage: ${percentage}%`,
             ];
           },
