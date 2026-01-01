@@ -1,5 +1,6 @@
 import { StatCard } from './StatCard';
 import { formatDate } from '../../utils/dateHelpers';
+import { formatNumber } from '../../utils/currencyHelpers';
 
 export function StatsGrid({ statistics }) {
   if (!statistics || !statistics.overview) {
@@ -29,7 +30,7 @@ export function StatsGrid({ statistics }) {
         value={overview.avgOrderValue}
         format="currency"
         icon="📊"
-        subtitle={`${overview.avgItemsPerOrder.toFixed(1)} items/order`}
+        subtitle={`${formatNumber(overview.avgItemsPerOrder, 1)} items/order`}
       />
       <StatCard
         title="Total Savings"

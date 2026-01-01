@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { formatNumber } from '../../utils/currencyHelpers';
 
 export function DrillDownModal({ isOpen, onClose, data, type }) {
   if (!isOpen) return null;
@@ -24,7 +25,7 @@ export function DrillDownModal({ isOpen, onClose, data, type }) {
           </div>
           <div className="bg-purple-50 rounded-lg p-4">
             <p className="text-sm text-gray-600 mb-1">Total Spent</p>
-            <p className="text-2xl font-bold text-purple-700">${totalSpent.toFixed(2)}</p>
+            <p className="text-2xl font-bold text-purple-700">${formatNumber(totalSpent, 2)}</p>
           </div>
         </div>
 
@@ -53,7 +54,9 @@ export function DrillDownModal({ isOpen, onClose, data, type }) {
                     )}
                   </div>
                   <div className="text-right ml-4">
-                    <p className="font-bold text-gray-900">${(order.totalOwed || 0).toFixed(2)}</p>
+                    <p className="font-bold text-gray-900">
+                      ${formatNumber(order.totalOwed || 0, 2)}
+                    </p>
                     <p className="text-sm text-gray-600">Qty: {order.quantity || 1}</p>
                   </div>
                 </div>
@@ -103,11 +106,11 @@ export function DrillDownModal({ isOpen, onClose, data, type }) {
           </div>
           <div className="bg-green-50 rounded-lg p-4">
             <p className="text-sm text-gray-600 mb-1">Average Order</p>
-            <p className="text-2xl font-bold text-green-700">${avgOrderValue.toFixed(2)}</p>
+            <p className="text-2xl font-bold text-green-700">${formatNumber(avgOrderValue, 2)}</p>
           </div>
           <div className="bg-purple-50 rounded-lg p-4">
             <p className="text-sm text-gray-600 mb-1">Total Spent</p>
-            <p className="text-2xl font-bold text-purple-700">${totalSpent.toFixed(2)}</p>
+            <p className="text-2xl font-bold text-purple-700">${formatNumber(totalSpent, 2)}</p>
           </div>
         </div>
 
@@ -126,7 +129,7 @@ export function DrillDownModal({ isOpen, onClose, data, type }) {
                       {product.orders} orders • Qty: {product.quantity}
                     </p>
                   </div>
-                  <p className="font-bold text-gray-900">${product.spent.toFixed(2)}</p>
+                  <p className="font-bold text-gray-900">${formatNumber(product.spent, 2)}</p>
                 </div>
               </div>
             ))}
@@ -173,7 +176,7 @@ export function DrillDownModal({ isOpen, onClose, data, type }) {
           </div>
           <div className="bg-purple-50 rounded-lg p-4">
             <p className="text-sm text-gray-600 mb-1">Total Spent</p>
-            <p className="text-2xl font-bold text-purple-700">${totalSpent.toFixed(2)}</p>
+            <p className="text-2xl font-bold text-purple-700">${formatNumber(totalSpent, 2)}</p>
           </div>
         </div>
 
@@ -188,9 +191,9 @@ export function DrillDownModal({ isOpen, onClose, data, type }) {
                     <p className="text-sm text-gray-600">{cat.orders} orders</p>
                   </div>
                   <div className="text-right">
-                    <p className="font-bold text-gray-900">${cat.spent.toFixed(2)}</p>
+                    <p className="font-bold text-gray-900">${formatNumber(cat.spent, 2)}</p>
                     <p className="text-sm text-gray-600">
-                      {((cat.spent / totalSpent) * 100).toFixed(1)}%
+                      {formatNumber((cat.spent / totalSpent) * 100, 1)}%
                     </p>
                   </div>
                 </div>

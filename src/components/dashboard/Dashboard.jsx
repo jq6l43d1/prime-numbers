@@ -38,6 +38,7 @@ import { ClickableStatCard } from './ClickableStatCard';
 import { ExportButton } from '../export/ExportButton';
 import { useStatistics } from '../../hooks/useStatistics';
 import { useData } from '../../context/DataContext';
+import { formatNumber } from '../../utils/currencyHelpers';
 import { useState, useMemo, useTransition } from 'react';
 
 export function Dashboard() {
@@ -128,7 +129,7 @@ export function Dashboard() {
     openDrillDown(
       {
         title: monthData.month,
-        subtitle: `${monthOrders.length} orders • $${monthData.amount.toFixed(2)} spent`,
+        subtitle: `${monthOrders.length} orders • $${formatNumber(monthData.amount, 2)} spent`,
         orders: monthOrders,
       },
       'time'
@@ -144,7 +145,7 @@ export function Dashboard() {
     openDrillDown(
       {
         title: `${yearData.year}`,
-        subtitle: `${yearOrders.length} orders • $${yearData.amount.toFixed(2)} spent`,
+        subtitle: `${yearOrders.length} orders • $${formatNumber(yearData.amount, 2)} spent`,
         orders: yearOrders,
       },
       'time'
@@ -160,7 +161,7 @@ export function Dashboard() {
     openDrillDown(
       {
         title: `${dayData.dayName} Orders`,
-        subtitle: `${dayOrders.length} orders • $${dayData.spending.toFixed(2)} spent`,
+        subtitle: `${dayOrders.length} orders • $${formatNumber(dayData.spending, 2)} spent`,
         orders: dayOrders,
       },
       'time'
@@ -171,7 +172,7 @@ export function Dashboard() {
     openDrillDown(
       {
         title: subscriptionData.product,
-        subtitle: `${subscriptionData.count} orders across ${subscriptionData.frequency} months • $${subscriptionData.totalSpent.toFixed(2)} total`,
+        subtitle: `${subscriptionData.count} orders across ${subscriptionData.frequency} months • $${formatNumber(subscriptionData.totalSpent, 2)} total`,
         orders: subscriptionData.orders,
       },
       'product'
@@ -182,7 +183,7 @@ export function Dashboard() {
     openDrillDown(
       {
         title: destinationData.title,
-        subtitle: `${destinationData.orders.length} orders • $${destinationData.metadata.totalSpent.toFixed(2)} total`,
+        subtitle: `${destinationData.orders.length} orders • $${formatNumber(destinationData.metadata.totalSpent, 2)} total`,
         orders: destinationData.orders,
         metadata: {
           address: destinationData.metadata.fullAddress,
@@ -196,7 +197,7 @@ export function Dashboard() {
     openDrillDown(
       {
         title: merchantData.merchant,
-        subtitle: `${merchantData.orderCount} orders • $${merchantData.totalSpent.toFixed(2)} total`,
+        subtitle: `${merchantData.orderCount} orders • $${formatNumber(merchantData.totalSpent, 2)} total`,
         orders: merchantData.orders,
       },
       'merchant'
@@ -212,7 +213,7 @@ export function Dashboard() {
     openDrillDown(
       {
         title: productData.name,
-        subtitle: `${productData.quantity} items ordered • $${productData.totalSpent.toFixed(2)} total`,
+        subtitle: `${productData.quantity} items ordered • $${formatNumber(productData.totalSpent, 2)} total`,
         orders: productOrders,
       },
       'product'
@@ -299,7 +300,7 @@ export function Dashboard() {
     openDrillDown(
       {
         title: `Payment: ${methodData.method}`,
-        subtitle: `${methodData.count} orders • $${methodData.totalSpent.toFixed(2)} total`,
+        subtitle: `${methodData.count} orders • $${formatNumber(methodData.totalSpent, 2)} total`,
         orders: methodData.orders,
       },
       'payment'
@@ -310,7 +311,7 @@ export function Dashboard() {
     openDrillDown(
       {
         title: `${seasonData.season} ${seasonData.year}`,
-        subtitle: `${seasonData.orders.length} orders • $${seasonData.totalSpent.toFixed(2)} total`,
+        subtitle: `${seasonData.orders.length} orders • $${formatNumber(seasonData.totalSpent, 2)} total`,
         orders: seasonData.orders,
       },
       'seasonal'
@@ -321,7 +322,7 @@ export function Dashboard() {
     openDrillDown(
       {
         title: giftData.type,
-        subtitle: `${giftData.orders.length} orders • $${giftData.totalSpent.toFixed(2)} total`,
+        subtitle: `${giftData.orders.length} orders • $${formatNumber(giftData.totalSpent, 2)} total`,
         orders: giftData.orders,
       },
       giftData.isGift ? 'gift' : 'personal'
@@ -332,7 +333,7 @@ export function Dashboard() {
     openDrillDown(
       {
         title: `Condition: ${conditionData.condition}`,
-        subtitle: `${conditionData.count} orders • ${conditionData.items} items • $${conditionData.totalSpent.toFixed(2)} total`,
+        subtitle: `${conditionData.count} orders • ${conditionData.items} items • $${formatNumber(conditionData.totalSpent, 2)} total`,
         orders: conditionData.orders,
       },
       'condition'
@@ -343,7 +344,7 @@ export function Dashboard() {
     openDrillDown(
       {
         title: `Fulfillment: ${speedData.bucket}`,
-        subtitle: `${speedData.count} orders • $${speedData.totalSpent.toFixed(2)} total`,
+        subtitle: `${speedData.count} orders • $${formatNumber(speedData.totalSpent, 2)} total`,
         orders: speedData.orders,
       },
       'fulfillment'
@@ -420,7 +421,7 @@ export function Dashboard() {
           <ClickableStatCard
             icon="💰"
             label="Total Spending"
-            value={`$${statistics.overview.totalSpent.toFixed(2)}`}
+            value={`$${formatNumber(statistics.overview.totalSpent, 2)}`}
             subtitle={`${statistics.overview.totalOrders} orders`}
             gradient="from-blue-500 to-blue-600"
             onClick={() =>
@@ -443,7 +444,7 @@ export function Dashboard() {
             icon="📦"
             label="Total Items"
             value={statistics.overview.totalItems}
-            subtitle={`${statistics.overview.avgItemsPerOrder.toFixed(1)} per order`}
+            subtitle={`${formatNumber(statistics.overview.avgItemsPerOrder, 1)} per order`}
             gradient="from-green-500 to-green-600"
             onClick={() =>
               openDrillDown(
@@ -465,7 +466,7 @@ export function Dashboard() {
             icon="🎯"
             label="Top Category"
             value={statistics.spending.byCategory[0]?.category.substring(0, 15) || 'N/A'}
-            subtitle={`$${statistics.spending.byCategory[0]?.amount.toFixed(2) || '0'}`}
+            subtitle={`$${formatNumber(statistics.spending.byCategory[0]?.amount || 0, 2)}`}
             gradient="from-purple-500 to-purple-600"
             onClick={() => {
               if (statistics.spending.byCategory[0]) {
@@ -481,7 +482,7 @@ export function Dashboard() {
           <ClickableStatCard
             icon="📈"
             label="Avg Order Value"
-            value={`$${statistics.overview.avgOrderValue.toFixed(2)}`}
+            value={`$${formatNumber(statistics.overview.avgOrderValue, 2)}`}
             subtitle="per order"
             gradient="from-orange-500 to-orange-600"
             onClick={() =>
@@ -885,7 +886,7 @@ export function Dashboard() {
               <p className="text-gray-600">
                 You spend an average of{' '}
                 <span className="font-bold text-primary">
-                  ${statistics.spending.monthlyAverage.toFixed(2)}
+                  ${formatNumber(statistics.spending.monthlyAverage, 2)}
                 </span>{' '}
                 per month
               </p>
@@ -896,7 +897,7 @@ export function Dashboard() {
                 <p className="text-gray-600">
                   {statistics.spending.highestMonth.month} with{' '}
                   <span className="font-bold text-primary">
-                    ${statistics.spending.highestMonth.amount.toFixed(2)}
+                    ${formatNumber(statistics.spending.highestMonth.amount, 2)}
                   </span>{' '}
                   spent
                 </p>
@@ -907,7 +908,7 @@ export function Dashboard() {
               <p className="text-gray-600">
                 You saved{' '}
                 <span className="font-bold text-green-600">
-                  ${statistics.overview.totalDiscounts.toFixed(2)}
+                  ${formatNumber(statistics.overview.totalDiscounts, 2)}
                 </span>{' '}
                 with discounts
               </p>
@@ -917,7 +918,7 @@ export function Dashboard() {
               <p className="text-gray-600">
                 You order something every{' '}
                 <span className="font-bold text-primary">
-                  {statistics.trends.avgDaysBetweenOrders.toFixed(0)}
+                  {formatNumber(statistics.trends.avgDaysBetweenOrders, 0)}
                 </span>{' '}
                 days
               </p>
