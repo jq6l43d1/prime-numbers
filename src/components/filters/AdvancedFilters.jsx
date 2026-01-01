@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import { formatNumber } from '../../utils/currencyHelpers';
 
 export function AdvancedFilters({ orders, onFilteredOrdersChange }) {
   const [priceRange, setPriceRange] = useState({ min: '', max: '' });
@@ -199,8 +200,11 @@ export function AdvancedFilters({ orders, onFilteredOrdersChange }) {
           {hasActiveFilters && (
             <div className="mt-4 pt-4 border-t border-gray-200">
               <p className="text-sm text-gray-600">
-                Showing <span className="font-bold text-blue-600">{filteredOrders.length}</span> of{' '}
-                {orders.length} orders
+                Showing{' '}
+                <span className="font-bold text-blue-600">
+                  {formatNumber(filteredOrders.length)}
+                </span>{' '}
+                of {formatNumber(orders.length)} orders
               </p>
             </div>
           )}

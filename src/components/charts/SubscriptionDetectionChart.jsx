@@ -157,7 +157,9 @@ export function SubscriptionDetectionChart({ orders, onSubscriptionClick }) {
       {/* Summary Cards */}
       <div className="grid grid-cols-3 gap-4">
         <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-3 text-center">
-          <div className="text-2xl font-bold text-purple-900">{subscriptions.length}</div>
+          <div className="text-2xl font-bold text-purple-900">
+            {formatNumber(subscriptions.length)}
+          </div>
           <div className="text-xs text-purple-700 font-medium">Recurring Items</div>
         </div>
         <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg p-3 text-center">

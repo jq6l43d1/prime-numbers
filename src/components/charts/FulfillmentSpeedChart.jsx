@@ -199,12 +199,14 @@ export function FulfillmentSpeedChart({ orders, onClick }) {
           </div>
 
           <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded p-3 text-center">
-            <div className="text-2xl font-bold text-blue-700">{fastShipped}</div>
+            <div className="text-2xl font-bold text-blue-700">{formatNumber(fastShipped)}</div>
             <div className="text-xs text-blue-600 font-medium">Fast (≤2 days)</div>
           </div>
 
           <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded p-3 text-center">
-            <div className="text-2xl font-bold text-purple-700">{fastPercentage}%</div>
+            <div className="text-2xl font-bold text-purple-700">
+              {formatNumber(fastPercentage, 1)}%
+            </div>
             <div className="text-xs text-purple-600 font-medium">Fast Rate</div>
           </div>
         </div>

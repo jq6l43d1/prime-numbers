@@ -17,11 +17,11 @@ export function DrillDownModal({ isOpen, onClose, data, type }) {
         <div className="grid grid-cols-3 gap-4">
           <div className="bg-blue-50 rounded-lg p-4">
             <p className="text-sm text-gray-600 mb-1">Total Orders</p>
-            <p className="text-2xl font-bold text-blue-700">{data.orders.length}</p>
+            <p className="text-2xl font-bold text-blue-700">{formatNumber(data.orders.length)}</p>
           </div>
           <div className="bg-green-50 rounded-lg p-4">
             <p className="text-sm text-gray-600 mb-1">Total Quantity</p>
-            <p className="text-2xl font-bold text-green-700">{totalQuantity}</p>
+            <p className="text-2xl font-bold text-green-700">{formatNumber(totalQuantity)}</p>
           </div>
           <div className="bg-purple-50 rounded-lg p-4">
             <p className="text-sm text-gray-600 mb-1">Total Spent</p>
@@ -102,7 +102,7 @@ export function DrillDownModal({ isOpen, onClose, data, type }) {
         <div className="grid grid-cols-3 gap-4">
           <div className="bg-blue-50 rounded-lg p-4">
             <p className="text-sm text-gray-600 mb-1">Total Orders</p>
-            <p className="text-2xl font-bold text-blue-700">{data.orders.length}</p>
+            <p className="text-2xl font-bold text-blue-700">{formatNumber(data.orders.length)}</p>
           </div>
           <div className="bg-green-50 rounded-lg p-4">
             <p className="text-sm text-gray-600 mb-1">Average Order</p>
@@ -126,7 +126,7 @@ export function DrillDownModal({ isOpen, onClose, data, type }) {
                   <div>
                     <p className="font-medium text-gray-900">{product.name}</p>
                     <p className="text-sm text-gray-600">
-                      {product.orders} orders • Qty: {product.quantity}
+                      {formatNumber(product.orders)} orders • Qty: {formatNumber(product.quantity)}
                     </p>
                   </div>
                   <p className="font-bold text-gray-900">${formatNumber(product.spent, 2)}</p>
@@ -168,11 +168,11 @@ export function DrillDownModal({ isOpen, onClose, data, type }) {
         <div className="grid grid-cols-3 gap-4">
           <div className="bg-blue-50 rounded-lg p-4">
             <p className="text-sm text-gray-600 mb-1">Total Orders</p>
-            <p className="text-2xl font-bold text-blue-700">{data.orders.length}</p>
+            <p className="text-2xl font-bold text-blue-700">{formatNumber(data.orders.length)}</p>
           </div>
           <div className="bg-green-50 rounded-lg p-4">
             <p className="text-sm text-gray-600 mb-1">Total Items</p>
-            <p className="text-2xl font-bold text-green-700">{totalQuantity}</p>
+            <p className="text-2xl font-bold text-green-700">{formatNumber(totalQuantity)}</p>
           </div>
           <div className="bg-purple-50 rounded-lg p-4">
             <p className="text-sm text-gray-600 mb-1">Total Spent</p>

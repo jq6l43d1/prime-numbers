@@ -98,8 +98,8 @@ export function ShippingCostAnalysisComparison({ datasetStats }) {
 
             return [
               `${label}: $${formatNumber(value, 2)}`,
-              `Free Shipping: ${shippingStats.freeShipping} orders`,
-              `Paid Shipping: ${shippingStats.paidShipping} orders`,
+              `Free Shipping: ${formatNumber(shippingStats.freeShipping)} orders`,
+              `Paid Shipping: ${formatNumber(shippingStats.paidShipping)} orders`,
               `Avg Paid: $${formatNumber(avgPaidShipping, 2)}`,
             ];
           },

@@ -217,16 +217,18 @@ export function ShippingDestinationsChart({ orders, onDrillDown }) {
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-blue-50 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Unique Addresses</p>
-          <p className="text-2xl font-bold text-blue-600">{uniqueAddresses}</p>
+          <p className="text-2xl font-bold text-blue-600">{formatNumber(uniqueAddresses)}</p>
         </div>
         <div className="bg-indigo-50 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Primary Address</p>
-          <p className="text-2xl font-bold text-indigo-600">{primaryAddressPercent}%</p>
+          <p className="text-2xl font-bold text-indigo-600">
+            {formatNumber(primaryAddressPercent, 1)}%
+          </p>
           <p className="text-xs text-gray-500">of orders</p>
         </div>
         <div className="bg-purple-50 rounded-lg p-4">
           <p className="text-sm text-gray-600 mb-1">Other Addresses</p>
-          <p className="text-2xl font-bold text-purple-600">{secondaryShipments}</p>
+          <p className="text-2xl font-bold text-purple-600">{formatNumber(secondaryShipments)}</p>
           <p className="text-xs text-gray-500">shipments</p>
         </div>
       </div>

@@ -88,6 +88,9 @@ export function ShippingCostAnalysisChart({ orders }) {
         },
         ticks: {
           font: { size: 12 },
+          callback: function (value) {
+            return formatNumber(value);
+          },
         },
       },
       x: {
@@ -109,14 +112,14 @@ export function ShippingCostAnalysisChart({ orders }) {
       <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
         <div className="bg-green-50 rounded-lg p-3 border border-green-200">
           <p className="font-semibold text-gray-700 mb-1">Free Shipping</p>
-          <p className="text-2xl font-bold text-green-600">{shippingAnalysis.free}</p>
+          <p className="text-2xl font-bold text-green-600">{formatNumber(shippingAnalysis.free)}</p>
           <p className="text-gray-600 text-xs mt-1">
             ${formatNumber(shippingAnalysis.freeTotal, 2)} in orders
           </p>
         </div>
         <div className="bg-red-50 rounded-lg p-3 border border-red-200">
           <p className="font-semibold text-gray-700 mb-1">Paid Shipping</p>
-          <p className="text-2xl font-bold text-red-600">{shippingAnalysis.paid}</p>
+          <p className="text-2xl font-bold text-red-600">{formatNumber(shippingAnalysis.paid)}</p>
           <p className="text-gray-600 text-xs mt-1">
             ${formatNumber(shippingAnalysis.paidTotal, 2)} total
           </p>
