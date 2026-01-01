@@ -96,6 +96,10 @@ export async function processAmazonData(zipFile, onProgress = () => {}) {
 
     onProgress({ step: 'complete', progress: 100, message: 'Processing complete!' });
 
+    // Calculate summary statistics
+    const totalSpent = sortedOrders.reduce((sum, order) => sum + (order.totalOwed || 0), 0);
+    const totalItems = sortedOrders.reduce((sum, order) => sum + (order.quantity || 0), 0);
+
     return {
       success: true,
       orders: sortedOrders,
@@ -103,6 +107,8 @@ export async function processAmazonData(zipFile, onProgress = () => {}) {
       photos: categorizedFiles.photos,
       summary: {
         totalOrders: sortedOrders.length,
+        totalSpent: totalSpent,
+        totalItems: totalItems,
         retailOrders: sortedOrders.filter(o => !o.isDigital).length,
         digitalOrders: sortedOrders.filter(o => o.isDigital).length,
         totalReturns: returns.length,

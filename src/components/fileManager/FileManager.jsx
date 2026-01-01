@@ -91,7 +91,7 @@ export function FileManager() {
               ×
             </button>
 
-            <div className="pr-8">
+            <div className="pr-8 pb-8">
               <div className="flex items-start gap-2 mb-2">
                 <span className="text-2xl">📦</span>
                 <div className="flex-1 min-w-0">
@@ -123,7 +123,7 @@ export function FileManager() {
             </div>
 
             {activeDatasetId === dataset.id && viewMode === 'single' && (
-              <div className="absolute bottom-2 right-2">
+              <div className="absolute bottom-3 right-3">
                 <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-indigo-600 text-white">
                   Active
                 </span>
