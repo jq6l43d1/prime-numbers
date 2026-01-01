@@ -78,7 +78,7 @@ export function RepeatPurchaseChart({ orders }) {
           label: function (context) {
             const product = repeatData[context.dataIndex];
             return [
-              `Purchased: ${product.count} times`,
+              `Purchased: ${formatNumber(product.count, 0)} times`,
               `Total spent: $${formatNumber(product.totalSpent, 2)}`,
               `ASIN: ${product.asin || 'N/A'}`,
             ];

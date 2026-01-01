@@ -12,6 +12,7 @@ import {
   Filler,
 } from 'chart.js';
 import { LINE_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
+import { formatNumber } from '../../../utils/currencyHelpers';
 
 ChartJS.register(
   CategoryScale,
@@ -25,11 +26,11 @@ ChartJS.register(
 );
 
 export function CumulativeOrdersComparison({ datasetStats }) {
-  if (!datasetStats || datasetStats.length === 0) {
-    return <div className="text-center text-gray-500 py-8">No data available</div>;
-  }
-
   const cumulativeData = useMemo(() => {
+    if (!datasetStats || datasetStats.length === 0) {
+      return [];
+    }
+
     return datasetStats.map(item => {
       const orders = [...item.dataset.orders].sort(
         (a, b) => new Date(a.orderDate) - new Date(b.orderDate)
@@ -54,6 +55,10 @@ export function CumulativeOrdersComparison({ datasetStats }) {
       return { monthlyData, name: item.dataset.name };
     });
   }, [datasetStats]);
+
+  if (cumulativeData.length === 0) {
+    return <div className="text-center text-gray-500 py-8">No data available</div>;
+  }
 
   // Get all unique months
   const allMonthsSet = new Set();
@@ -106,7 +111,7 @@ export function CumulativeOrdersComparison({ datasetStats }) {
       tooltip: {
         callbacks: {
           label: context => {
-            return `${context.dataset.label}: ${context.parsed.y} orders`;
+            return `${context.dataset.label}: ${formatNumber(context.parsed.y)} orders`;
           },
         },
       },

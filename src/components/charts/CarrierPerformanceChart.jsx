@@ -49,7 +49,7 @@ export function CarrierPerformanceChart({ orders, onCarrierClick }) {
     datasets: [
       {
         label: 'Number of Shipments',
-        data: sortedCarriers.map(([_, data]) => data.count),
+        data: sortedCarriers.map(([, data]) => data.count),
         backgroundColor: 'rgba(59, 130, 246, 0.8)',
         borderColor: 'rgba(59, 130, 246, 1)',
         borderWidth: 2,
@@ -91,9 +91,9 @@ export function CarrierPerformanceChart({ orders, onCarrierClick }) {
           },
           label: function (context) {
             const value = context.parsed.x;
-            const total = sortedCarriers.reduce((sum, [_, data]) => sum + data.count, 0);
+            const total = sortedCarriers.reduce((sum, [, data]) => sum + data.count, 0);
             const percentage = formatNumber((value / total) * 100, 1);
-            return `${value} shipments (${percentage}%)`;
+            return `${formatNumber(value, 0)} shipments (${percentage}%)`;
           },
         },
       },

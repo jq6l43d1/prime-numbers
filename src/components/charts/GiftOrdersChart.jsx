@@ -126,7 +126,7 @@ export function GiftOrdersChart({ orders, onClick }) {
             if (context.dataset.yAxisID === 'y1') {
               label += '$' + formatNumber(context.parsed.y, 2);
             } else {
-              label += context.parsed.y;
+              label += formatNumber(context.parsed.y);
             }
             return label;
           },

@@ -1,5 +1,5 @@
 import { Bar } from 'react-chartjs-2';
-import { formatNumber } from '../../../utils/currencyHelpers';
+import { formatNumber, formatCurrency } from '../../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -101,7 +101,7 @@ export function GiftOrdersComparison({ datasetStats }) {
         ...BAR_CHART_OPTIONS.scales.y,
         ticks: {
           callback: function (value) {
-            return '$' + value.toLocaleString();
+            return formatCurrency(value);
           },
         },
       },

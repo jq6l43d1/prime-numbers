@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { formatNumber } from '../../utils/currencyHelpers';
+import { formatNumber, formatCurrency } from '../../utils/currencyHelpers';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -122,7 +122,7 @@ export function SpendingVelocityChart({ orders }) {
         beginAtZero: true,
         ticks: {
           callback: function (value) {
-            return '$' + value.toLocaleString();
+            return formatCurrency(value);
           },
         },
         title: {

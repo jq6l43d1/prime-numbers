@@ -9,6 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLORS } from '../../constants/chartConfig';
+import { formatNumber } from '../../utils/currencyHelpers';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -56,7 +57,7 @@ export function OrdersByMonthChart({ data, onMonthClick }) {
             return onMonthClick ? 'Click to view orders' : context[0].label;
           },
           label: function (context) {
-            return `Orders: ${context.parsed.y}`;
+            return `Orders: ${formatNumber(context.parsed.y)}`;
           },
         },
       },

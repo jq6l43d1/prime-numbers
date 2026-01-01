@@ -62,7 +62,7 @@ export function TopProductsChart({ data, type = 'spending', onProductClick }) {
             if (type === 'spending') {
               return `Total Spent: $${formatNumber(value, 2)}`;
             } else {
-              return `Quantity: ${value}`;
+              return `Quantity: ${formatNumber(value)}`;
             }
           },
           afterLabel: function (context) {

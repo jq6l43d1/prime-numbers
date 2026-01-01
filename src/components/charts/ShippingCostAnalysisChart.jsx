@@ -75,7 +75,7 @@ export function ShippingCostAnalysisChart({ orders }) {
             const value = context.parsed.y;
             const total = shippingAnalysis.free + shippingAnalysis.paid;
             const percentage = formatNumber((value / total) * 100, 1);
-            return `${label}: ${value} (${percentage}%)`;
+            return `${label}: ${formatNumber(value)} (${percentage}%)`;
           },
         },
       },

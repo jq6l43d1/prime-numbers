@@ -117,7 +117,7 @@ export function FulfillmentSpeedComparison({ datasetStats }) {
                   }, 0) / shippedOrders.length
                 : 0;
 
-            return `${label}: ${value} orders (Avg: ${formatNumber(avgDays, 1)} days)`;
+            return `${label}: ${formatNumber(value, 0)} orders (Avg: ${formatNumber(avgDays, 1)} days)`;
           },
         },
       },
@@ -128,7 +128,7 @@ export function FulfillmentSpeedComparison({ datasetStats }) {
         ...BAR_CHART_OPTIONS.scales.y,
         ticks: {
           callback: function (value) {
-            return value.toLocaleString();
+            return formatNumber(value);
           },
         },
         title: {

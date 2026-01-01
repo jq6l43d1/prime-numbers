@@ -9,6 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
+import { formatCurrency } from '../../../utils/currencyHelpers';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -78,7 +79,7 @@ export function TopProductsComparison({ datasetStats }) {
           label: function (context) {
             const label = context.dataset.label || '';
             const value = context.parsed.x;
-            return `${label}: $${value.toLocaleString()}`;
+            return `${label}: ${formatCurrency(value)}`;
           },
         },
       },
@@ -88,7 +89,7 @@ export function TopProductsComparison({ datasetStats }) {
         beginAtZero: true,
         ticks: {
           callback: function (value) {
-            return '$' + value.toLocaleString();
+            return formatCurrency(value);
           },
         },
       },

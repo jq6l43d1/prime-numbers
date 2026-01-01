@@ -58,7 +58,7 @@ export function ShippingMethodsChart({ data, onMethodClick }) {
             const value = context.parsed || 0;
             const total = context.dataset.data.reduce((a, b) => a + b, 0);
             const percentage = formatNumber((value / total) * 100, 1);
-            return `${label}: ${value} orders (${percentage}%)`;
+            return `${label}: ${formatNumber(value, 0)} orders (${percentage}%)`;
           },
           afterLabel: onMethodClick ? () => 'Click to view details' : undefined,
         },

@@ -45,7 +45,7 @@ export function SubscriptionDetectionChart({ orders, onSubscriptionClick }) {
 
   // Filter for potential subscriptions (appeared in 3+ different months)
   const subscriptions = Object.entries(productMonthMap)
-    .filter(([_, data]) => data.months.size >= 3)
+    .filter(([, data]) => data.months.size >= 3)
     .map(([product, data]) => ({
       product,
       frequency: data.months.size,
@@ -99,7 +99,7 @@ export function SubscriptionDetectionChart({ orders, onSubscriptionClick }) {
             const sub = subscriptions[context.dataIndex];
             return [
               `Active: ${sub.frequency} months`,
-              `Orders: ${sub.count}`,
+              `Orders: ${formatNumber(sub.count, 0)}`,
               `Total Spent: $${formatNumber(sub.totalSpent, 2)}`,
               `Avg: $${formatNumber(sub.avgPrice, 2)}/order`,
             ];
@@ -161,7 +161,9 @@ export function SubscriptionDetectionChart({ orders, onSubscriptionClick }) {
           <div className="text-xs text-purple-700 font-medium">Recurring Items</div>
         </div>
         <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-lg p-3 text-center">
-          <div className="text-2xl font-bold text-indigo-900">{totalRecurringOrders}</div>
+          <div className="text-2xl font-bold text-indigo-900">
+            {formatNumber(totalRecurringOrders, 0)}
+          </div>
           <div className="text-xs text-indigo-700 font-medium">Total Orders</div>
         </div>
         <div className="bg-gradient-to-br from-violet-50 to-violet-100 rounded-lg p-3 text-center">

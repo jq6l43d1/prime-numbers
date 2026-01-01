@@ -44,12 +44,12 @@ export function SubscriptionDetectionComparison({ datasetStats }) {
 
     // Filter for potential subscriptions (appeared in 3+ different months)
     const subscriptions = Object.entries(productMonthMap).filter(
-      ([_, data]) => data.months.size >= 3
+      ([, data]) => data.months.size >= 3
     );
 
     const totalRecurringItems = subscriptions.length;
-    const totalRecurringOrders = subscriptions.reduce((sum, [_, data]) => sum + data.count, 0);
-    const totalRecurringSpend = subscriptions.reduce((sum, [_, data]) => sum + data.totalSpent, 0);
+    const totalRecurringOrders = subscriptions.reduce((sum, [, data]) => sum + data.count, 0);
+    const totalRecurringSpend = subscriptions.reduce((sum, [, data]) => sum + data.totalSpent, 0);
 
     return {
       name: item.dataset.name,

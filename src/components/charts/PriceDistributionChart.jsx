@@ -70,7 +70,7 @@ export function PriceDistributionChart({ data, onPriceRangeClick }) {
             const value = context.parsed.y;
             const total = values.reduce((a, b) => a + b, 0);
             const percentage = formatNumber((value / total) * 100, 1);
-            return `${value} items (${percentage}%)`;
+            return `${formatNumber(value, 0)} items (${percentage}%)`;
           },
           afterLabel: onPriceRangeClick ? () => 'Click to view items' : undefined,
         },

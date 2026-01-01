@@ -69,7 +69,7 @@ export function TaxAnalysisChart({ orders }) {
             const value = context.parsed;
             const total = taxStats.taxedOrders + taxStats.taxFreeOrders;
             const percentage = formatNumber((value / total) * 100, 1);
-            return `${label}: ${value} orders (${percentage}%)`;
+            return `${label}: ${formatNumber(value, 0)} orders (${percentage}%)`;
           },
         },
       },
@@ -84,7 +84,9 @@ export function TaxAnalysisChart({ orders }) {
       <div className="mt-4 space-y-3">
         <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
           <p className="font-semibold text-gray-700 mb-1">Total Tax Paid</p>
-          <p className="text-2xl font-bold text-orange-600">${formatNumber(taxStats.totalTax, 2)}</p>
+          <p className="text-2xl font-bold text-orange-600">
+            ${formatNumber(taxStats.totalTax, 2)}
+          </p>
         </div>
         <div className="bg-blue-50 rounded-lg p-3 border border-blue-200">
           <p className="font-semibold text-gray-700 mb-1">Average Tax Rate</p>

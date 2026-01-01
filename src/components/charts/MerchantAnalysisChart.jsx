@@ -80,7 +80,7 @@ export function MerchantAnalysisChart({ orders, onMerchantClick }) {
             return [
               `${context.label}`,
               `Spending: $${formatNumber(merchant.total, 2)}`,
-              `Orders: ${merchant.count}`,
+              `Orders: ${formatNumber(merchant.count, 0)}`,
               onMerchantClick ? 'Click to view details' : '',
             ].filter(Boolean);
           },

@@ -172,7 +172,7 @@ export function Dashboard() {
     openDrillDown(
       {
         title: subscriptionData.product,
-        subtitle: `${subscriptionData.count} orders across ${subscriptionData.frequency} months • $${formatNumber(subscriptionData.totalSpent, 2)} total`,
+        subtitle: `${formatNumber(subscriptionData.count, 0)} orders across ${subscriptionData.frequency} months • $${formatNumber(subscriptionData.totalSpent, 2)} total`,
         orders: subscriptionData.orders,
       },
       'product'
@@ -224,7 +224,7 @@ export function Dashboard() {
     openDrillDown(
       {
         title: `Returns: ${reasonData.reason}`,
-        subtitle: `${reasonData.count} returns`,
+        subtitle: `${formatNumber(reasonData.count, 0)} returns`,
         orders: reasonData.orders,
         metadata: {
           returnReason: reasonData.reason,
@@ -300,7 +300,7 @@ export function Dashboard() {
     openDrillDown(
       {
         title: `Payment: ${methodData.method}`,
-        subtitle: `${methodData.count} orders • $${formatNumber(methodData.totalSpent, 2)} total`,
+        subtitle: `${formatNumber(methodData.count, 0)} orders • $${formatNumber(methodData.totalSpent, 2)} total`,
         orders: methodData.orders,
       },
       'payment'
@@ -333,7 +333,7 @@ export function Dashboard() {
     openDrillDown(
       {
         title: `Condition: ${conditionData.condition}`,
-        subtitle: `${conditionData.count} orders • ${conditionData.items} items • $${formatNumber(conditionData.totalSpent, 2)} total`,
+        subtitle: `${formatNumber(conditionData.count, 0)} orders • ${formatNumber(conditionData.items, 0)} items • $${formatNumber(conditionData.totalSpent, 2)} total`,
         orders: conditionData.orders,
       },
       'condition'
@@ -344,7 +344,7 @@ export function Dashboard() {
     openDrillDown(
       {
         title: `Fulfillment: ${speedData.bucket}`,
-        subtitle: `${speedData.count} orders • $${formatNumber(speedData.totalSpent, 2)} total`,
+        subtitle: `${formatNumber(speedData.count, 0)} orders • $${formatNumber(speedData.totalSpent, 2)} total`,
         orders: speedData.orders,
       },
       'fulfillment'

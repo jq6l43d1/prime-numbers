@@ -9,6 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { DEFAULT_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
+import { formatNumber } from '../../../utils/currencyHelpers';
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Filler, Tooltip, Legend);
 
@@ -64,7 +65,7 @@ export function DayOfWeekComparison({ datasetStats }) {
           label: function (context) {
             const label = context.dataset.label || '';
             const value = context.parsed.r;
-            return `${label}: ${value} orders`;
+            return `${label}: ${formatNumber(value)} orders`;
           },
         },
       },

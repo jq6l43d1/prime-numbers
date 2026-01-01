@@ -100,7 +100,7 @@ export function CumulativeOrdersChart({ orders }) {
       tooltip: {
         callbacks: {
           label: function (context) {
-            return `Total Orders: ${context.parsed.y}`;
+            return `Total Orders: ${formatNumber(context.parsed.y)}`;
           },
         },
       },
@@ -122,7 +122,7 @@ export function CumulativeOrdersChart({ orders }) {
         beginAtZero: true,
         ticks: {
           callback: function (value) {
-            return value.toLocaleString();
+            return formatNumber(value);
           },
         },
         title: {

@@ -68,7 +68,7 @@ export function ReturnsAnalysisComparison({ datasetStats }) {
             if (label.includes('%')) {
               return `${label}: ${formatNumber(value, 1)}%`;
             }
-            return `${label}: ${value}`;
+            return `${label}: ${formatNumber(value)}`;
           },
         },
       },
@@ -85,7 +85,7 @@ export function ReturnsAnalysisComparison({ datasetStats }) {
         },
         ticks: {
           callback: function (value) {
-            return value.toLocaleString();
+            return formatNumber(value);
           },
         },
       },

@@ -9,6 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLOR_PALETTE } from '../../../constants/chartConfig';
+import { formatNumber } from '../../../utils/currencyHelpers';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -70,7 +71,7 @@ export function ShippingMethodsComparison({ datasetStats }) {
           label: function (context) {
             const label = context.dataset.label || '';
             const value = context.parsed.y;
-            return `${label}: ${value} orders`;
+            return `${label}: ${formatNumber(value, 0)} orders`;
           },
         },
       },
@@ -81,7 +82,7 @@ export function ShippingMethodsComparison({ datasetStats }) {
         ...BAR_CHART_OPTIONS.scales.y,
         ticks: {
           callback: function (value) {
-            return value.toLocaleString();
+            return formatNumber(value);
           },
         },
       },

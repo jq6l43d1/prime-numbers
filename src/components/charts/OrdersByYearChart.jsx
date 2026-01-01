@@ -9,6 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { BAR_CHART_OPTIONS, CHART_COLORS } from '../../constants/chartConfig';
+import { formatCurrency, formatNumber } from '../../utils/currencyHelpers';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -42,12 +43,12 @@ export function OrdersByYearChart({ data, onYearClick }) {
         ...BAR_CHART_OPTIONS.plugins.tooltip,
         callbacks: {
           label: function (context) {
-            return `Orders: ${context.parsed.y}`;
+            return `Orders: ${formatNumber(context.parsed.y)}`;
           },
           afterLabel: function (context) {
             const yearData = data[context.dataIndex];
             if (yearData && yearData.amount) {
-              return [`Total Spent: $${yearData.amount.toLocaleString()}`, 'Click to view details'];
+              return [`Total Spent: ${formatCurrency(yearData.amount)}`, 'Click to view details'];
             }
             return '';
           },
