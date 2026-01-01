@@ -19,15 +19,23 @@ export function GiftOrdersChart({ orders, onClick }) {
   }
 
   // Separate gift orders from personal orders
-  // Only consider it a gift if giftMessage or giftSenderName has actual content (not empty/whitespace)
+  // Only consider it a gift if giftMessage or giftSenderName has actual content (not empty/whitespace/Not Available)
+  const isValidGiftField = value => {
+    if (!value) return false;
+    const trimmed = value.trim();
+    if (trimmed.length === 0) return false;
+    if (trimmed.toLowerCase() === 'not available') return false;
+    return true;
+  };
+
   const giftOrders = orders.filter(o => {
-    const hasGiftMessage = o.giftMessage && o.giftMessage.trim().length > 0;
-    const hasGiftSender = o.giftSenderName && o.giftSenderName.trim().length > 0;
+    const hasGiftMessage = isValidGiftField(o.giftMessage);
+    const hasGiftSender = isValidGiftField(o.giftSenderName);
     return hasGiftMessage || hasGiftSender;
   });
   const personalOrders = orders.filter(o => {
-    const hasGiftMessage = o.giftMessage && o.giftMessage.trim().length > 0;
-    const hasGiftSender = o.giftSenderName && o.giftSenderName.trim().length > 0;
+    const hasGiftMessage = isValidGiftField(o.giftMessage);
+    const hasGiftSender = isValidGiftField(o.giftSenderName);
     return !hasGiftMessage && !hasGiftSender;
   });
 
