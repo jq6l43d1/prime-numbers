@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -78,7 +79,7 @@ export function YearOverYearComparison({ datasetStats }) {
       tooltip: {
         callbacks: {
           label: context => {
-            return `${context.dataset.label}: $${context.parsed.y.toFixed(2)}`;
+            return `${context.dataset.label}: $${formatNumber(context.parsed.y, 2)}`;
           },
         },
       },

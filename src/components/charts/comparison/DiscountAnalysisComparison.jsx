@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -91,9 +92,9 @@ export function DiscountAnalysisComparison({ datasetStats }) {
                 : 0;
 
             return [
-              `${label}: $${value.toFixed(2)}`,
+              `${label}: $${formatNumber(value, 2)}`,
               `Orders with Discounts: ${discountStats.ordersWithDiscounts}`,
-              `Avg Discount: $${avgDiscount.toFixed(2)}`,
+              `Avg Discount: $${formatNumber(avgDiscount, 2)}`,
             ];
           },
         },

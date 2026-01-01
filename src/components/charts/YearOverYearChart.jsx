@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -96,7 +97,7 @@ export function YearOverYearChart({ orders }) {
             return context[0].label;
           },
           label: context => {
-            return `${context.dataset.label}: $${parseFloat(context.parsed.y).toFixed(2)}`;
+            return `${context.dataset.label}: $${formatNumber(parseFloat(context.parsed.y), 2)}`;
           },
           footer: tooltipItems => {
             if (tooltipItems.length > 1) {
@@ -104,7 +105,7 @@ export function YearOverYearChart({ orders }) {
               const max = Math.max(...values);
               const min = Math.min(...values.filter(v => v > 0));
               if (max > 0 && min > 0 && max !== min) {
-                const change = (((max - min) / min) * 100).toFixed(1);
+                const change = formatNumber(((max - min) / min) * 100, 1);
                 return `\nChange: ${change}%`;
               }
             }
@@ -122,7 +123,7 @@ export function YearOverYearChart({ orders }) {
       y: {
         beginAtZero: true,
         ticks: {
-          callback: value => `$${value.toFixed(0)}`,
+          callback: value => `$${formatNumber(value, 0)}`,
           font: { size: 11 },
         },
         grid: {

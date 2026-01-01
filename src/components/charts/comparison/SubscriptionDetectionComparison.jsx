@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -95,7 +96,7 @@ export function SubscriptionDetectionComparison({ datasetStats }) {
             return [
               `Recurring items: ${data.totalRecurringItems}`,
               `Total orders: ${data.totalRecurringOrders}`,
-              `Total spent: $${data.totalRecurringSpend.toFixed(2)}`,
+              `Total spent: $${formatNumber(data.totalRecurringSpend, 2)}`,
             ];
           },
         },

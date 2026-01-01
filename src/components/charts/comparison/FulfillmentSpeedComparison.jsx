@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -116,7 +117,7 @@ export function FulfillmentSpeedComparison({ datasetStats }) {
                   }, 0) / shippedOrders.length
                 : 0;
 
-            return `${label}: ${value} orders (Avg: ${avgDays.toFixed(1)} days)`;
+            return `${label}: ${value} orders (Avg: ${formatNumber(avgDays, 1)} days)`;
           },
         },
       },

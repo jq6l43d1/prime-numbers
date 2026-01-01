@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -65,7 +66,7 @@ export function ReturnsAnalysisComparison({ datasetStats }) {
             const label = context.dataset.label || '';
             const value = context.parsed.y;
             if (label.includes('%')) {
-              return `${label}: ${value.toFixed(1)}%`;
+              return `${label}: ${formatNumber(value, 1)}%`;
             }
             return `${label}: ${value}`;
           },
@@ -102,7 +103,7 @@ export function ReturnsAnalysisComparison({ datasetStats }) {
         },
         ticks: {
           callback: function (value) {
-            return value.toFixed(1) + '%';
+            return formatNumber(value, 1) + '%';
           },
         },
       },

@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -96,10 +97,10 @@ export function ShippingCostAnalysisComparison({ datasetStats }) {
                 : 0;
 
             return [
-              `${label}: $${value.toFixed(2)}`,
+              `${label}: $${formatNumber(value, 2)}`,
               `Free Shipping: ${shippingStats.freeShipping} orders`,
               `Paid Shipping: ${shippingStats.paidShipping} orders`,
-              `Avg Paid: $${avgPaidShipping.toFixed(2)}`,
+              `Avg Paid: $${formatNumber(avgPaidShipping, 2)}`,
             ];
           },
         },

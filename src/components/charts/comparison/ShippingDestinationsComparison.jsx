@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -87,7 +88,7 @@ export function ShippingDestinationsComparison({ datasetStats }) {
             const data = destinationData[context.dataIndex];
             return [
               `Unique addresses: ${data.uniqueAddresses}`,
-              `Primary address: ${data.primaryPercentage.toFixed(1)}% of orders`,
+              `Primary address: ${formatNumber(data.primaryPercentage, 1)}% of orders`,
             ];
           },
         },

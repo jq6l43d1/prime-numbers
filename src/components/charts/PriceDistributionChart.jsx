@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   BarElement,
@@ -68,7 +69,7 @@ export function PriceDistributionChart({ data, onPriceRangeClick }) {
           label: function (context) {
             const value = context.parsed.y;
             const total = values.reduce((a, b) => a + b, 0);
-            const percentage = ((value / total) * 100).toFixed(1);
+            const percentage = formatNumber((value / total) * 100, 1);
             return `${value} items (${percentage}%)`;
           },
           afterLabel: onPriceRangeClick ? () => 'Click to view items' : undefined,

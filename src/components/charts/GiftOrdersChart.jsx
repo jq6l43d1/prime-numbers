@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -139,7 +140,7 @@ export function GiftOrdersChart({ orders, onClick }) {
               label += ': ';
             }
             if (context.dataset.yAxisID === 'y1') {
-              label += '$' + context.parsed.y.toFixed(2);
+              label += '$' + formatNumber(context.parsed.y, 2);
             } else {
               label += context.parsed.y;
             }
@@ -153,7 +154,7 @@ export function GiftOrdersChart({ orders, onClick }) {
   const avgGiftValue = giftOrders.length > 0 ? giftSpending / giftOrders.length : 0;
   const avgPersonalValue = personalOrders.length > 0 ? personalSpending / personalOrders.length : 0;
   const giftPercentage =
-    orders.length > 0 ? ((giftOrders.length / orders.length) * 100).toFixed(1) : 0;
+    orders.length > 0 ? formatNumber((giftOrders.length / orders.length) * 100, 1) : 0;
 
   return (
     <div>
@@ -165,16 +166,16 @@ export function GiftOrdersChart({ orders, onClick }) {
           <div className="bg-pink-50 rounded p-3">
             <div className="font-semibold text-gray-900">🎁 Gift Orders</div>
             <div className="text-xs text-gray-600 mt-1">
-              {giftOrders.length} orders • ${giftSpending.toFixed(2)}
+              {giftOrders.length} orders • ${formatNumber(giftSpending, 2)}
             </div>
-            <div className="text-xs text-gray-500">Avg: ${avgGiftValue.toFixed(2)}</div>
+            <div className="text-xs text-gray-500">Avg: ${formatNumber(avgGiftValue, 2)}</div>
           </div>
           <div className="bg-blue-50 rounded p-3">
             <div className="font-semibold text-gray-900">🛍️ Personal Orders</div>
             <div className="text-xs text-gray-600 mt-1">
-              {personalOrders.length} orders • ${personalSpending.toFixed(2)}
+              {personalOrders.length} orders • ${formatNumber(personalSpending, 2)}
             </div>
-            <div className="text-xs text-gray-500">Avg: ${avgPersonalValue.toFixed(2)}</div>
+            <div className="text-xs text-gray-500">Avg: ${formatNumber(avgPersonalValue, 2)}</div>
           </div>
         </div>
         <div className="bg-gray-50 rounded p-2 text-center">

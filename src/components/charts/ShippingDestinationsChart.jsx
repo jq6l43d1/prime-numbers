@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -173,7 +174,7 @@ export function ShippingDestinationsChart({ orders, onDrillDown }) {
             const addressData = topAddresses[context.dataIndex];
             return [
               `${addressData.orderCount} orders`,
-              `$${addressData.totalSpent.toFixed(2)} total`,
+              `$${formatNumber(addressData.totalSpent, 2)} total`,
               `Click to view details`,
             ];
           },
@@ -205,7 +206,7 @@ export function ShippingDestinationsChart({ orders, onDrillDown }) {
   // Calculate summary stats
   const uniqueAddresses = addressStats.length;
   const primaryAddressPercent = primaryAddress
-    ? ((primaryAddress.orderCount / orders.length) * 100).toFixed(1)
+    ? formatNumber((primaryAddress.orderCount / orders.length) * 100, 1)
     : 0;
   const secondaryShipments = orders.length - (primaryAddress?.orderCount || 0);
 

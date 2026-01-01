@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { formatNumber } from '../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -90,7 +91,7 @@ export function DiscountAnalysisChart({ orders }) {
       tooltip: {
         callbacks: {
           label: context => {
-            return `Saved: $${context.parsed.x.toFixed(2)}`;
+            return `Saved: $${formatNumber(context.parsed.x, 2)}`;
           },
         },
       },

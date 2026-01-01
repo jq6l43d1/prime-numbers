@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { formatNumber } from '../../utils/currencyHelpers';
 import { useData } from '../../context/DataContext';
 
 export function TimePeriodComparison() {
@@ -162,13 +163,13 @@ export function TimePeriodComparison() {
                   <div className="bg-blue-50 rounded p-2">
                     <div className="text-xs text-blue-700">{period1.label}</div>
                     <div className="text-lg font-bold text-blue-900">
-                      ${stats1.totalSpent.toFixed(0)}
+                      ${formatNumber(stats1.totalSpent, 0)}
                     </div>
                   </div>
                   <div className="bg-purple-50 rounded p-2">
                     <div className="text-xs text-purple-700">{period2.label}</div>
                     <div className="text-lg font-bold text-purple-900">
-                      ${stats2.totalSpent.toFixed(0)}
+                      ${formatNumber(stats2.totalSpent, 0)}
                     </div>
                   </div>
                 </div>
@@ -176,7 +177,7 @@ export function TimePeriodComparison() {
                   className={`text-sm font-semibold ${calculateChange(stats1.totalSpent, stats2.totalSpent) > 0 ? 'text-red-600' : 'text-green-600'}`}
                 >
                   {calculateChange(stats1.totalSpent, stats2.totalSpent) > 0 ? '↑' : '↓'}{' '}
-                  {Math.abs(calculateChange(stats1.totalSpent, stats2.totalSpent)).toFixed(1)}%
+                  {Math.absformatNumber(calculateChange(stats1.totalSpent, stats2.totalSpent), 1)}%
                 </div>
               </div>
             </div>
@@ -199,7 +200,7 @@ export function TimePeriodComparison() {
                   className={`text-sm font-semibold ${calculateChange(stats1.totalOrders, stats2.totalOrders) > 0 ? 'text-red-600' : 'text-green-600'}`}
                 >
                   {calculateChange(stats1.totalOrders, stats2.totalOrders) > 0 ? '↑' : '↓'}{' '}
-                  {Math.abs(calculateChange(stats1.totalOrders, stats2.totalOrders)).toFixed(1)}%
+                  {Math.absformatNumber(calculateChange(stats1.totalOrders, stats2.totalOrders), 1)}%
                 </div>
               </div>
             </div>
@@ -212,13 +213,13 @@ export function TimePeriodComparison() {
                   <div className="bg-blue-50 rounded p-2">
                     <div className="text-xs text-blue-700">{period1.label}</div>
                     <div className="text-lg font-bold text-blue-900">
-                      ${stats1.avgOrderValue.toFixed(2)}
+                      ${formatNumber(stats1.avgOrderValue, 2)}
                     </div>
                   </div>
                   <div className="bg-purple-50 rounded p-2">
                     <div className="text-xs text-purple-700">{period2.label}</div>
                     <div className="text-lg font-bold text-purple-900">
-                      ${stats2.avgOrderValue.toFixed(2)}
+                      ${formatNumber(stats2.avgOrderValue, 2)}
                     </div>
                   </div>
                 </div>
@@ -226,7 +227,7 @@ export function TimePeriodComparison() {
                   className={`text-sm font-semibold ${calculateChange(stats1.avgOrderValue, stats2.avgOrderValue) > 0 ? 'text-red-600' : 'text-green-600'}`}
                 >
                   {calculateChange(stats1.avgOrderValue, stats2.avgOrderValue) > 0 ? '↑' : '↓'}{' '}
-                  {Math.abs(calculateChange(stats1.avgOrderValue, stats2.avgOrderValue)).toFixed(1)}
+                  {Math.absformatNumber(calculateChange(stats1.avgOrderValue, stats2.avgOrderValue), 1)}
                   %
                 </div>
               </div>
@@ -250,7 +251,8 @@ export function TimePeriodComparison() {
                   className={`text-sm font-semibold ${calculateChange(stats1.uniqueProducts, stats2.uniqueProducts) > 0 ? 'text-blue-600' : 'text-gray-600'}`}
                 >
                   {calculateChange(stats1.uniqueProducts, stats2.uniqueProducts) > 0 ? '↑' : '↓'}{' '}
-                  {Math.abs(calculateChange(stats1.uniqueProducts, stats2.uniqueProducts)).toFixed(
+                  {formatNumber(
+                    Math.abs(calculateChange(stats1.uniqueProducts, stats2.uniqueProducts)),
                     1
                   )}
                   %
@@ -281,7 +283,7 @@ export function TimePeriodComparison() {
                             ></div>
                           </div>
                           <span className="text-xs font-semibold text-blue-900 w-16 text-right">
-                            ${spent1.toFixed(0)}
+                            ${formatNumber(spent1, 0)}
                           </span>
                         </div>
                       </div>
@@ -294,7 +296,7 @@ export function TimePeriodComparison() {
                             ></div>
                           </div>
                           <span className="text-xs font-semibold text-purple-900 w-16 text-right">
-                            ${spent2.toFixed(0)}
+                            ${formatNumber(spent2, 0)}
                           </span>
                         </div>
                       </div>

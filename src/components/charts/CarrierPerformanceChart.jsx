@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -91,7 +92,7 @@ export function CarrierPerformanceChart({ orders, onCarrierClick }) {
           label: function (context) {
             const value = context.parsed.x;
             const total = sortedCarriers.reduce((sum, [_, data]) => sum + data.count, 0);
-            const percentage = ((value / total) * 100).toFixed(1);
+            const percentage = formatNumber((value / total) * 100, 1);
             return `${value} shipments (${percentage}%)`;
           },
         },

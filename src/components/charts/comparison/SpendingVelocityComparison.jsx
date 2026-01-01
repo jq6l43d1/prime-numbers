@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { formatNumber } from '../../../utils/currencyHelpers';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -106,7 +107,7 @@ export function SpendingVelocityComparison({ datasetStats }) {
       tooltip: {
         callbacks: {
           label: context => {
-            return `${context.dataset.label}: $${context.parsed.y.toFixed(2)}`;
+            return `${context.dataset.label}: $${formatNumber(context.parsed.y, 2)}`;
           },
         },
       },

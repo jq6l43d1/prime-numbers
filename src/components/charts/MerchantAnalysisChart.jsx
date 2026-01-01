@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { formatNumber } from '../../utils/currencyHelpers';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
@@ -78,7 +79,7 @@ export function MerchantAnalysisChart({ orders, onMerchantClick }) {
             const merchant = merchantData[context.dataIndex];
             return [
               `${context.label}`,
-              `Spending: $${merchant.total.toFixed(2)}`,
+              `Spending: $${formatNumber(merchant.total, 2)}`,
               `Orders: ${merchant.count}`,
               onMerchantClick ? 'Click to view details' : '',
             ].filter(Boolean);
@@ -121,7 +122,7 @@ export function MerchantAnalysisChart({ orders, onMerchantClick }) {
           {merchantData.slice(0, 3).map((m, i) => (
             <div key={i} className="flex justify-between">
               <span className="truncate max-w-[200px]">{m.merchant}</span>
-              <span className="font-semibold">${m.total.toFixed(2)}</span>
+              <span className="font-semibold">${formatNumber(m.total, 2)}</span>
             </div>
           ))}
         </div>

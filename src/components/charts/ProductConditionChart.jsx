@@ -1,4 +1,5 @@
 import { Doughnut } from 'react-chartjs-2';
+import { formatNumber } from '../../utils/currencyHelpers';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { CHART_COLORS } from '../../constants/chartConfig';
 
@@ -114,14 +115,14 @@ export function ProductConditionChart({ orders, onClick }) {
             const count = countData[context.dataIndex];
             const spending = spendingData[context.dataIndex];
             const items = itemsData[context.dataIndex];
-            const percentage = ((count / countData.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
-            const avgOrderValue = (spending / count).toFixed(2);
+            const percentage = formatNumber((count / countData.reduce((a, b) => a + b, 0)) * 100, 1);
+            const avgOrderValue = formatNumber(spending / count, 2);
 
             return [
               `${condition}`,
               `Orders: ${count} (${percentage}%)`,
               `Items: ${items}`,
-              `Total: $${spending.toFixed(2)}`,
+              `Total: $${formatNumber(spending, 2)}`,
               `Avg/Order: $${avgOrderValue}`,
             ];
           },
@@ -146,8 +147,8 @@ export function ProductConditionChart({ orders, onClick }) {
       <div className="mt-4 space-y-2">
         <div className="grid grid-cols-2 gap-2">
           {sortedConditions.map(([condition, stats]) => {
-            const percentage = ((stats.count / totalOrders) * 100).toFixed(1);
-            const avgValue = (stats.totalSpent / stats.count).toFixed(2);
+            const percentage = formatNumber((stats.count / totalOrders) * 100, 1);
+            const avgValue = formatNumber(stats.totalSpent / stats.count, 2);
 
             return (
               <div
@@ -163,7 +164,7 @@ export function ProductConditionChart({ orders, onClick }) {
                   {stats.count} orders ({percentage}%)
                 </div>
                 <div className="text-xs text-gray-500">
-                  ${stats.totalSpent.toFixed(2)} • Avg: ${avgValue}
+                  ${formatNumber(stats.totalSpent, 2)} • Avg: ${avgValue}
                 </div>
               </div>
             );
@@ -178,7 +179,7 @@ export function ProductConditionChart({ orders, onClick }) {
               <div className="text-xs text-gray-600">Total Orders</div>
             </div>
             <div>
-              <div className="text-lg font-bold text-gray-900">${totalSpent.toFixed(2)}</div>
+              <div className="text-lg font-bold text-gray-900">${formatNumber(totalSpent, 2)}</div>
               <div className="text-xs text-gray-600">Total Spent</div>
             </div>
           </div>

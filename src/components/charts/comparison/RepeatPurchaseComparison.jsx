@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { formatNumber } from '../../../utils/currencyHelpers';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -84,7 +85,7 @@ export function RepeatPurchaseComparison({ datasetStats }) {
             return [
               `Repeat purchases: ${data.totalRepeats}`,
               `Total products: ${data.totalProducts}`,
-              `Repeat rate: ${data.repeatRate.toFixed(1)}%`,
+              `Repeat rate: ${formatNumber(data.repeatRate, 1)}%`,
             ];
           },
         },

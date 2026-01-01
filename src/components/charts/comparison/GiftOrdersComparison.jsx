@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -89,7 +90,7 @@ export function GiftOrdersComparison({ datasetStats }) {
 
             const count = context.dataIndex === 0 ? giftOrders.length : personalOrders.length;
 
-            return `${label}: $${value.toFixed(2)} (${count} orders)`;
+            return `${label}: $${formatNumber(value, 2)} (${count} orders)`;
           },
         },
       },

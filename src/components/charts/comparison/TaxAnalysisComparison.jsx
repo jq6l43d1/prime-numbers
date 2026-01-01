@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -87,9 +88,9 @@ export function TaxAnalysisComparison({ datasetStats }) {
               taxStats.totalSubtotal > 0 ? (taxStats.totalTax / taxStats.totalSubtotal) * 100 : 0;
 
             return [
-              `${label}: $${value.toFixed(2)}`,
+              `${label}: $${formatNumber(value, 2)}`,
               `Taxed Orders: ${taxStats.taxedOrders}`,
-              `Avg Tax Rate: ${avgTaxRate.toFixed(2)}%`,
+              `Avg Tax Rate: ${formatNumber(avgTaxRate, 2)}%`,
             ];
           },
         },

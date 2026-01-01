@@ -9,7 +9,7 @@ export function StatCard({ title, value, subtitle, icon, trend, format = 'number
       case 'currency':
         return formatCurrency(value);
       case 'percentage':
-        return `${value.toFixed(1)}%`;
+        return `${formatNumber(value, 1)}%`;
       case 'text':
         return value;
       case 'number':
@@ -36,7 +36,7 @@ export function StatCard({ title, value, subtitle, icon, trend, format = 'number
         <div
           className={`mt-2 text-sm font-medium ${trend > 0 ? 'text-green-600' : 'text-red-600'}`}
         >
-          {trend > 0 ? '↑' : '↓'} {Math.abs(trend).toFixed(1)}%
+          {trend > 0 ? '↑' : '↓'} {Math.absformatNumber(trend, 1)}%
         </div>
       )}
     </div>

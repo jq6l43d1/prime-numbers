@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -99,8 +100,8 @@ export function SubscriptionDetectionChart({ orders, onSubscriptionClick }) {
             return [
               `Active: ${sub.frequency} months`,
               `Orders: ${sub.count}`,
-              `Total Spent: $${sub.totalSpent.toFixed(2)}`,
-              `Avg: $${sub.avgPrice.toFixed(2)}/order`,
+              `Total Spent: $${formatNumber(sub.totalSpent, 2)}`,
+              `Avg: $${formatNumber(sub.avgPrice, 2)}/order`,
             ];
           },
           afterLabel: () => 'Click to view details',
@@ -165,7 +166,7 @@ export function SubscriptionDetectionChart({ orders, onSubscriptionClick }) {
         </div>
         <div className="bg-gradient-to-br from-violet-50 to-violet-100 rounded-lg p-3 text-center">
           <div className="text-2xl font-bold text-violet-900">
-            ${totalRecurringSpend.toFixed(0)}
+            ${formatNumber(totalRecurringSpend, 0)}
           </div>
           <div className="text-xs text-violet-700 font-medium">Total Spent</div>
         </div>

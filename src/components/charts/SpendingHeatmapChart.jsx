@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { formatNumber } from '../../utils/currencyHelpers';
 import { format, getMonth, getYear } from 'date-fns';
 
 export function SpendingHeatmapChart({ orders }) {
@@ -106,14 +107,14 @@ export function SpendingHeatmapChart({ orders }) {
                     <div
                       key={monthIndex}
                       className={`w-16 h-16 flex flex-col items-center justify-center rounded-lg ${color} ${textColor} transition-all hover:scale-105 hover:shadow-lg cursor-pointer relative group`}
-                      title={`${months[monthIndex]} ${year}: $${amount.toFixed(2)}`}
+                      title={`${months[monthIndex]} ${year}: $${formatNumber(amount, 2)}`}
                     >
                       <span className="text-xs font-semibold">
-                        ${amount > 999 ? `${(amount / 1000).toFixed(1)}k` : amount.toFixed(0)}
+                        ${amount > 999 ? `${formatNumber(amount / 1000, 1)}k` : formatNumber(amount, 0)}
                       </span>
                       {/* Tooltip on hover */}
                       <div className="absolute top-full mt-2 hidden group-hover:block bg-gray-900 text-white text-xs rounded px-2 py-1 whitespace-nowrap z-10">
-                        ${amount.toFixed(2)}
+                        ${formatNumber(amount, 2)}
                       </div>
                     </div>
                   );
@@ -137,8 +138,8 @@ export function SpendingHeatmapChart({ orders }) {
             <span className="text-xs text-gray-500 ml-2">
               $
               {maxSpending > 999
-                ? `${(maxSpending / 1000).toFixed(1)}k+`
-                : `${maxSpending.toFixed(0)}+`}
+                ? `${formatNumber(maxSpending / 1000, 1)}k+`
+                : `${formatNumber(maxSpending, 0)}+`}
             </span>
           </div>
         </div>

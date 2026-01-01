@@ -1,4 +1,5 @@
 import { Doughnut } from 'react-chartjs-2';
+import { formatNumber } from '../../utils/currencyHelpers';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -78,7 +79,7 @@ export function OrderSizeDistributionChart({ orders }) {
             const label = context.label || '';
             const value = context.parsed || 0;
             const total = context.dataset.data.reduce((a, b) => a + b, 0);
-            const percentage = ((value / total) * 100).toFixed(1);
+            const percentage = formatNumber((value / total) * 100, 1);
             return `${label}: ${value} orders (${percentage}%)`;
           },
         },

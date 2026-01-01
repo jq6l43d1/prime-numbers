@@ -1,4 +1,5 @@
 import { Radar } from 'react-chartjs-2';
+import { formatNumber } from '../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   RadialLinearScale,
@@ -161,7 +162,7 @@ export function SeasonalSpendingChart({ orders, onClick }) {
       tooltip: {
         callbacks: {
           label: context => {
-            return `${context.dataset.label}: $${parseFloat(context.parsed.r).toFixed(2)}`;
+            return `${context.dataset.label}: $${formatNumber(parseFloat(context.parsed.r), 2)}`;
           },
         },
         backgroundColor: 'rgba(0, 0, 0, 0.85)',

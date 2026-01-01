@@ -1,4 +1,5 @@
 import { Line } from 'react-chartjs-2';
+import { formatNumber } from '../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -74,7 +75,7 @@ export function CategorySpendingTrendChart({ orders }) {
     return {
       label: category,
       data: recentMonths.map(month => {
-        return (monthlyData[month][category] || 0).toFixed(2);
+        return formatNumber(monthlyData[month][category] || 0, 2);
       }),
       borderColor: color.border,
       backgroundColor: color.bg,
@@ -117,7 +118,7 @@ export function CategorySpendingTrendChart({ orders }) {
       tooltip: {
         callbacks: {
           label: context => {
-            return `${context.dataset.label}: $${parseFloat(context.parsed.y).toFixed(2)}`;
+            return `${context.dataset.label}: $${formatNumber(parseFloat(context.parsed.y), 2)}`;
           },
         },
         backgroundColor: 'rgba(0, 0, 0, 0.8)',

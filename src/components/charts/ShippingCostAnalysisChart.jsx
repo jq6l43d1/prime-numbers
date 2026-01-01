@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -73,7 +74,7 @@ export function ShippingCostAnalysisChart({ orders }) {
             const label = context.dataset.label || '';
             const value = context.parsed.y;
             const total = shippingAnalysis.free + shippingAnalysis.paid;
-            const percentage = ((value / total) * 100).toFixed(1);
+            const percentage = formatNumber((value / total) * 100, 1);
             return `${label}: ${value} (${percentage}%)`;
           },
         },
@@ -110,24 +111,24 @@ export function ShippingCostAnalysisChart({ orders }) {
           <p className="font-semibold text-gray-700 mb-1">Free Shipping</p>
           <p className="text-2xl font-bold text-green-600">{shippingAnalysis.free}</p>
           <p className="text-gray-600 text-xs mt-1">
-            ${shippingAnalysis.freeTotal.toFixed(2)} in orders
+            ${formatNumber(shippingAnalysis.freeTotal, 2)} in orders
           </p>
         </div>
         <div className="bg-red-50 rounded-lg p-3 border border-red-200">
           <p className="font-semibold text-gray-700 mb-1">Paid Shipping</p>
           <p className="text-2xl font-bold text-red-600">{shippingAnalysis.paid}</p>
           <p className="text-gray-600 text-xs mt-1">
-            ${shippingAnalysis.paidTotal.toFixed(2)} total
+            ${formatNumber(shippingAnalysis.paidTotal, 2)} total
           </p>
         </div>
         <div className="bg-blue-50 rounded-lg p-3 border border-blue-200 col-span-2">
           <p className="font-semibold text-gray-700 mb-1">💰 Total Shipping Costs</p>
           <p className="text-2xl font-bold text-blue-600">
-            ${shippingAnalysis.totalShippingPaid.toFixed(2)}
+            ${formatNumber(shippingAnalysis.totalShippingPaid, 2)}
           </p>
           {shippingAnalysis.paid > 0 && (
             <p className="text-gray-600 text-xs mt-1">
-              Avg: ${avgPaidShipping.toFixed(2)} per paid order
+              Avg: ${formatNumber(avgPaidShipping, 2)} per paid order
             </p>
           )}
         </div>

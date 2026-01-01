@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -145,13 +146,13 @@ export function FulfillmentSpeedChart({ orders, onClick }) {
             const bucket = context.label;
             const count = counts[context.dataIndex];
             const totalSpent = spending[context.dataIndex];
-            const avgSpent = count > 0 ? (totalSpent / count).toFixed(2) : 0;
-            const percentage = ((count / counts.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
+            const avgSpent = count > 0 ? formatNumber(totalSpent / count, 2) : 0;
+            const percentage = formatNumber((count / counts.reduce((a, b) => a + b, 0)) * 100, 1);
 
             return [
               `${bucket}`,
               `Orders: ${count} (${percentage}%)`,
-              `Total: $${totalSpent.toFixed(2)}`,
+              `Total: $${formatNumber(totalSpent, 2)}`,
               `Avg: $${avgSpent}`,
             ];
           },
@@ -179,7 +180,7 @@ export function FulfillmentSpeedChart({ orders, onClick }) {
 
   const fastShipped =
     speedBuckets['Same Day'].orders.length + speedBuckets['1-2 Days'].orders.length;
-  const fastPercentage = orders.length > 0 ? ((fastShipped / orders.length) * 100).toFixed(1) : 0;
+  const fastPercentage = orders.length > 0 ? formatNumber((fastShipped / orders.length) * 100, 1) : 0;
 
   return (
     <div>
@@ -190,7 +191,7 @@ export function FulfillmentSpeedChart({ orders, onClick }) {
         {/* Key metrics */}
         <div className="grid grid-cols-3 gap-2">
           <div className="bg-gradient-to-br from-green-50 to-green-100 rounded p-3 text-center">
-            <div className="text-2xl font-bold text-green-700">{avgFulfillmentDays.toFixed(1)}</div>
+            <div className="text-2xl font-bold text-green-700">{formatNumber(avgFulfillmentDays, 1)}</div>
             <div className="text-xs text-green-600 font-medium">Avg Days</div>
           </div>
 

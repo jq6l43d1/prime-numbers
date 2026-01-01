@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { formatNumber } from '../../utils/currencyHelpers';
 
 export function ExportButton({ orders, statistics, dateFilter }) {
   const [isExporting, setIsExporting] = useState(false);
@@ -24,10 +25,10 @@ export function ExportButton({ orders, statistics, dateFilter }) {
         order.productName || 'Unknown',
         order.category || 'Other',
         order.quantity || 1,
-        (order.unitPrice || 0).toFixed(2),
-        (order.totalOwed || 0).toFixed(2),
+        formatNumber(order.unitPrice || 0, 2),
+        formatNumber(order.totalOwed || 0, 2),
         order.paymentMethod || 'Unknown',
-        (order.shippingCharge || 0).toFixed(2),
+        formatNumber(order.shippingCharge || 0, 2),
       ]);
 
       const csvContent = [
@@ -121,12 +122,12 @@ Date Range: ${dateFilter.label}
 
 OVERVIEW
 --------
-Total Spent:          $${statistics.overview.totalSpent.toFixed(2)}
+Total Spent:          $${formatNumber(statistics.overview.totalSpent, 2)}
 Total Orders:         ${statistics.overview.totalOrders}
-Average Order Value:  $${statistics.overview.avgOrderValue.toFixed(2)}
+Average Order Value:  $${formatNumber(statistics.overview.avgOrderValue, 2)}
 Total Items:          ${statistics.overview.totalItems}
-Total Savings:        $${statistics.overview.totalDiscounts.toFixed(2)}
-Return Rate:          ${statistics.returns?.returnRate.toFixed(1)}%
+Total Savings:        $${formatNumber(statistics.overview.totalDiscounts, 2)}
+Return Rate:          ${statistics.returns ? formatNumber(statistics.returns.returnRate, 1) : 0}%
 
 SPENDING BY CATEGORY
 --------------------
@@ -134,7 +135,7 @@ ${statistics.spending.byCategory
   .slice(0, 10)
   .map(
     (cat, i) =>
-      `${i + 1}. ${cat.category.padEnd(30)} $${cat.amount.toFixed(2).padStart(12)} (${cat.percentage}%)`
+      `${i + 1}. ${cat.category.padEnd(30)} $${formatNumber(cat.amount, 2).padStart(12)} (${cat.percentage}%)`
   )
   .join('\n')}
 
@@ -144,7 +145,7 @@ ${statistics.products.topBySpending
   .slice(0, 10)
   .map(
     (prod, i) =>
-      `${i + 1}. ${(prod.name || 'Unknown').substring(0, 40).padEnd(40)} $${prod.totalSpent.toFixed(2).padStart(10)}`
+      `${i + 1}. ${(prod.name || 'Unknown').substring(0, 40).padEnd(40)} $${formatNumber(prod.totalSpent, 2).padStart(10)}`
   )
   .join('\n')}
 
@@ -153,7 +154,7 @@ MONTHLY SPENDING (LAST 12 MONTHS)
 ${statistics.spending.last12Months
   .map(
     month =>
-      `${month.month.padEnd(15)} $${month.amount.toFixed(2).padStart(10)} (${month.orders} orders)`
+      `${month.month.padEnd(15)} $${formatNumber(month.amount, 2).padStart(10)} (${month.orders} orders)`
   )
   .join('\n')}
 

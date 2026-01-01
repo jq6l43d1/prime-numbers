@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { formatNumber } from '../../utils/currencyHelpers';
 import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -99,7 +100,7 @@ export function SpendingVelocityChart({ orders }) {
       tooltip: {
         callbacks: {
           label: function (context) {
-            return `Total: $${context.parsed.y.toFixed(2)}`;
+            return `Total: $${formatNumber(context.parsed.y, 2)}`;
           },
         },
       },
@@ -146,7 +147,7 @@ export function SpendingVelocityChart({ orders }) {
           <span>
             Total spending from {firstMonth} to {lastMonth}
           </span>
-          <span className="font-bold text-lg text-blue-600">${totalSpent.toFixed(2)}</span>
+          <span className="font-bold text-lg text-blue-600">${formatNumber(totalSpent, 2)}</span>
         </div>
       </div>
     </div>

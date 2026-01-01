@@ -1,4 +1,5 @@
 import { Bar } from 'react-chartjs-2';
+import { formatNumber } from '../../utils/currencyHelpers';
 import {
   Chart as ChartJS,
   BarElement,
@@ -59,7 +60,7 @@ export function TopProductsChart({ data, type = 'spending', onProductClick }) {
           label: function (context) {
             const value = context.parsed.x;
             if (type === 'spending') {
-              return `Total Spent: $${value.toFixed(2)}`;
+              return `Total Spent: $${formatNumber(value, 2)}`;
             } else {
               return `Quantity: ${value}`;
             }
@@ -70,7 +71,7 @@ export function TopProductsChart({ data, type = 'spending', onProductClick }) {
             if (type === 'spending') {
               lines.push(`Quantity: ${item.quantity}`);
             } else {
-              lines.push(`Total Spent: $${item.totalSpent.toFixed(2)}`);
+              lines.push(`Total Spent: $${formatNumber(item.totalSpent, 2)}`);
             }
             if (onProductClick) {
               lines.push('Click to view details');

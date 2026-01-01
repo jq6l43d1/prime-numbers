@@ -1,4 +1,5 @@
 import { Doughnut } from 'react-chartjs-2';
+import { formatNumber } from '../../utils/currencyHelpers';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { CHART_COLORS } from '../../constants/chartConfig';
 
@@ -90,7 +91,7 @@ export function OrderStatusChart({ orders, onStatusClick }) {
           label: context => {
             const status = context.label;
             const count = context.parsed;
-            const percentage = ((count / orders.length) * 100).toFixed(1);
+            const percentage = formatNumber((count / orders.length) * 100, 1);
             return `${status}: ${count} orders (${percentage}%)`;
           },
         },

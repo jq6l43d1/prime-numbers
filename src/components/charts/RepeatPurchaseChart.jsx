@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { formatNumber } from '../../utils/currencyHelpers';
 import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -78,7 +79,7 @@ export function RepeatPurchaseChart({ orders }) {
             const product = repeatData[context.dataIndex];
             return [
               `Purchased: ${product.count} times`,
-              `Total spent: $${product.totalSpent.toFixed(2)}`,
+              `Total spent: $${formatNumber(product.totalSpent, 2)}`,
               `ASIN: ${product.asin || 'N/A'}`,
             ];
           },

@@ -1,4 +1,5 @@
 import { Doughnut } from 'react-chartjs-2';
+import { formatNumber } from '../../utils/currencyHelpers';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { CHART_COLORS } from '../../constants/chartConfig';
 
@@ -114,12 +115,13 @@ export function PaymentMethodChart({ orders, onClick }) {
             const method = context.label;
             const spending = context.parsed;
             const count = countData[context.dataIndex];
-            const percentage = ((spending / spendingData.reduce((a, b) => a + b, 0)) * 100).toFixed(
+            const percentage = formatNumber(
+              (spending / spendingData.reduce((a, b) => a + b, 0)) * 100,
               1
             );
             return [
               `${method}`,
-              `Spending: $${spending.toFixed(2)}`,
+              `Spending: $${formatNumber(spending, 2)}`,
               `Orders: ${count}`,
               `Percentage: ${percentage}%`,
             ];
@@ -140,7 +142,7 @@ export function PaymentMethodChart({ orders, onClick }) {
             <div key={method} className="bg-gray-50 rounded p-2">
               <div className="font-semibold text-gray-900">{method}</div>
               <div className="text-xs">
-                ${stats.totalSpent.toFixed(2)} • {stats.count} orders
+                ${formatNumber(stats.totalSpent, 2)} • {stats.count} orders
               </div>
             </div>
           ))}
