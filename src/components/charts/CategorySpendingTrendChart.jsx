@@ -131,7 +131,7 @@ export function CategorySpendingTrendChart({ orders }) {
       y: {
         beginAtZero: true,
         ticks: {
-          callback: value => `$${value}`,
+          callback: value => `$${formatNumber(value, 0)}`,
           font: { size: 11 },
         },
         grid: {

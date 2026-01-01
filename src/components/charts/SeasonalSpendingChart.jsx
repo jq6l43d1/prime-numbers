@@ -175,7 +175,7 @@ export function SeasonalSpendingChart({ orders, onClick }) {
       r: {
         beginAtZero: true,
         ticks: {
-          callback: value => `$${value}`,
+          callback: value => `$${formatNumber(value, 0)}`,
           font: { size: 10 },
           backdropColor: 'transparent',
         },

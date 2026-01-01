@@ -100,7 +100,7 @@ export function DiscountAnalysisChart({ orders }) {
       x: {
         beginAtZero: true,
         ticks: {
-          callback: value => `$${value}`,
+          callback: value => `$${formatNumber(value, 0)}`,
         },
         grid: {
           color: 'rgba(0, 0, 0, 0.05)',
