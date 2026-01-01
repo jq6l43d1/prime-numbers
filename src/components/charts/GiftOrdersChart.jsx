@@ -35,30 +35,6 @@ export function GiftOrdersChart({ orders, onClick }) {
   const giftSpending = giftOrders.reduce((sum, o) => sum + (o.totalOwed || 0), 0);
   const personalSpending = personalOrders.reduce((sum, o) => sum + (o.totalOwed || 0), 0);
 
-  // Analyze gift orders by month
-  const giftsByMonth = {};
-  giftOrders.forEach(order => {
-    const date = new Date(order.orderDate);
-    const monthKey = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-
-    if (!giftsByMonth[monthKey]) {
-      giftsByMonth[monthKey] = {
-        count: 0,
-        spending: 0,
-      };
-    }
-
-    giftsByMonth[monthKey].count += 1;
-    giftsByMonth[monthKey].spending += order.totalOwed || 0;
-  });
-
-  // Get last 12 months of gift data
-  const sortedMonths = Object.keys(giftsByMonth)
-    .sort((a, b) => {
-      return new Date(a) - new Date(b);
-    })
-    .slice(-12);
-
   const chartData = {
     labels: ['Gift Orders', 'Personal Orders'],
     datasets: [
@@ -166,14 +142,14 @@ export function GiftOrdersChart({ orders, onClick }) {
           <div className="bg-pink-50 rounded p-3">
             <div className="font-semibold text-gray-900">🎁 Gift Orders</div>
             <div className="text-xs text-gray-600 mt-1">
-              {giftOrders.length} orders • ${formatNumber(giftSpending, 2)}
+              {formatNumber(giftOrders.length, 0)} orders • ${formatNumber(giftSpending, 2)}
             </div>
             <div className="text-xs text-gray-500">Avg: ${formatNumber(avgGiftValue, 2)}</div>
           </div>
           <div className="bg-blue-50 rounded p-3">
             <div className="font-semibold text-gray-900">🛍️ Personal Orders</div>
             <div className="text-xs text-gray-600 mt-1">
-              {personalOrders.length} orders • ${formatNumber(personalSpending, 2)}
+              {formatNumber(personalOrders.length, 0)} orders • ${formatNumber(personalSpending, 2)}
             </div>
             <div className="text-xs text-gray-500">Avg: ${formatNumber(avgPersonalValue, 2)}</div>
           </div>
