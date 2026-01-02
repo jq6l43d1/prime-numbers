@@ -27,7 +27,7 @@ ChartJS.register(
 );
 
 export function NvidiaInvestmentChart({ orders }) {
-  const { loading, error, data, apiKey } = useOpportunityCostData(orders);
+  const { loading, error, data } = useOpportunityCostData(orders);
 
   if (!orders || orders.length === 0) {
     return (
@@ -39,16 +39,7 @@ export function NvidiaInvestmentChart({ orders }) {
     );
   }
 
-  if (!apiKey) {
-    return (
-      <Card title="🎮 Nvidia Investment" subtitle="NVDA - AI & Graphics Leader">
-        <div className="text-center text-gray-500 py-8">
-          <p>API key required</p>
-          <p className="text-sm mt-2">Configure in the main chart above</p>
-        </div>
-      </Card>
-    );
-  }
+  // API key is now optional (using bundled data)
 
   if (loading) {
     return (

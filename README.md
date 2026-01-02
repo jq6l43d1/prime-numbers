@@ -7,24 +7,28 @@ A privacy-focused web application that analyzes your Amazon order history to pro
 ## Features
 
 ✨ **Comprehensive Statistics**
+
 - Total spending, order counts, and averages
 - Return rates and refund amounts
 - Shipping costs analysis
 - Payment method breakdown
 
 📊 **Beautiful Visualizations**
+
 - Spending over time (line chart)
 - Category breakdown (doughnut chart)
 - Orders by month (bar chart)
 - Interactive Chart.js charts
 
 🔒 **100% Private & Secure**
+
 - All processing happens client-side in your browser
 - Zero data transmission to any server
 - No tracking, no cookies, no analytics
 - Open source for transparency
 
 🎨 **Modern UI**
+
 - Clean, responsive design built with Tailwind CSS
 - Works on desktop, tablet, and mobile
 - Drag-and-drop file upload
@@ -38,7 +42,21 @@ A privacy-focused web application that analyzes your Amazon order history to pro
 npm install
 ```
 
-### 2. Start Development Server
+### 2. Fetch Stock Price Data (One-time setup)
+
+The opportunity cost analysis feature requires historical stock price data. Fetch it once:
+
+```bash
+node scripts/fetchStockPrices.js YOUR_ALPHA_VANTAGE_API_KEY
+```
+
+**Get a free API key:** https://www.alphavantage.co/support/#api-key
+
+This downloads historical prices for S&P 500, Nvidia, and Bitcoin (~2.5 MB total).
+
+**Note:** This is a one-time setup. The data is cached in `public/data/` and only needs updating occasionally.
+
+### 3. Start Development Server
 
 ```bash
 npm run dev
@@ -46,7 +64,7 @@ npm run dev
 
 The application will open at `http://localhost:5173/`
 
-### 3. Request Your Amazon Data
+### 4. Request Your Amazon Data
 
 1. Go to [Amazon.com](https://www.amazon.com) and sign in
 2. Navigate to **Account & Lists** → **Privacy & Settings** → **Request My Data**
@@ -55,7 +73,7 @@ The application will open at `http://localhost:5173/`
 5. Wait for an email from Amazon (usually 24-48 hours)
 6. Download the **"Your Orders.zip"** file
 
-### 4. Analyze Your Data
+### 5. Analyze Your Data
 
 1. Open the application in your browser
 2. Drag and drop your **"Your Orders.zip"** file onto the upload zone
@@ -103,6 +121,7 @@ npm run preview
 ```
 
 Deploy the `dist/` folder to any static hosting service:
+
 - Netlify
 - Vercel
 - GitHub Pages

@@ -1,0 +1,2 @@
+This directory will contain stock price data files.
+Run: node scripts/fetchStockPrices.js YOUR_API_KEY

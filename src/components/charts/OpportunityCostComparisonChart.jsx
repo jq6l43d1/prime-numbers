@@ -20,7 +20,7 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 export function OpportunityCostComparisonChart({ orders }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const { loading, error, data, apiKey, setApiKey } = useOpportunityCostData(orders);
+  const { loading, error, data, setApiKey } = useOpportunityCostData(orders);
 
   if (!orders || orders.length === 0) {
     return (
@@ -30,38 +30,6 @@ export function OpportunityCostComparisonChart({ orders }) {
           <p className="text-sm mt-2">Upload your Amazon data to see investment comparisons.</p>
         </div>
       </Card>
-    );
-  }
-
-  // API Key required
-  if (!apiKey) {
-    return (
-      <>
-        <Card title="💸 Opportunity Cost Analysis" subtitle="Investment comparison">
-          <div className="text-center py-12">
-            <div className="mb-6">
-              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-blue-100 mb-4">
-                <span className="text-4xl">🔑</span>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">API Key Required</h3>
-              <p className="text-gray-600 max-w-md mx-auto">
-                See how much your Amazon spending could have become if invested in S&P 500, Nvidia,
-                or Bitcoin.
-              </p>
-            </div>
-            <button
-              onClick={() => setModalOpen(true)}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
-            >
-              Get Started - Enter API Key
-            </button>
-            <p className="text-xs text-gray-500 mt-4">
-              Free API key from Alpha Vantage • Stored locally in browser only
-            </p>
-          </div>
-        </Card>
-        <ApiKeyModal isOpen={modalOpen} onClose={() => setModalOpen(false)} onSave={setApiKey} />
-      </>
     );
   }
 

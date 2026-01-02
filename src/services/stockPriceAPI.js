@@ -1,6 +1,7 @@
 const CACHE_EXPIRATION_DAYS = 30;
 const MAX_RETRIES = 3;
 const RETRY_DELAYS = [1000, 2000, 4000]; // Exponential backoff
+const USE_BUNDLED_DATA = true; // Use pre-fetched data bundled with the app
 
 /**
  * Determines if a symbol is a cryptocurrency
@@ -10,9 +11,35 @@ function isCrypto(symbol) {
 }
 
 /**
- * Fetches historical prices from Alpha Vantage API
+ * Loads stock price data from bundled JSON files
+ * @param {string} symbol - Stock symbol (SPY, NVDA, BTC)
+ * @returns {Promise<Object>} - Historical prices data
+ */
+async function loadBundledData(symbol) {
+  try {
+    const response = await fetch(`/data/${symbol.toLowerCase()}.json`);
+
+    if (!response.ok) {
+      throw new Error(`Failed to load bundled data for ${symbol}`);
+    }
+
+    const data = await response.json();
+
+    console.log(
+      `📦 Loaded bundled ${symbol} data (${data.priceCount} days, fetched: ${new Date(data.fetchedAt).toLocaleDateString()})`
+    );
+
+    return { success: true, data: data.prices, bundled: true };
+  } catch (error) {
+    console.error(`Error loading bundled data for ${symbol}:`, error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Fetches historical prices from Alpha Vantage API or bundled data
  * @param {string} symbol - Stock symbol (SPY, NVDA) or crypto (BTC)
- * @param {string} apiKey - Alpha Vantage API key
+ * @param {string} apiKey - Alpha Vantage API key (optional if using bundled data)
  * @returns {Promise<Object>} - Historical prices data
  */
 export async function fetchHistoricalPrices(symbol, apiKey) {
@@ -21,6 +48,27 @@ export async function fetchHistoricalPrices(symbol, apiKey) {
   if (cached && isCacheValid(symbol)) {
     console.log(`Using cached data for ${symbol}`);
     return { success: true, data: cached.prices, cached: true };
+  }
+
+  // If no API key provided, use bundled data
+  if (!apiKey && USE_BUNDLED_DATA) {
+    console.log(`No API key provided, loading bundled data for ${symbol}`);
+    const bundledResult = await loadBundledData(symbol);
+
+    if (bundledResult.success) {
+      // Cache the bundled data
+      setStockPriceCache(symbol, bundledResult.data);
+    }
+
+    return bundledResult;
+  }
+
+  // If we don't have an API key and bundled data loading failed, return error
+  if (!apiKey) {
+    return {
+      success: false,
+      error: 'No API key provided and bundled data unavailable',
+    };
   }
 
   // Determine API endpoint based on symbol type

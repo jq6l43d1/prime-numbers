@@ -46,11 +46,6 @@ export function useOpportunityCostData(orders) {
 
   // Fetch stock prices from API or cache
   const fetchAllPrices = async () => {
-    if (!apiKey) {
-      setError('API key is required');
-      return;
-    }
-
     if (!orders || orders.length === 0) {
       setError('No orders to analyze');
       return;
@@ -94,13 +89,13 @@ export function useOpportunityCostData(orders) {
     }
   };
 
-  // Auto-fetch when component mounts or API key changes
+  // Auto-fetch when component mounts or when orders/API key changes
   useEffect(() => {
-    if (apiKey && orders && orders.length > 0) {
+    if (orders && orders.length > 0) {
       fetchAllPrices();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [apiKey]); // Only run when apiKey changes, not orders
+  }, [apiKey, orders?.length]); // Run when apiKey or number of orders changes
 
   // Calculate investment performance using useMemo to avoid recalculation on every render
   const data = useMemo(() => {
