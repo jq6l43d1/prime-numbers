@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 // IPO/Launch dates for filtering pre-existence orders
 const IPO_DATES = {
   SPY: new Date('1993-01-22').getTime(),
+  AMZN: new Date('1997-05-15').getTime(),
   NVDA: new Date('1999-01-22').getTime(),
   BTC: new Date('2010-07-01').getTime(),
 };
@@ -200,11 +201,12 @@ export function calculateDollarCostAveraging(orders, stockPrices, symbol) {
  * Generates Chart.js compatible datasets for comparison chart
  * @param {Array} orders - Original orders array
  * @param {Object} sp500Data - S&P 500 calculation results
+ * @param {Object} amazonData - Amazon calculation results
  * @param {Object} nvidiaData - Nvidia calculation results
  * @param {Object} bitcoinData - Bitcoin calculation results
  * @returns {Object} - Chart datasets and labels
  */
-export function generateComparisonDatasets(orders, sp500Data, nvidiaData, bitcoinData) {
+export function generateComparisonDatasets(orders, sp500Data, amazonData, nvidiaData, bitcoinData) {
   if (!orders || orders.length === 0) {
     return {
       labels: [],
@@ -225,6 +227,9 @@ export function generateComparisonDatasets(orders, sp500Data, nvidiaData, bitcoi
   // Add investment dates
   if (sp500Data?.success) {
     sp500Data.dataPoints.forEach(dp => allDates.add(dp.dateStr));
+  }
+  if (amazonData?.success) {
+    amazonData.dataPoints.forEach(dp => allDates.add(dp.dateStr));
   }
   if (nvidiaData?.success) {
     nvidiaData.dataPoints.forEach(dp => allDates.add(dp.dateStr));
@@ -254,6 +259,7 @@ export function generateComparisonDatasets(orders, sp500Data, nvidiaData, bitcoi
 
   // Build investment value arrays
   const sp500Values = buildInvestmentValues(sortedDates, sp500Data);
+  const amazonStockValues = buildInvestmentValues(sortedDates, amazonData);
   const nvidiaValues = buildInvestmentValues(sortedDates, nvidiaData);
   const bitcoinValues = buildInvestmentValues(sortedDates, bitcoinData);
 
@@ -276,6 +282,18 @@ export function generateComparisonDatasets(orders, sp500Data, nvidiaData, bitcoi
       data: sp500Values,
       borderColor: 'rgb(34, 197, 94)', // green
       backgroundColor: 'rgba(34, 197, 94, 0.1)',
+      borderWidth: 2,
+      tension: 0.1,
+      fill: false,
+    });
+  }
+
+  if (amazonData?.success) {
+    datasets.push({
+      label: 'Amazon Stock (AMZN)',
+      data: amazonStockValues,
+      borderColor: 'rgb(147, 51, 234)', // purple
+      backgroundColor: 'rgba(147, 51, 234, 0.1)',
       borderWidth: 2,
       tension: 0.1,
       fill: false,

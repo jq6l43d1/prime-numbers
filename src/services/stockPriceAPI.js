@@ -263,7 +263,7 @@ export function isCacheValid(symbol, maxAge = null) {
  * Clears all stock price caches
  */
 export function clearAllCaches() {
-  const symbols = ['SPY', 'NVDA', 'BTC'];
+  const symbols = ['SPY', 'NVDA', 'AMZN', 'BTC'];
 
   symbols.forEach(symbol => {
     try {

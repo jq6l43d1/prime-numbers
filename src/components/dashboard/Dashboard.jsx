@@ -22,6 +22,7 @@ import { PaymentMethodChart } from '../charts/PaymentMethodChart';
 import { GiftOrdersChart } from '../charts/GiftOrdersChart';
 import { OpportunityCostComparisonChart } from '../charts/OpportunityCostComparisonChart';
 import { SP500InvestmentChart } from '../charts/SP500InvestmentChart';
+import { AmazonInvestmentChart } from '../charts/AmazonInvestmentChart';
 import { NvidiaInvestmentChart } from '../charts/NvidiaInvestmentChart';
 import { BitcoinInvestmentChart } from '../charts/BitcoinInvestmentChart';
 import { SubscriptionDetectionChart } from '../charts/SubscriptionDetectionChart';
@@ -726,9 +727,10 @@ export function Dashboard() {
         {/* Opportunity Cost Analysis - Full Width */}
         <OpportunityCostComparisonChart orders={filteredOrders} />
 
-        {/* Investment Details - Three Columns */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Investment Details - Four Columns */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           <SP500InvestmentChart orders={filteredOrders} />
+          <AmazonInvestmentChart orders={filteredOrders} />
           <NvidiaInvestmentChart orders={filteredOrders} />
           <BitcoinInvestmentChart orders={filteredOrders} />
         </div>

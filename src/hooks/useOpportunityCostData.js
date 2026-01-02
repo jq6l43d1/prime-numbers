@@ -26,6 +26,7 @@ export function useOpportunityCostData(orders) {
   const [error, setError] = useState(null);
   const [stockPrices, setStockPrices] = useState({
     SPY: null,
+    AMZN: null,
     NVDA: null,
     BTC: null,
   });
@@ -55,9 +56,10 @@ export function useOpportunityCostData(orders) {
     setError(null);
 
     try {
-      // Fetch all three symbols in parallel
-      const [spyResult, nvdaResult, btcResult] = await Promise.all([
+      // Fetch all four symbols in parallel
+      const [spyResult, amznResult, nvdaResult, btcResult] = await Promise.all([
         fetchHistoricalPrices('SPY', apiKey),
+        fetchHistoricalPrices('AMZN', apiKey),
         fetchHistoricalPrices('NVDA', apiKey),
         fetchHistoricalPrices('BTC', apiKey),
       ]);
@@ -65,6 +67,7 @@ export function useOpportunityCostData(orders) {
       // Check for errors
       const errors = [];
       if (!spyResult.success) errors.push(`SPY: ${spyResult.error}`);
+      if (!amznResult.success) errors.push(`AMZN: ${amznResult.error}`);
       if (!nvdaResult.success) errors.push(`NVDA: ${nvdaResult.error}`);
       if (!btcResult.success) errors.push(`BTC: ${btcResult.error}`);
 
@@ -77,6 +80,7 @@ export function useOpportunityCostData(orders) {
       // Update state with fetched prices
       setStockPrices({
         SPY: spyResult.data,
+        AMZN: amznResult.data,
         NVDA: nvdaResult.data,
         BTC: btcResult.data,
       });
@@ -99,7 +103,7 @@ export function useOpportunityCostData(orders) {
 
   // Calculate investment performance using useMemo to avoid recalculation on every render
   const data = useMemo(() => {
-    if (!stockPrices.SPY || !stockPrices.NVDA || !stockPrices.BTC) {
+    if (!stockPrices.SPY || !stockPrices.AMZN || !stockPrices.NVDA || !stockPrices.BTC) {
       return null;
     }
 
@@ -109,17 +113,25 @@ export function useOpportunityCostData(orders) {
 
     // Calculate DCA for each investment
     const sp500Data = calculateDollarCostAveraging(orders, stockPrices.SPY, 'SPY');
+    const amazonData = calculateDollarCostAveraging(orders, stockPrices.AMZN, 'AMZN');
     const nvidiaData = calculateDollarCostAveraging(orders, stockPrices.NVDA, 'NVDA');
     const bitcoinData = calculateDollarCostAveraging(orders, stockPrices.BTC, 'BTC');
 
     // Generate chart datasets
-    const chartData = generateComparisonDatasets(orders, sp500Data, nvidiaData, bitcoinData);
+    const chartData = generateComparisonDatasets(
+      orders,
+      sp500Data,
+      amazonData,
+      nvidiaData,
+      bitcoinData
+    );
 
     // Calculate total Amazon spending for comparison
     const totalSpending = orders.reduce((sum, order) => sum + (order.totalOwed || 0), 0);
 
     return {
       sp500: sp500Data,
+      amazon: amazonData,
       nvidia: nvidiaData,
       bitcoin: bitcoinData,
       chartData,

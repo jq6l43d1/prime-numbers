@@ -39,7 +39,7 @@ export function OpportunityCostComparisonChart({ orders }) {
       <Card title="💸 Opportunity Cost Analysis" subtitle="Loading historical data...">
         <div className="text-center py-12">
           <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
-          <p className="text-gray-600">Fetching S&P 500, Nvidia, and Bitcoin prices...</p>
+          <p className="text-gray-600">Fetching S&P 500, Amazon, Nvidia, and Bitcoin prices...</p>
           <p className="text-sm text-gray-500 mt-2">This may take a few moments</p>
         </div>
       </Card>
@@ -181,6 +181,16 @@ export function OpportunityCostComparisonChart({ orders }) {
     });
   }
 
+  if (data.amazon?.success) {
+    stats.push({
+      label: 'Amazon (AMZN)',
+      value: data.amazon.summary.currentValue,
+      return: data.amazon.summary.totalReturnPercent,
+      color: 'purple',
+      icon: '🛍️',
+    });
+  }
+
   if (data.nvidia?.success) {
     stats.push({
       label: 'Nvidia (NVDA)',
@@ -204,6 +214,7 @@ export function OpportunityCostComparisonChart({ orders }) {
   const colorMap = {
     blue: 'from-blue-50 to-blue-100 text-blue-900',
     green: 'from-green-50 to-green-100 text-green-900',
+    purple: 'from-purple-50 to-purple-100 text-purple-900',
     red: 'from-red-50 to-red-100 text-red-900',
     orange: 'from-orange-50 to-orange-100 text-orange-900',
   };
@@ -220,7 +231,7 @@ export function OpportunityCostComparisonChart({ orders }) {
         </div>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
           {stats.map((stat, index) => (
             <div
               key={index}
