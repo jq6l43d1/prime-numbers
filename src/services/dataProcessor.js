@@ -1,5 +1,11 @@
 import { extractZipFile, categorizeFiles, validateAmazonData } from './zipParser';
-import { parseRetailOrders, parseDigitalItems, parseReturns } from './csvParser';
+import {
+  parseRetailOrders,
+  parseDigitalItems,
+  parseReturns,
+  parseCartItems,
+  parseSustainability,
+} from './csvParser';
 import { categorizeProducts } from '../utils/categoryMapper';
 import { getYearMonth } from '../utils/dateHelpers';
 
@@ -71,6 +77,37 @@ export async function processAmazonData(zipFile, onProgress = () => {}) {
       // Continue processing even if returns fail
     }
 
+    // Step 5a: Parse cart items
+    let cartItems = [];
+    if (categorizedFiles.cartItems && categorizedFiles.cartItems.length > 0) {
+      onProgress({ step: 'parsing-cart', progress: 65, message: 'Parsing cart items...' });
+      try {
+        for (const cartFile of categorizedFiles.cartItems) {
+          const parsedItems = await parseCartItems(cartFile.content);
+          cartItems.push(...parsedItems);
+        }
+      } catch (error) {
+        console.error('Error parsing cart items:', error);
+        // Continue processing even if cart items fail
+      }
+    }
+
+    // Step 5b: Parse sustainability metrics
+    let sustainabilityMetrics = {};
+    if (categorizedFiles.sustainability) {
+      onProgress({
+        step: 'parsing-sustainability',
+        progress: 67,
+        message: 'Parsing sustainability data...',
+      });
+      try {
+        sustainabilityMetrics = await parseSustainability(categorizedFiles.sustainability.content);
+      } catch (error) {
+        console.error('Error parsing sustainability:', error);
+        // Continue processing even if sustainability fails
+      }
+    }
+
     // Step 6: Normalize and enrich data
     onProgress({ step: 'normalizing', progress: 70, message: 'Normalizing data...' });
     const normalizedOrders = normalizeOrders(allOrders);
@@ -105,6 +142,8 @@ export async function processAmazonData(zipFile, onProgress = () => {}) {
       orders: sortedOrders,
       returns,
       photos: categorizedFiles.photos,
+      cartItems,
+      sustainabilityMetrics,
       summary: {
         totalOrders: sortedOrders.length,
         totalSpent: totalSpent,
@@ -113,6 +152,7 @@ export async function processAmazonData(zipFile, onProgress = () => {}) {
         digitalOrders: sortedOrders.filter(o => o.isDigital).length,
         totalReturns: returns.length,
         totalPhotos: categorizedFiles.photos.length,
+        cartItemsCount: cartItems.length,
       },
     };
   } catch (error) {
@@ -123,6 +163,8 @@ export async function processAmazonData(zipFile, onProgress = () => {}) {
       orders: [],
       returns: [],
       photos: [],
+      cartItems: [],
+      sustainabilityMetrics: {},
     };
   }
 }

@@ -31,6 +31,9 @@ import { ProductConditionChart } from '../charts/ProductConditionChart';
 import { FulfillmentSpeedChart } from '../charts/FulfillmentSpeedChart';
 import { AmazonAnniversaryChart } from '../charts/AmazonAnniversaryChart';
 import { ProductWordCloudChart } from '../charts/ProductWordCloudChart';
+import { WishlistAnalysisChart } from '../charts/WishlistAnalysisChart';
+import { SustainabilityChart } from '../charts/SustainabilityChart';
+import { DetailedReturnsChart } from '../charts/DetailedReturnsChart';
 import { TimePeriodComparison } from '../comparison/TimePeriodComparison';
 import { DateRangeFilter } from '../filters/DateRangeFilter';
 import { ProductSearchFilter } from '../filters/ProductSearchFilter';
@@ -51,6 +54,8 @@ export function Dashboard() {
   const {
     orders,
     returns,
+    cartItems,
+    sustainabilityMetrics,
     viewMode,
     getCombinedData,
     dateFilter,
@@ -858,6 +863,21 @@ export function Dashboard() {
         {/* Product Word Cloud - Full Width */}
         <div className="border-2 border-blue-200">
           <ProductWordCloudChart orders={filteredOrders} />
+        </div>
+
+        {/* Wishlist & Saved Items Analysis - Full Width */}
+        <div className="border-2 border-purple-200">
+          <WishlistAnalysisChart orders={filteredOrders} cartItems={cartItems || []} />
+        </div>
+
+        {/* Sustainability Dashboard - Full Width */}
+        <div className="border-2 border-green-200">
+          <SustainabilityChart sustainabilityMetrics={sustainabilityMetrics || {}} />
+        </div>
+
+        {/* Detailed Return Reason Analysis - Full Width */}
+        <div className="border-2 border-red-200">
+          <DetailedReturnsChart returns={dataToUse.returns} orders={filteredOrders} />
         </div>
 
         {/* Time Period Comparison - Full Width */}

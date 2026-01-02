@@ -184,3 +184,68 @@ export async function parseReturns(csvContent) {
     throw error;
   }
 }
+
+/**
+ * Parses cart items CSV data
+ * @param {string} csvContent - The cart items CSV content
+ * @returns {Promise<Array>} - Array of cart items
+ */
+export async function parseCartItems(csvContent) {
+  try {
+    const result = await parseCSV(csvContent);
+
+    if (!result.success || !result.data) {
+      throw new Error('Failed to parse cart items CSV');
+    }
+
+    const items = result.data.map(row => ({
+      asin: row['ASIN'] || row['Asin'] || '',
+      productName: row['Product Name'] || row['Title'] || row['product name'] || '',
+      quantity: parseInt(row['Quantity']) || 1,
+      dateAddedToCart: row['Date Added to Cart'] || row['date added to cart'] || '',
+      cartList: row['Cart List'] || row['List'] || row['list'] || 'active',
+    }));
+
+    return items.filter(item => item.asin || item.productName);
+  } catch (error) {
+    console.error('Error parsing cart items:', error);
+    throw error;
+  }
+}
+
+/**
+ * Parses sustainability metrics CSV data
+ * @param {string} csvContent - The sustainability CSV content
+ * @returns {Promise<Object>} - Sustainability metrics
+ */
+export async function parseSustainability(csvContent) {
+  try {
+    const result = await parseCSV(csvContent);
+
+    if (!result.success || !result.data || result.data.length === 0) {
+      return { msp_metric: 0, cpf_metric: 0, dex_metric: 0 };
+    }
+
+    // Aggregate all metrics from the rows
+    const metrics = result.data.reduce(
+      (acc, row) => {
+        // Try different possible column names
+        const msp = parseFloat(row['msp_metric'] || row['MSP Metric'] || row['msp'] || 0);
+        const cpf = parseFloat(row['cpf_metric'] || row['CPF Metric'] || row['cpf'] || 0);
+        const dex = parseFloat(row['dex_metric'] || row['DEX Metric'] || row['dex'] || 0);
+
+        return {
+          msp_metric: acc.msp_metric + msp,
+          cpf_metric: acc.cpf_metric + cpf,
+          dex_metric: acc.dex_metric + dex,
+        };
+      },
+      { msp_metric: 0, cpf_metric: 0, dex_metric: 0 }
+    );
+
+    return metrics;
+  } catch (error) {
+    console.error('Error parsing sustainability metrics:', error);
+    return { msp_metric: 0, cpf_metric: 0, dex_metric: 0 };
+  }
+}

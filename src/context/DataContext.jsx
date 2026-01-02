@@ -7,6 +7,8 @@ export function DataProvider({ children }) {
   const [orders, setOrders] = useState([]);
   const [returns, setReturns] = useState([]);
   const [photos, setPhotos] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
+  const [sustainabilityMetrics, setSustainabilityMetrics] = useState({});
   const [summary, setSummary] = useState(null);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
@@ -26,6 +28,8 @@ export function DataProvider({ children }) {
     setOrders(processedData.orders || []);
     setReturns(processedData.returns || []);
     setPhotos(processedData.photos || []);
+    setCartItems(processedData.cartItems || []);
+    setSustainabilityMetrics(processedData.sustainabilityMetrics || {});
     setSummary(processedData.summary || null);
     setIsDataLoaded(true);
   };
@@ -39,6 +43,8 @@ export function DataProvider({ children }) {
       orders: processedData.orders || [],
       returns: processedData.returns || [],
       photos: processedData.photos || [],
+      cartItems: processedData.cartItems || [],
+      sustainabilityMetrics: processedData.sustainabilityMetrics || {},
       summary: processedData.summary || null,
       ...metadata,
     };
@@ -155,6 +161,8 @@ export function DataProvider({ children }) {
     orders,
     returns,
     photos,
+    cartItems,
+    sustainabilityMetrics,
     summary,
     isDataLoaded,
     setData,
@@ -178,6 +186,7 @@ export function DataProvider({ children }) {
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useData() {
   const context = useContext(DataContext);
   if (!context) {

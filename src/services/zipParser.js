@@ -74,6 +74,7 @@ export function categorizeFiles(files) {
     customerReturns: [],
     ordersReturned: [],
     cartItems: [],
+    sustainability: null,
     rentalContracts: [],
     rentalEvents: [],
     rentalItems: [],
@@ -104,6 +105,8 @@ export function categorizeFiles(files) {
       categorized.ordersReturned.push(file);
     } else if (fileName.includes('retail.cartitems')) {
       categorized.cartItems.push(file);
+    } else if (fileName.includes('sustainability')) {
+      categorized.sustainability = file;
     } else if (fileName.includes('rental_contracts')) {
       categorized.rentalContracts.push(file);
     } else if (fileName.includes('rental_events')) {
