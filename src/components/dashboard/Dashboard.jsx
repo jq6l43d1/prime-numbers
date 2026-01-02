@@ -20,6 +20,10 @@ import { SpendingVelocityChart } from '../charts/SpendingVelocityChart';
 import { CumulativeOrdersChart } from '../charts/CumulativeOrdersChart';
 import { PaymentMethodChart } from '../charts/PaymentMethodChart';
 import { GiftOrdersChart } from '../charts/GiftOrdersChart';
+import { OpportunityCostComparisonChart } from '../charts/OpportunityCostComparisonChart';
+import { SP500InvestmentChart } from '../charts/SP500InvestmentChart';
+import { NvidiaInvestmentChart } from '../charts/NvidiaInvestmentChart';
+import { BitcoinInvestmentChart } from '../charts/BitcoinInvestmentChart';
 import { SubscriptionDetectionChart } from '../charts/SubscriptionDetectionChart';
 import { ShippingDestinationsChart } from '../charts/ShippingDestinationsChart';
 import { DiscountAnalysisChart } from '../charts/DiscountAnalysisChart';
@@ -717,6 +721,16 @@ export function Dashboard() {
           <div className="h-80 mb-2">
             <CumulativeOrdersChart orders={filteredOrders} />
           </div>
+        </div>
+
+        {/* Opportunity Cost Analysis - Full Width */}
+        <OpportunityCostComparisonChart orders={filteredOrders} />
+
+        {/* Investment Details - Three Columns */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <SP500InvestmentChart orders={filteredOrders} />
+          <NvidiaInvestmentChart orders={filteredOrders} />
+          <BitcoinInvestmentChart orders={filteredOrders} />
         </div>
 
         {/* Advanced Analytics - Two Column */}
